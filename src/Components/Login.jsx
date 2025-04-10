@@ -2,29 +2,75 @@ import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineMail } from "react-icons/ai";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaBrain } from "react-icons/fa";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate(); 
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true); // Start loading
+
+    try {
+      const response = await axios.post(
+        "https://quiz-portal-3ax0.onrender.com/api/auth/signin",
+        formData
+      );
+
+      // Store tokens in localStorage
+      localStorage.setItem("refreshToken", response.data.refreshToken);
+      localStorage.setItem("accessToken", response.data.accessToken);
+
+      // Navigate to the dashboard
+      navigate("/userdashboard");
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed. Please try again.");
+    } finally {
+      setLoading(false); // Stop loading
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-800 to-purple-900 flex items-center justify-center px-4">
-      <div className="max-w-md w-full bg-purple-950 text-white p-8 rounded-2xl shadow-xl">
-           <div className="flex items-center justify-center mb-6 ">
-                <FaBrain className="text-white text-5xl mr-2" /> 
-                <h1 className="text-white text-4xl font-bold">Quiz Master</h1>
-              </div>
-        <h2 className="text-2xl font-bold text-center mb-1"> Sign In</h2>
-        <p className="text-center text-purple-300 mb-6 text-sm">Access the quiz management dashboard</p>
+    <div className="relative min-h-screen bg-gradient-to-br from-purple-800 to-purple-900 flex items-center justify-center px-4">
+      {loading && (
+        <div className="fixed inset-0  bg-opacity-80 flex items-center justify-center z-50">
+          <div className="w-16 h-16 border-8 border-gray-300 border-t-purple-500 rounded-full animate-spin"></div>
+        </div>
+      )}
 
-        <form className="space-y-4">
+      <div className={`max-w-md w-full bg-purple-950 text-white p-8 rounded-2xl shadow-xl ${loading ? "blur-sm" : ""}`}>
+        <div className="flex items-center justify-center mb-6">
+          <FaBrain className="text-white text-5xl mr-2" />
+          <h1 className="text-white text-4xl font-bold">Quiz Master</h1>
+        </div>
+        <h2 className="text-2xl font-bold text-center mb-1">Sign In</h2>
+        <p className="text-center text-purple-300 mb-6 text-sm">
+          Access the quiz management dashboard
+        </p>
+
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="relative">
             <AiOutlineMail className="absolute top-3.5 left-3 text-purple-300" size={20} />
             <input
               type="email"
+              name="email"
               placeholder="Admin Email"
+              value={formData.email}
+              onChange={handleChange}
               className="w-full bg-purple-900 text-white py-2 px-10 rounded-md border border-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
+              required
             />
           </div>
 
@@ -32,8 +78,12 @@ const Login = () => {
             <RiLockPasswordLine className="absolute top-3.5 left-3 text-purple-300" size={20} />
             <input
               type={showPassword ? "text" : "password"}
+              name="password"
               placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
               className="w-full bg-purple-900 text-white py-2 px-10 rounded-md border border-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
+              required
             />
             <button
               type="button"
@@ -49,7 +99,13 @@ const Login = () => {
               <input type="checkbox" className="mr-1 accent-pink-500" />
               Remember me
             </label>
-            <a href="#" className="hover:underline">Forgot password?</a>
+            <a
+              href="#"
+              className="hover:underline"
+              onClick={() => navigate("/forgot")}
+            >
+              Forgot password?
+            </a>
           </div>
 
           <button
@@ -58,24 +114,30 @@ const Login = () => {
           >
             Sign In
           </button>
-
-          <p className="text-center text-sm text-purple-300 mt-2">
-            Need a participant account?{" "}
-            <span
-              onClick={() => navigate("/signup")} 
-              className="text-white hover:underline cursor-pointer"
-            >
-              Sign up
-            </span>
-          </p>
         </form>
+
+        <p className="text-center text-sm text-purple-300 mt-2">
+          Need a participant account?{" "}
+          <span
+            onClick={() => navigate("/signup")}
+            className="text-white hover:underline cursor-pointer"
+          >
+            Sign up
+          </span>
+        </p>
 
         <div className="mt-8 text-xs text-purple-400 text-center">
           © 2025 Quiz Master. All rights reserved.
           <div className="flex justify-center gap-4 mt-1">
-            <a href="#" className="hover:underline">Terms</a>
-            <a href="#" className="hover:underline">Privacy</a>
-            <a href="#" className="hover:underline">Help</a>
+            <a href="#" className="hover:underline">
+              Terms
+            </a>
+            <a href="#" className="hover:underline">
+              Privacy
+            </a>
+            <a href="#" className="hover:underline">
+              Help
+            </a>
           </div>
         </div>
       </div>
