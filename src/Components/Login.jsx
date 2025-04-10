@@ -31,7 +31,7 @@ const Login = () => {
         // Admin login successful
         localStorage.setItem("Token", adminResponse.data.token);
         navigate("/admindashboard");
-        return; // Exit after successful admin login
+        return; /
       }
     } catch (adminError) {
       // Admin login failed, proceed to user login
@@ -79,7 +79,7 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="relative">
-            <AiOutlineMail className="absolute top-3.5 left-3 text-purple-300" size={20} />
+            <AiOutlineMail className="absolute top-3 left-3 text-purple-300" size={18} />
             <input
               type="email"
               name="email"
@@ -92,7 +92,7 @@ const Login = () => {
           </div>
 
           <div className="relative">
-            <RiLockPasswordLine className="absolute top-3.5 left-3 text-purple-300" size={20} />
+            <RiLockPasswordLine className="absolute top-3 left-3 text-purple-300" size={18} />
             <input
               type={showPassword ? "text" : "password"}
               name="password"
