@@ -10,7 +10,7 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-800 to-purple-900 flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-purple-950 text-white p-8 rounded-2xl shadow-xl">
-        <h2 className="text-xl font-bold text-center mb-1"> Sign In</h2>
+        <h2 className="text-2xl font-bold text-center mb-1"> Sign In</h2>
         <p className="text-center text-purple-300 mb-6 text-sm">Access the quiz management dashboard</p>
 
         <form className="space-y-4">
