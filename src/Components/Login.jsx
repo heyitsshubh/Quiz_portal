@@ -62,11 +62,11 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="relative">
-            <AiOutlineMail className="absolute top-3.5 left-3 text-purple-300" size={20} />
+            <AiOutlineMail className="absolute top-3 left-3 text-purple-300" size={18} />
             <input
               type="email"
               name="email"
-              placeholder="Admin Email"
+              placeholder=" Email"
               value={formData.email}
               onChange={handleChange}
               className="w-full bg-purple-900 text-white py-2 px-10 rounded-md border border-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
@@ -75,7 +75,7 @@ const Login = () => {
           </div>
 
           <div className="relative">
-            <RiLockPasswordLine className="absolute top-3.5 left-3 text-purple-300" size={20} />
+            <RiLockPasswordLine className="absolute top-3 left-3 text-purple-300" size={18} />
             <input
               type={showPassword ? "text" : "password"}
               name="password"
@@ -90,7 +90,7 @@ const Login = () => {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute top-3.5 right-3 text-purple-400"
             >
-              {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
+              {showPassword ? <AiOutlineEyeInvisible size={18} /> : <AiOutlineEye size={18} />}
             </button>
           </div>
 
