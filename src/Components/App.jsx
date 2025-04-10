@@ -4,6 +4,7 @@ import SignupForm from './Signup';
 import Login from './Login';
 import Forgot from './Forgot';
 import Userdashboard from './Userdashboard';
+import Admindashboard from './Admindashboard';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/forgot" element={<Forgot />} />
         <Route path="/userdashboard" element={<Userdashboard />} />
+        <Route path="/admindashboard" element={<Admindashboard />} />
       </Routes>
     </Router>
   );

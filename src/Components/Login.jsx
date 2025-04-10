@@ -9,7 +9,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false); 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -19,20 +19,36 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setLoading(true); // Start loading
+    setLoading(true); 
 
     try {
-      const response = await axios.post(
-        "https://quiz-portal-3ax0.onrender.com/api/auth/signin",
-        formData
-      );
+      if (formData.email.endsWith("@akgec.ac.in")) {
+        // Admin login API
+        const adminResponse = await axios.post(
+          "https://quiz-portal-3ax0.onrender.com/api/admin/login",
+          formData
+        );
 
-      // Store tokens in localStorage
-      localStorage.setItem("refreshToken", response.data.refreshToken);
-      localStorage.setItem("accessToken", response.data.accessToken);
+        // Store tokens for admin
+        localStorage.setItem("Token", adminResponse.data.token);
+        // localStorage.setItem("accessToken", adminResponse.data.accessToken);
 
-      // Navigate to the dashboard
-      navigate("/userdashboard");
+        // Navigate to admin dashboard
+        navigate("/admindashboard");
+      } else {
+        // User login API
+        const userResponse = await axios.post(
+          "https://quiz-portal-3ax0.onrender.com/api/auth/signin",
+          formData
+        );
+
+        // Store tokens for user
+        localStorage.setItem("refreshToken", userResponse.data.refreshToken);
+        localStorage.setItem("accessToken", userResponse.data.accessToken);
+
+        // Navigate to user dashboard
+        navigate("/userdashboard");
+      }
     } catch (err) {
       setError(err.response?.data?.message || "Login failed. Please try again.");
     } finally {
@@ -43,7 +59,7 @@ const Login = () => {
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-purple-800 to-purple-900 flex items-center justify-center px-4">
       {loading && (
-        <div className="fixed inset-0  bg-opacity-80 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50">
           <div className="w-16 h-16 border-8 border-gray-300 border-t-purple-500 rounded-full animate-spin"></div>
         </div>
       )}
@@ -62,11 +78,11 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="relative">
-            <AiOutlineMail className="absolute top-3 left-3 text-purple-300" size={18} />
+            <AiOutlineMail className="absolute top-3.5 left-3 text-purple-300" size={20} />
             <input
               type="email"
               name="email"
-              placeholder=" Email"
+              placeholder="Email"
               value={formData.email}
               onChange={handleChange}
               className="w-full bg-purple-900 text-white py-2 px-10 rounded-md border border-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
@@ -75,7 +91,7 @@ const Login = () => {
           </div>
 
           <div className="relative">
-            <RiLockPasswordLine className="absolute top-3 left-3 text-purple-300" size={18} />
+            <RiLockPasswordLine className="absolute top-3.5 left-3 text-purple-300" size={20} />
             <input
               type={showPassword ? "text" : "password"}
               name="password"
@@ -90,7 +106,7 @@ const Login = () => {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute top-3.5 right-3 text-purple-400"
             >
-              {showPassword ? <AiOutlineEyeInvisible size={18} /> : <AiOutlineEye size={18} />}
+              {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
             </button>
           </div>
 
