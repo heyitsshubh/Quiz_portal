@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineMail } from "react-icons/ai";
 import { RiLockPasswordLine } from "react-icons/ri";
+import { FaBrain } from "react-icons/fa";
 import { useNavigate } from "react-router-dom"; 
 
 const Login = () => {
@@ -10,25 +11,29 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-800 to-purple-900 flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-purple-950 text-white p-8 rounded-2xl shadow-xl">
+           <div className="flex items-center justify-center mb-6 ">
+                <FaBrain className="text-white text-5xl mr-2" /> 
+                <h1 className="text-white text-4xl font-bold">Quiz Master</h1>
+              </div>
         <h2 className="text-2xl font-bold text-center mb-1"> Sign In</h2>
         <p className="text-center text-purple-300 mb-6 text-sm">Access the quiz management dashboard</p>
 
         <form className="space-y-4">
           <div className="relative">
-            <AiOutlineMail className="absolute top-3.5 left-3 text-purple-400" size={20} />
+            <AiOutlineMail className="absolute top-3.5 left-3 text-purple-300" size={20} />
             <input
               type="email"
               placeholder="Admin Email"
-              className="w-full bg-purple-900 text-white py-2 px-10 rounded-md border border-purple-700 focus:outline-none focus:ring-2 focus:ring-pink-400"
+              className="w-full bg-purple-900 text-white py-2 px-10 rounded-md border border-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
             />
           </div>
 
           <div className="relative">
-            <RiLockPasswordLine className="absolute top-3.5 left-3 text-purple-400" size={20} />
+            <RiLockPasswordLine className="absolute top-3.5 left-3 text-purple-300" size={20} />
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
-              className="w-full bg-purple-900 text-white py-2 px-10 rounded-md border border-purple-700 focus:outline-none focus:ring-2 focus:ring-pink-400"
+              className="w-full bg-purple-900 text-white py-2 px-10 rounded-md border border-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
             />
             <button
               type="button"

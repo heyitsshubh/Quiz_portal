@@ -1,5 +1,5 @@
 import React from "react";
-import { FaUsers, FaUser, FaEnvelope, FaIdBadge, FaLock, FaEye } from "react-icons/fa"; 
+import { FaUsers, FaUser, FaEnvelope, FaIdBadge, FaLock, FaEye,FaBrain } from "react-icons/fa"; 
 import { useNavigate } from "react-router-dom"; 
 
 export default function SignupForm() {
@@ -7,7 +7,12 @@ export default function SignupForm() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-800 to-purple-900 flex items-center justify-center">
+  
       <div className="bg-purple-950 p-8 rounded-2xl w-full max-w-md shadow-2xl">
+      <div className="flex items-center justify-center mb-6 ">
+        <FaBrain className="text-white text-5xl mr-2" /> 
+        <h1 className="text-white text-5xl font-bold">Quiz Master</h1>
+      </div>
         <h2 className="text-2xl font-bold text-white text-center mb-1">
           Sign Up
         </h2>
@@ -58,7 +63,7 @@ function InputField({ icon, placeholder, type = "text" }) {
       <input
         type={type}
         placeholder={placeholder}
-        className="w-full bg-purple-900 text-white py-2 px-10 rounded-md border border-purple-700 focus:outline-none focus:ring-2 focus:ring-pink-400"
+        className="w-full bg-purple-900 text-white py-2 px-10 rounded-md border border-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
       />
       {type === "password" && (
         <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-purple-300 cursor-pointer">
