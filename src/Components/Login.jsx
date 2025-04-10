@@ -31,7 +31,7 @@ const Login = () => {
         // Admin login successful
         localStorage.setItem("Token", adminResponse.data.token);
         navigate("/admindashboard");
-        return; /
+        return; // Exit after successful admin login
       }
     } catch (adminError) {
       // Admin login failed, proceed to user login
