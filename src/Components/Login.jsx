@@ -15,44 +15,45 @@ const Login = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setLoading(true); 
-
+    setLoading(true);
+  
     try {
-      if (formData.email.endsWith("@akgec.ac.in")) {
-        // Admin login API
-        const adminResponse = await axios.post(
-          "https://quiz-portal-3ax0.onrender.com/api/admin/login",
-          formData
-        );
-
-        // Store tokens for admin
+      // Attempt admin login
+      const adminResponse = await axios.post(
+        "https://quiz-portal-3ax0.onrender.com/api/admin/login",
+        formData
+      );
+  
+      if (adminResponse.data && adminResponse.data.token) {
+        // Admin login successful
         localStorage.setItem("Token", adminResponse.data.token);
-        // localStorage.setItem("accessToken", adminResponse.data.accessToken);
-
-        // Navigate to admin dashboard
         navigate("/admindashboard");
-      } else {
-        // User login API
+        return; // Exit after successful admin login
+      }
+    } catch (adminError) {
+      // Admin login failed, proceed to user login
+      try {
         const userResponse = await axios.post(
           "https://quiz-portal-3ax0.onrender.com/api/auth/signin",
           formData
         );
-
-        // Store tokens for user
-        localStorage.setItem("refreshToken", userResponse.data.refreshToken);
-        localStorage.setItem("accessToken", userResponse.data.accessToken);
-
-        // Navigate to user dashboard
-        navigate("/userdashboard");
+  
+        if (userResponse.data && userResponse.data.refreshToken) {
+          // User login successful
+          localStorage.setItem("refreshToken", userResponse.data.refreshToken);
+          localStorage.setItem("accessToken", userResponse.data.accessToken);
+          navigate("/userdashboard");
+          return;
+        }
+      } catch (userError) {
+        // Both admin and user login failed
+        setError(userError.response?.data?.message || "Login failed. Please try again.");
       }
-    } catch (err) {
-      setError(err.response?.data?.message || "Login failed. Please try again.");
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
