@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaUsers, FaUser, FaEnvelope, FaIdBadge, FaLock, FaEye, FaEyeSlash, FaBrain } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../axiosInstance"; // Import the axios instance
 
 export default function SignupForm() {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ export default function SignupForm() {
     confirmPassword: "",
   });
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,64 +23,61 @@ export default function SignupForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setLoading(true); 
+    setLoading(true);
 
-    
+    // Validate email domain
     if (!formData.email.endsWith("@akgec.ac.in")) {
       setError("Enter your college email");
-      setLoading(false); 
+      setLoading(false);
       return;
     }
 
-
+    // Validate student ID
     if (!formData.studentId.startsWith("24")) {
-      setError("Enter your studentId");
-      setLoading(false); 
+      setError("Enter your student ID");
+      setLoading(false);
       return;
     }
 
-  
+    
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(formData.password)) {
       setError(
         "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character."
       );
-      setLoading(false); 
+      setLoading(false);
       return;
     }
 
-  
+    
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match.");
-      setLoading(false); 
+      setLoading(false);
       return;
     }
 
-    
     try {
-      const response = await axios.post(
-        "https://quiz-portal-3ax0.onrender.com/api/auth/signup",
-        formData
-      );
-
     
+      const response = await api.post("/auth/signup", formData);
+
+      
       localStorage.setItem("refreshToken", response.data.refreshToken);
       localStorage.setItem("accessToken", response.data.accessToken);
 
-      
+    
       navigate("/userdashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed. Please try again.");
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-purple-800 to-purple-900 flex items-center justify-center">
-       {loading && (
-        <div className="fixed inset-0  bg-opacity-80 flex items-center justify-center z-50">
+      {loading && (
+        <div className="fixed inset-0 bg-opacity-80 flex items-center justify-center z-50">
           <div className="w-16 h-16 border-8 border-gray-300 border-t-purple-500 rounded-full animate-spin"></div>
         </div>
       )}

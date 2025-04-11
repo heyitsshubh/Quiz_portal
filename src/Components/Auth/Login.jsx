@@ -3,7 +3,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineMail } from "react-icons/
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaBrain } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../axiosInstance"; // Import the axios instance
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,41 +15,36 @@ const Login = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
-  
+
     try {
-      // Attempt admin login
-      const adminResponse = await axios.post(
-        "https://quiz-portal-3ax0.onrender.com/api/admin/login",
-        formData
-      );
-  
+      // Admin login API
+      const adminResponse = await api.post("/admin/login", formData);
+
       if (adminResponse.data && adminResponse.data.token) {
-        // Admin login successful
+        console.log("Admin Token:", adminResponse.data.token);
         localStorage.setItem("Token", adminResponse.data.token);
         navigate("/admindashboard");
-        return; // Exit after successful admin login
+        return; 
       }
     } catch (adminError) {
-      // Admin login failed, proceed to user login
       try {
-        const userResponse = await axios.post(
-          "https://quiz-portal-3ax0.onrender.com/api/auth/signin",
-          formData
-        );
-  
+        // User login API
+        const userResponse = await api.post("/auth/signin", formData);
+
         if (userResponse.data && userResponse.data.refreshToken) {
-          // User login successful
+          console.log("User Refresh Token:", userResponse.data.refreshToken);
+          console.log("User Access Token:", userResponse.data.accessToken);
           localStorage.setItem("refreshToken", userResponse.data.refreshToken);
           localStorage.setItem("accessToken", userResponse.data.accessToken);
           navigate("/userdashboard");
           return;
         }
       } catch (userError) {
-        // Both admin and user login failed
         setError(userError.response?.data?.message || "Login failed. Please try again.");
       }
     } finally {
@@ -60,7 +55,7 @@ const Login = () => {
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-purple-800 to-purple-900 flex items-center justify-center px-4">
       {loading && (
-        <div className="fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-opacity-80 flex items-center justify-center z-50">
           <div className="w-16 h-16 border-8 border-gray-300 border-t-purple-500 rounded-full animate-spin"></div>
         </div>
       )}
