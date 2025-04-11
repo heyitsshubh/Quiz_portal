@@ -25,10 +25,12 @@ const Login = () => {
       // Admin login API
       const adminResponse = await api.post("/admin/login", formData);
 
-      if (adminResponse.data && adminResponse.data.token) {
-        console.log("Admin Token:", adminResponse.data.token);
-        localStorage.setItem("Token", adminResponse.data.token);
-        navigate("/admindashboard");
+      if (adminResponse.data && adminResponse.data.refreshToken) {
+        console.log(" Refresh Token:", adminResponse.data.refreshToken);
+        console.log(" Access Token:", adminResponse.data.accessToken);
+        localStorage.setItem("refreshToken", adminResponse.data.refreshToken);
+          localStorage.setItem("accessToken", adminResponse.data.accessToken);
+        navigate("/dashboard");
         return; 
       }
     } catch (adminError) {

@@ -3,6 +3,7 @@ import { FaUsers, FaUser, FaEnvelope, FaIdBadge, FaLock, FaEye, FaEyeSlash, FaBr
 import { useNavigate } from "react-router-dom";
 import api from "../axiosInstance"; // Import the axios instance
 
+
 export default function SignupForm() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
