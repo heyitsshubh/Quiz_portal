@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import api from "./axiosInstance"; // Import axiosInstance
+import { useLocation } from "react-router-dom"; // Import useLocation to get quizId
 
 const AddQuestions = () => {
-  const [question, setQuestion] = useState('');
-  const [options, setOptions] = useState(['', '', '', '']);
+  const location = useLocation(); // Access location state
+  const { quizId } = location.state || {}; // Get quizId from state
+
+  const [question, setQuestion] = useState("");
+  const [options, setOptions] = useState(["", "", "", ""]);
   const [correctOption, setCorrectOption] = useState(0);
-  const [explanation, setExplanation] = useState('');
+  const [points, setPoints] = useState(1); // Points for the question
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleOptionChange = (index, value) => {
     const updated = [...options];
@@ -12,32 +19,52 @@ const AddQuestions = () => {
     setOptions(updated);
   };
 
-  const handleAddQuestion = () => {
+  const handleAddQuestion = async () => {
+    if (!question || options.some((opt) => opt === "")) {
+      setError("Please fill out all fields and options.");
+      return;
+    }
+
     const newQuestion = {
-      question,
+      questionText: question,
       options,
       correctOption,
-      explanation,
+      points,
     };
-    console.log('New Question:', newQuestion);
-    // Reset form
-    setQuestion('');
-    setOptions(['', '', '', '']);
-    setCorrectOption(0);
-    setExplanation('');
+
+    try {
+      // Send the question to the backend
+      const response = await api.put(
+        `/admin/dashboard/quiz/questions`,
+        { quizId, 
+            questions: [newQuestion] } // Include quizId in the request body
+      );
+
+      console.log("Question Saved:", response.data);
+      setSuccess("Question added successfully!");
+
+      // Reset form
+      setQuestion("");
+      setOptions(["", "", "", ""]);
+      setCorrectOption(0);
+      setPoints(1);
+      setError("");
+    } catch (error) {
+      console.error("Error saving question:", error.response?.data || error);
+      setError("Failed to save question. Please try again.");
+    }
   };
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-md">
-      <h1 className="text-3xl font-bold text-purple-700 mb-4">Quiz Creator</h1>
+      <h1 className="text-3xl font-bold text-purple-700 mb-4">Add Question</h1>
+      <p className="text-gray-600 mb-6">Quiz ID: {quizId}</p>
 
       <div className="mb-6">
         <h2 className="text-xl font-semibold mb-2">Add New Question</h2>
 
-        <label className="block text-sm font-medium mb-1">Question Type</label>
-        <select className="w-full mb-4 p-2 border rounded-md">
-          <option>Multiple Choice</option>
-        </select>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+        {success && <p className="text-green-500 mb-4">{success}</p>}
 
         <label className="block text-sm font-medium mb-1">Question</label>
         <textarea
@@ -57,7 +84,6 @@ const AddQuestions = () => {
               className="mr-2 accent-purple-600"
               checked={correctOption === idx}
               onChange={() => setCorrectOption(idx)}
-                  
             />
             <input
               type="text"
@@ -69,13 +95,13 @@ const AddQuestions = () => {
           </div>
         ))}
 
-        <label className="block text-sm font-medium mt-4 mb-1">Explanation (Optional)</label>
-        <textarea
+        <label className="block text-sm font-medium mt-4 mb-1">Points</label>
+        <input
+          type="number"
           className="w-full p-2 border rounded-md mb-4"
-          rows="2"
-          placeholder="Explain why this answer is correct (optional)"
-          value={explanation}
-          onChange={(e) => setExplanation(e.target.value)}
+          value={points}
+          onChange={(e) => setPoints(Number(e.target.value))}
+          min="1"
         />
 
         <button

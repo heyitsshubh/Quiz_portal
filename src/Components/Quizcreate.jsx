@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axiosInstance from "./axiosInstance"; // Import axiosInstance
+import api from "./axiosInstance"; // Import axiosInstance
 import { useQuizContext } from "./QuizContext";
 
 const QuizCreator = () => {
@@ -30,7 +30,7 @@ const QuizCreator = () => {
 
     try {
       // Use axiosInstance to make the API call
-      const response = await axiosInstance.put("/admin/dashboard/quiz/details", quizData);
+      const response = await api.put("/admin/dashboard/quiz/details", quizData);
 
       console.log("API Response:", response.data);
 

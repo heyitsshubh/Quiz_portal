@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { FaHome, FaEdit, FaChartBar, FaCogs, FaSignOutAlt, FaBrain } from "react-icons/fa";
 
 export default function Sidebar() {
+    const adminEmail = localStorage.getItem("adminEmail"); // Retrieve admin email from localStorage
   return (
     <aside className="w-64 h-screen bg-purple-900 text-white flex flex-col justify-between p-4">
       <div>
@@ -19,14 +20,14 @@ export default function Sidebar() {
 
       <div className="text-sm space-y-2">
         <div>
-          <p className="font-semibold">Admin User</p>
-          <p className="text-gray-300 text-xs">admin@quizmaster.com</p>
+          <p className="font-semibold">Admin </p>
+          <p className="text-gray-300 text-sm">{adminEmail || "admin@quizmaster.com"}</p>
         </div>
         <button
-          className="flex items-center gap-2 text-red-300 hover:text-red-400 mt-4"
+          className="flex items-center gap-2 text-red-300 hover:text-red-400 mt-4 text-lg"
           onClick={() => {
-            localStorage.clear(); // Clear tokens or user data
-            window.location.href = "/"; // Redirect to login page
+            localStorage.clear(); 
+            window.location.href = "/"; 
           }}
         >
           <FaSignOutAlt /> Logout

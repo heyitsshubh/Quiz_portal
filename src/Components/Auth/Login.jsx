@@ -30,6 +30,7 @@ const Login = () => {
         console.log(" Access Token:", adminResponse.data.accessToken);
         localStorage.setItem("refreshToken", adminResponse.data.refreshToken);
           localStorage.setItem("accessToken", adminResponse.data.accessToken);
+          localStorage.setItem("adminEmail", formData.email);
         navigate("/dashboard");
         return; 
       }
