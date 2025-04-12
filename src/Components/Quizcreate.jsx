@@ -11,10 +11,10 @@ const QuizCreator = () => {
   const [difficulty, setDifficulty] = useState("Medium");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false); // State to show success box
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const { addQuiz } = useQuizContext();
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); 
 
   const handleSave = async () => {
     if (!quizTitle || !description || !timeLimit || !difficulty) {
@@ -29,7 +29,7 @@ const QuizCreator = () => {
       title: quizTitle,
       description,
       timeLimit,
-      difficulty,
+      difficulty :difficulty.toLowerCase(),
     };
 
     try {
