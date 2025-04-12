@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import api from "./axiosInstance"; // Import axiosInstance
 import { useQuizContext } from "./QuizContext";
+import SuccessBox from "./SuccessBox"; // Import SuccessBox component
 
 const QuizCreator = () => {
   const [quizTitle, setQuizTitle] = useState("");
@@ -9,8 +11,10 @@ const QuizCreator = () => {
   const [difficulty, setDifficulty] = useState("Medium");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false); // State to show success box
 
   const { addQuiz } = useQuizContext();
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSave = async () => {
     if (!quizTitle || !description || !timeLimit || !difficulty) {
@@ -36,10 +40,20 @@ const QuizCreator = () => {
 
       addQuiz(quizData);
 
+      // Show success box
+      setShowSuccess(true);
+
+      // Reset form fields
       setQuizTitle("");
       setDescription("");
       setTimeLimit(30);
       setDifficulty("Medium");
+
+      // Navigate to dashboard after 2 seconds
+      setTimeout(() => {
+        setShowSuccess(false); // Hide success box
+        navigate("/dashboard");
+      }, 2000);
     } catch (apiError) {
       console.error("API Error:", apiError.response?.data || apiError);
       setError(apiError.response?.data?.message || "Failed to save quiz. Please try again.");
@@ -68,7 +82,7 @@ const QuizCreator = () => {
         </p>
 
         {error && <p className="text-red-500 mb-4">{error}</p>}
-        {loading && <p className="text-blue-500 mb-4">Saving quiz details...</p>}
+        {/* {loading && <p className="text-blue-500 mb-4">Saving quiz details...</p>} */}
 
         <div className="mb-4">
           <label className="block mb-1 font-medium">Quiz Title</label>
@@ -123,12 +137,15 @@ const QuizCreator = () => {
 
         <button
           onClick={handleSave}
-          className="bg-purple-600 text-white px-6 py-2 rounded-md hover:bg-purple-700 transition "
+          className="bg-purple-600 text-white px-6 py-2 rounded-md hover:bg-purple-700 transition"
           disabled={loading}
         >
           {loading ? "Saving..." : "Save Details"}
         </button>
       </div>
+
+      {/* Show SuccessBox when quiz is saved */}
+      {showSuccess && <SuccessBox message="Quiz details saved successfully!" />}
     </div>
   );
 };
