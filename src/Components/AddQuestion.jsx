@@ -43,7 +43,8 @@ const AddQuestions = () => {
     try {
       const response = await api.put(
         `/admin/dashboard/quiz/questions`,
-        { quizId, questions: [newQuestion] } 
+        { _id: quizId, questions: [newQuestion] }
+
       );
 
       console.log("Question Saved:", response.data);

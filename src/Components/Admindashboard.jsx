@@ -98,7 +98,8 @@ const Admindashboard = () => {
               >
                 <FaPlus /> Add Question
               </button>
-              <button className="border border-gray-300 text-gray-700 px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-gray-100">
+              <button className="border border-gray-300 text-gray-700 px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-gray-100"
+                onClick={() => navigate(`/dashboard/view-test`, { state: { quizId: quiz.id } })}>
                 <FaEye /> View Test
               </button>
             </div>

@@ -2,34 +2,44 @@ import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import api from "./axiosInstance"; // Import your axios instance
 
-const ViewTest = () => {
-  const [questions, setQuestions] = useState([]); // State to store questions
-  const [loading, setLoading] = useState(true); // State for loading
-  const [error, setError] = useState(""); // State for error handling
+import { useLocation } from "react-router-dom";
 
-  // Fetch questions from the API
+const ViewTest = () => {
+  const location = useLocation();
+  const { quizId } = location.state || {}; // get quizId
+
+  const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
   useEffect(() => {
     const fetchQuestions = async () => {
+      if (!quizId) {
+        setError("Quiz ID not found.");
+        setLoading(false);
+        return;
+      }
+
       try {
-        const response = await api.get("/admin/dashboard/quiz");
-        console.log("API Response:", response.data); // Debugging log
+        const response = await api.get("/admin/dashboard/quiz", {
+          params: { _id: quizId },
+        });
 
-        // Extract questions from the response
-        const fetchedQuestions = Array.isArray(response.data.data)
-          ? response.data.data
-          : response.data.data?.questions || []; // Adjust based on API structure
+        console.log("API Response:", response.data);
 
-        setQuestions(fetchedQuestions); // Set questions state
+        const fetchedQuestions = response.data.data?.questions || [];
+        setQuestions(fetchedQuestions);
       } catch (err) {
         console.error("Error fetching questions:", err.response?.data || err);
         setError("Failed to load questions. Please try again.");
       } finally {
-        setLoading(false); // Stop loading
+        setLoading(false);
       }
     };
 
     fetchQuestions();
-  }, []);
+  }, [quizId]);
+
 
   if (loading) {
     return <p className="text-center text-gray-600">Loading questions...</p>;
@@ -99,10 +109,6 @@ const ViewTest = () => {
               })}
             </div>
 
-            {/* Points */}
-            <p className="text-sm text-gray-500 mt-3">
-              <strong>Points:</strong> {question.points}
-            </p>
           </div>
         ))}
       </div>
