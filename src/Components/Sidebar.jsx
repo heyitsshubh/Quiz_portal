@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { FaHome, FaEdit, FaChartBar, FaCogs, FaSignOutAlt, FaBrain } from "react-icons/fa";
 
 export default function Sidebar() {
-    const adminEmail = localStorage.getItem("adminEmail"); // Retrieve admin email from localStorage
+    const adminEmail = localStorage.getItem("adminEmail"); 
   return (
     <aside className="w-64 h-screen bg-purple-900 text-white flex flex-col justify-between p-4">
       <div>
@@ -14,7 +14,7 @@ export default function Sidebar() {
           <SidebarLink to="/dashboard" icon={<FaHome />} text="Dashboard" />
           <SidebarLink to="/dashboard/quiz-creator" icon={<FaEdit />} text="Quiz Creator" />
           <SidebarLink to="/dashboard/results-dashboard" icon={<FaChartBar />} text="Results Dashboard" />
-          <SidebarLink to="/dashboard/quiz-control" icon={<FaCogs />} text="Quiz Control" />
+          {/* <SidebarLink to="/dashboard/quiz-control" icon={<FaCogs />} text="Quiz Control" /> */}
         </nav>
       </div>
 

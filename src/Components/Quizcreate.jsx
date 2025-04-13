@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import api from "./axiosInstance"; // Import axiosInstance
+import { useNavigate } from "react-router-dom"; 
+import api from "./axiosInstance"; 
 import { useQuizContext } from "./QuizContext";
-import SuccessBox from "./SuccessBox"; // Import SuccessBox component
+import SuccessBox from "./SuccessBox"; 
 
 const QuizCreator = () => {
   const [quizTitle, setQuizTitle] = useState("");
@@ -33,25 +33,25 @@ const QuizCreator = () => {
     };
 
     try {
-      // Use axiosInstance to make the API call
+    
       const response = await api.put("/admin/dashboard/quiz/details", quizData);
 
       console.log("API Response:", response.data);
 
       addQuiz(quizData);
 
-      // Show success box
+
       setShowSuccess(true);
 
-      // Reset form fields
+
       setQuizTitle("");
       setDescription("");
       setTimeLimit(30);
       setDifficulty("Medium");
 
-      // Navigate to dashboard after 2 seconds
+      
       setTimeout(() => {
-        setShowSuccess(false); // Hide success box
+        setShowSuccess(false); 
         navigate("/dashboard");
       }, 2000);
     } catch (apiError) {
@@ -82,7 +82,7 @@ const QuizCreator = () => {
         </p>
 
         {error && <p className="text-red-500 mb-4">{error}</p>}
-        {/* {loading && <p className="text-blue-500 mb-4">Saving quiz details...</p>} */}
+    
 
         <div className="mb-4">
           <label className="block mb-1 font-medium">Quiz Title</label>

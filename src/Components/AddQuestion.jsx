@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from "react";
-import api from "./axiosInstance"; // Import axiosInstance
-import { useLocation } from "react-router-dom"; // Import useLocation to get quizId
-import SuccessBox from "./SuccessBox"; // Import SuccessBox component
+import api from "./axiosInstance"; 
+import { useLocation } from "react-router-dom"; 
+import SuccessBox from "./SuccessBox"; 
 
 const AddQuestions = () => {
-  const location = useLocation(); // Access location state
-  const { quizId } = location.state || {}; // Get quizId from state
+  const location = useLocation(); 
+  const { quizId } = location.state || {}; 
 
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", "", "", ""]);
   const [correctOption, setCorrectOption] = useState(0);
-  const [points, setPoints] = useState(1); // Points for the question
+  const [points, setPoints] = useState(1); 
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false); // State for success box
+  const [success, setSuccess] = useState(false); 
 
-  // Prevent scrolling when the component is mounted
   useEffect(() => {
-    document.body.style.overflow = "hidden"; // Disable scrolling
+    document.body.style.overflow = "hidden"; 
     return () => {
-      document.body.style.overflow = "auto"; // Re-enable scrolling on unmount
+      document.body.style.overflow = "auto"; 
     };
   }, []);
 
@@ -42,23 +41,20 @@ const AddQuestions = () => {
     };
 
     try {
-      // Send the question to the backend
       const response = await api.put(
         `/admin/dashboard/quiz/questions`,
-        { quizId, questions: [newQuestion] } // Include quizId in the request body
+        { quizId, questions: [newQuestion] } 
       );
 
       console.log("Question Saved:", response.data);
-      setSuccess(true); // Show success box
+      setSuccess(true); 
 
-      // Reset form
       setQuestion("");
       setOptions(["", "", "", ""]);
       setCorrectOption(0);
       setPoints(1);
       setError("");
 
-      // Hide success box after 2 seconds
       setTimeout(() => {
         setSuccess(false);
       }, 2000);
@@ -141,3 +137,4 @@ const AddQuestions = () => {
 };
 
 export default AddQuestions;
+

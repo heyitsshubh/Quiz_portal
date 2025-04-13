@@ -1,4 +1,3 @@
-
 import axios from "axios";
 
 const api = axios.create({
@@ -6,9 +5,9 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const accessToken = localStorage.getItem("accessToken");
-  if (accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
+  const token = localStorage.getItem("accessToken");
+  if (token) {
+    config.headers["Authorization"] = `Bearer ${token}`;
   }
   return config;
 });
@@ -23,20 +22,27 @@ api.interceptors.response.use(
       error.response.status === 401 &&
       !originalRequest._retry
     ) {
-    console.log("Access token expired. Attempting to refresh...");
       originalRequest._retry = true;
       const refreshToken = localStorage.getItem("refreshToken");
+
+      if (!refreshToken) {
+        localStorage.clear();
+        window.location.href = "/";
+        return Promise.reject(error);
+      }
 
       try {
         const res = await axios.post(
           "https://quiz-portal-3ax0.onrender.com/api/auth/refresh-token",
           { refreshToken }
         );
-        console.log("Refresh token response:", res.data.accessToken);
 
-        localStorage.setItem("accessToken", res.data.accessToken);
-        api.defaults.headers.common["Authorization"] = `Bearer ${res.data.accessToken}`;
-        originalRequest.headers["Authorization"] = `Bearer ${res.data.accessToken}`;
+        const newAccessToken = res.data.accessToken;
+
+        localStorage.setItem("accessToken", newAccessToken);
+        api.defaults.headers.common["Authorization"] = `Bearer ${newAccessToken}`;
+        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+
         return api(originalRequest);
       } catch (refreshError) {
         localStorage.clear();
@@ -50,3 +56,4 @@ api.interceptors.response.use(
 );
 
 export default api;
+

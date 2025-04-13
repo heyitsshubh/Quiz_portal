@@ -10,6 +10,7 @@ import QuizCreator from "./Quizcreate";
 // import QuizControl from "./QuizControl";
 import AdminLayout from "./AdminLayout";
 import AddQuestions from "./AddQuestion";
+import ViewTest from "./ViewTest";
 import { QuizProvider } from "./QuizContext";
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
           <Route index element={<Admindashboard />} /> {/* Default dashboard */}
           <Route path="quiz-creator" element={<QuizCreator />} />
           <Route path="add-questions" element={<AddQuestions />} />
+          <Route path="view-test" element={<ViewTest />} />
           {/* <Route path="results-dashboard" element={<ResultsDashboard />} />
           <Route path="quiz-control" element={<QuizControl />} /> */}
         </Route>
