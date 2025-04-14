@@ -18,20 +18,16 @@ function App() {
     <QuizProvider>
     <Router>
       <Routes>
-        {/* Public Routes */}
+
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/forgot" element={<Forgot />} />
-
-        {/* User Dashboard */}
         <Route path="/userdashboard" element={<Userdashboard />} />
-
-        {/* Admin Routes */}
         <Route path="/dashboard/*" element={<AdminLayout />}>
-          <Route index element={<Admindashboard />} /> {/* Default dashboard */}
-          <Route path="quiz-creator" element={<QuizCreator />} />
-          <Route path="add-questions" element={<AddQuestions />} />
-          <Route path="view-test" element={<ViewTest />} />
+        <Route index element={<Admindashboard />} /> 
+        <Route path="quiz-creator" element={<QuizCreator />} />
+        <Route path="add-questions" element={<AddQuestions />} />
+        <Route path="view-test" element={<ViewTest />} />
           {/* <Route path="results-dashboard" element={<ResultsDashboard />} />
           <Route path="quiz-control" element={<QuizControl />} /> */}
         </Route>

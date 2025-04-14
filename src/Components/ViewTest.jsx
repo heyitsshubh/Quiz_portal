@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import api from "./axiosInstance"; // Import your axios instance
+import api from "./axiosInstance"; 
 
 import { useLocation } from "react-router-dom";
 
 const ViewTest = () => {
   const location = useLocation();
-  const { quizId } = location.state || {}; // get quizId
+  const { quizId } = location.state || {}; 
 
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -62,7 +62,6 @@ const ViewTest = () => {
             key={index}
             className="bg-white rounded-xl shadow p-5 relative border border-gray-100"
           >
-            {/* Type Badge */}
             <span
               className={`absolute -top-3 left-4 px-3 py-1 text-xs font-semibold rounded-full ${
                 question.type === "Multiple Choice"
@@ -73,7 +72,6 @@ const ViewTest = () => {
               {question.type || "Question"}
             </span>
 
-            {/* Edit / Delete Icons */}
             <div className="absolute top-3 right-3 flex gap-2 text-gray-500">
               <button>
                 <FaEdit className="hover:text-blue-600" />
@@ -83,16 +81,16 @@ const ViewTest = () => {
               </button>
             </div>
 
-            {/* Question Text */}
+
             <h3 className="text-base font-semibold mt-5 text-gray-800 mb-3">
               {question.questionText}
             </h3>
 
-            {/* Options */}
+  
             <div className="space-y-2 text-sm">
               {question.options.map((option, idx) => {
-                const isCorrect = idx === question.correctOption; // Compare index with correctOption
-                const optionLabel = String.fromCharCode(65 + idx); // A, B, C...
+                const isCorrect = idx === question.correctOption; 
+                const optionLabel = String.fromCharCode(65 + idx); 
                 return (
                   <div
                     key={idx}

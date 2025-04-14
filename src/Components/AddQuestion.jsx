@@ -69,10 +69,6 @@ const AddQuestions = () => {
     <div className="h-screen flex items-start justify-center bg-gray-100 pt-8">
       <div className="max-w-3xl w-full p-8 bg-white shadow-lg rounded-lg overflow-auto">
         <h1 className="text-2xl font-bold text-purple-700 mb-5">Add Question</h1>
-        {/* <p className="text-gray-600 mb-6">
-          Quiz ID: <span className="font-semibold">{quizId}</span>
-        </p> */}
-
         <div className="space-y-4">
           <h2 className="text-lg font-semibold mb-2">Add New Question</h2>
 
@@ -130,8 +126,6 @@ const AddQuestions = () => {
           </button>
         </div>
       </div>
-
-      {/* Show SuccessBox when a question is added successfully */}
       {success && <SuccessBox message="Question added successfully!" />}
     </div>
   );
