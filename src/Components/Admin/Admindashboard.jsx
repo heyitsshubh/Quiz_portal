@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import api from "../axiosInstance";
 import { FaClock, FaPlus, FaEye } from "react-icons/fa";
 import { FiTrash2 } from "react-icons/fi";
+import SuccessBox from "../SuccessBox"; 
 
 const Admindashboard = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,8 +18,6 @@ const Admindashboard = () => {
         const response = await api.get("/admin/dashboard/quizzes");
         let quizzesData = [];
 
-        console.log("Raw API response:", response.data);
-
         if (Array.isArray(response.data.data)) {
           quizzesData = response.data.data;
         } else if (response.data.data) {
@@ -25,6 +25,7 @@ const Admindashboard = () => {
         } else {
           quizzesData = response.data.quizzes || [];
         }
+
         const transformedQuizzes = quizzesData.map((quiz) => ({
           quizTitle: quiz.title || "Untitled Quiz",
           description: quiz.description || "No description available",
@@ -32,7 +33,6 @@ const Admindashboard = () => {
           difficulty: quiz.difficulty || "Unknown",
           id: quiz._id || quiz.id,
         }));
-        
 
         setQuizzes(transformedQuizzes);
       } catch (err) {
@@ -51,11 +51,11 @@ const Admindashboard = () => {
   };
 
   const handleDeleteQuiz = async (quizId) => {
-    if (!window.confirm("Are you sure you want to delete this quiz?")) return;
-
     try {
       await api.delete(`/admin/dashboard/quiz/details?_id=${quizId}`);
       setQuizzes((prev) => prev.filter((quiz) => quiz.id !== quizId));
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 1000); 
     } catch (error) {
       console.error("Error deleting quiz:", error.response?.data || error);
       alert("Failed to delete quiz. Please try again.");
@@ -70,6 +70,8 @@ const Admindashboard = () => {
     <div className="p-6 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold text-purple-700 mb-4">Admin Dashboard</h1>
       <p className="text-gray-600 mb-6">Manage your quizzes</p>
+
+      {showSuccess && <SuccessBox message="Quiz deleted successfully!" />}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {quizzes.map((quiz, idx) => (
@@ -94,12 +96,13 @@ const Admindashboard = () => {
               <button
                 className="bg-purple-600 text-white px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-purple-700 cursor-pointer"
                 onClick={() => handleAddQuestion(quiz.id)}
-                
               >
                 <FaPlus /> Add Question
               </button>
-              <button className="border border-gray-300 text-gray-700 px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-gray-100 cursor-pointer"
-                onClick={() => navigate(`/dashboard/view-test`, { state: { quizId: quiz.id } })}>
+              <button
+                className="border border-gray-300 text-gray-700 px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-gray-100 cursor-pointer"
+                onClick={() => navigate(`/dashboard/view-test`, { state: { quizId: quiz.id } })}
+              >
                 <FaEye /> View Test
               </button>
             </div>
@@ -111,6 +114,7 @@ const Admindashboard = () => {
 };
 
 export default Admindashboard;
+
 
 
 
