@@ -32,6 +32,7 @@ const AddQuestions = () => {
       setError("Please fill out all fields and options.");
       return;
     }
+    
 
     const newQuestion = {
       questionText: question,
@@ -121,6 +122,7 @@ const AddQuestions = () => {
           <button
             className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-md transition"
             onClick={handleAddQuestion}
+            style={{ cursor: loading ? "not-allowed" : "pointer" }}
           >
             + Add Question
           </button>

@@ -88,7 +88,7 @@ const QuizCreator = () => {
           <label className="block mb-1 font-medium">Quiz Title</label>
           <input
             type="text"
-            className="w-full border border-gray-300 rounded-md p-2"
+            className="w-full border border-gray-300 rounded-md p-2  focus:outline-none focus:ring-2 focus:ring-purple-500"
             placeholder="Enter quiz title"
             value={quizTitle}
             onChange={(e) => setQuizTitle(e.target.value)}
@@ -98,7 +98,7 @@ const QuizCreator = () => {
         <div className="mb-4">
           <label className="block mb-1 font-medium">Description</label>
           <textarea
-            className="w-full border border-gray-300 rounded-md p-2"
+            className="w-full border border-gray-300 rounded-md p-2  focus:outline-none focus:ring-2 focus:ring-purple-500"
             rows="4"
             placeholder="Enter quiz description"
             value={description}
@@ -110,7 +110,7 @@ const QuizCreator = () => {
           <label className="block mb-1 font-medium">Time Limit (minutes)</label>
           <input
             type="number"
-            className="w-full border border-gray-300 rounded-md p-2"
+            className="w-full border border-gray-300 rounded-md p-2  focus:outline-none focus:ring-2 focus:ring-purple-500"
             value={timeLimit}
             onChange={(e) => setTimeLimit(e.target.value)}
           />
@@ -127,7 +127,7 @@ const QuizCreator = () => {
                   value={level}
                   checked={difficulty === level}
                   onChange={() => setDifficulty(level)}
-                  className="accent-purple-600"
+                  className="accent-purple-600 "
                 />
                 {level}
               </label>
@@ -139,6 +139,7 @@ const QuizCreator = () => {
           onClick={handleSave}
           className="bg-purple-600 text-white px-6 py-2 rounded-md hover:bg-purple-700 transition"
           disabled={loading}
+          style={{ cursor: loading ? "not-allowed" : "pointer" }}
         >
           {loading ? "Saving..." : "Save Details"}
         </button>

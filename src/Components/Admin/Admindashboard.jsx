@@ -68,15 +68,14 @@ const Admindashboard = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-2xl font-bold text-gray-800 mb-4">Admin Dashboard</h1>
+      <h1 className="text-3xl font-bold text-purple-700 mb-4">Admin Dashboard</h1>
       <p className="text-gray-600 mb-6">Manage your quizzes</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {quizzes.map((quiz, idx) => (
           <div key={`${quiz.id}-${idx}`} className="bg-white p-5 rounded-xl shadow relative">
-            {/* Delete Button */}
             <button
-              className="absolute top-3 right-3 text-red-500 hover:text-red-700"
+              className="absolute top-3 right-3 text-red-500 hover:text-red-700 cursor-pointer"
               title="Delete Quiz"
               onClick={() => handleDeleteQuiz(quiz.id)}
             >
@@ -93,12 +92,13 @@ const Admindashboard = () => {
 
             <div className="flex gap-3">
               <button
-                className="bg-purple-600 text-white px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-purple-700"
+                className="bg-purple-600 text-white px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-purple-700 cursor-pointer"
                 onClick={() => handleAddQuestion(quiz.id)}
+                
               >
                 <FaPlus /> Add Question
               </button>
-              <button className="border border-gray-300 text-gray-700 px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-gray-100"
+              <button className="border border-gray-300 text-gray-700 px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-gray-100 cursor-pointer"
                 onClick={() => navigate(`/dashboard/view-test`, { state: { quizId: quiz.id } })}>
                 <FaEye /> View Test
               </button>

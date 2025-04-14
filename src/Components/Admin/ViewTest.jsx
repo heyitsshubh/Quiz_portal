@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import api from "../axiosInstance"; 
+import api from "../axiosInstance";  
 
 import { useLocation } from "react-router-dom";
 
@@ -55,7 +55,7 @@ const ViewTest = () => {
 
   return (
     <div className="p-6">
-      <h2 className="text-xl font-semibold mb-4 text-gray-800">Question List</h2>
+      <h2 className="text-3xl font-bold mb-4 text-purple-700">Question List</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {questions.map((question, index) => (
           <div
