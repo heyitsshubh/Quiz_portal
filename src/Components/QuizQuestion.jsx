@@ -45,7 +45,7 @@ const QuizQuestion = () => {
           {questionData.options.map((option, idx) => (
             <label
               key={idx}
-              className={`border px-4 py-4 rounded-lg cursor-pointer flex items-center gap-4 text-lg transition ${
+              className={`border px-4 py-4 rounded-lg cursor-pointer flex items-center gap-4 text-lg transition hover:border-purple-500 ${
                 selectedOption === idx
                   ? "border-purple-600 bg-purple-50"
                   : "border-gray-200"
