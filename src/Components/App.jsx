@@ -4,14 +4,13 @@ import SignupForm from "./Auth/Signup";
 import Login from "./Auth/Login";
 import Forgot from "./Auth/Forgot";
 import Userdashboard from "./Userdashboard";
-import Admindashboard from "./Admindashboard";
-import QuizCreator from "./Quizcreate";
+import Admindashboard from "./Admin/Admindashboard";
+import QuizCreator from "./Admin/Quizcreate";
 // import ResultsDashboard from "./ResultsDashboard";
-// import QuizControl from "./QuizControl";
-import AdminLayout from "./AdminLayout";
-import AddQuestions from "./AddQuestion";
-import ViewTest from "./ViewTest";
-import { QuizProvider } from "./QuizContext";
+import AdminLayout from "./Admin/AdminLayout";
+import AddQuestions from "./Admin/AddQuestion";
+import ViewTest from "./Admin/ViewTest";
+import { QuizProvider } from "./Admin/QuizContext";
 
 function App() {
   return (
@@ -28,8 +27,7 @@ function App() {
         <Route path="quiz-creator" element={<QuizCreator />} />
         <Route path="add-questions" element={<AddQuestions />} />
         <Route path="view-test" element={<ViewTest />} />
-          {/* <Route path="results-dashboard" element={<ResultsDashboard />} />
-          <Route path="quiz-control" element={<QuizControl />} /> */}
+        {/* <Route path="results-dashboard" element={<ResultsDashboard />} /> */}
         </Route>
       </Routes>
     </Router>

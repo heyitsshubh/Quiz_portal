@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import api from "./axiosInstance"; 
+import api from "../axiosInstance"; 
 import { useLocation } from "react-router-dom"; 
-import SuccessBox from "./SuccessBox"; 
+import SuccessBox from "../SuccessBox"; 
 
 const AddQuestions = () => {
   const location = useLocation(); 

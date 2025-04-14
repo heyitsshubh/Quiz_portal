@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
-import api from "./axiosInstance"; 
+import api from "../axiosInstance"; 
 import { useQuizContext } from "./QuizContext";
-import SuccessBox from "./SuccessBox"; 
+import SuccessBox from "../SuccessBox"; 
 
 const QuizCreator = () => {
   const [quizTitle, setQuizTitle] = useState("");

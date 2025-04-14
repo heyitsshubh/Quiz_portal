@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import api from "./axiosInstance"; 
+import api from "../axiosInstance"; 
 
 import { useLocation } from "react-router-dom";
 

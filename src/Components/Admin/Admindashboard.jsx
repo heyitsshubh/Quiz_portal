@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "./axiosInstance";
+import api from "../axiosInstance";
 import { FaClock, FaPlus, FaEye } from "react-icons/fa";
 import { FiTrash2 } from "react-icons/fi";
 
