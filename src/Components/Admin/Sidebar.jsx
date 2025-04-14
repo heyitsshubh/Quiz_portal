@@ -5,7 +5,7 @@ import { FaHome, FaEdit, FaChartBar, FaCogs, FaSignOutAlt, FaBrain } from "react
 export default function Sidebar() {
     const adminEmail = localStorage.getItem("adminEmail"); 
   return (
-    <aside className="w-64 h-screen bg-purple-900 text-white flex flex-col justify-between p-4">
+    <aside className="w-64 h-screen  bg-purple-900 text-white flex flex-col justify-between p-4">
       <div>
         <h1 className="text-2xl font-bold mb-8 flex items-center gap-2">
           <FaBrain /> Quiz Master

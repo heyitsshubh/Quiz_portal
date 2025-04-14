@@ -1,25 +1,37 @@
 import React, { useState, useEffect } from "react";
-import api from "../axiosInstance"; 
-import { useLocation } from "react-router-dom"; 
-import SuccessBox from "../SuccessBox"; 
+import api from "../axiosInstance";
+import { useLocation, useNavigate } from "react-router-dom";
+import SuccessBox from "../SuccessBox";
 
 const AddQuestions = () => {
-  const location = useLocation(); 
-  const { quizId } = location.state || {}; 
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { quizId, mode, questionData } = location.state || {};
 
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", "", "", ""]);
   const [correctOption, setCorrectOption] = useState(0);
-  const [points, setPoints] = useState(1); 
+  const [points, setPoints] = useState(1);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false); 
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    document.body.style.overflow = "hidden"; 
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = "auto"; 
+      document.body.style.overflow = "auto";
     };
   }, []);
+
+  useEffect(() => {
+    // Pre-fill fields in edit mode
+    if (mode === "edit" && questionData) {
+      setQuestion(questionData.questionText);
+      setOptions(questionData.options);
+      setCorrectOption(questionData.correctOption);
+      setPoints(questionData.points || 1);
+    }
+  }, [mode, questionData]);
 
   const handleOptionChange = (index, value) => {
     const updated = [...options];
@@ -27,12 +39,11 @@ const AddQuestions = () => {
     setOptions(updated);
   };
 
-  const handleAddQuestion = async () => {
+  const handleAddOrEditQuestion = async () => {
     if (!question || options.some((opt) => opt === "")) {
       setError("Please fill out all fields and options.");
       return;
     }
-    
 
     const newQuestion = {
       questionText: question,
@@ -42,21 +53,28 @@ const AddQuestions = () => {
     };
 
     try {
-      const response = await api.put(
-        `/admin/dashboard/quiz/questions`,
-        { _id: quizId, questions: [newQuestion] }
+      if (mode === "edit" && questionData?._id) {
+        await api.put(
+          `/admin/dashboard/quiz/${quizId}/question/${questionData._id}`,
+          newQuestion
+        );
+        setSuccess(true);
+      } else {
+      
+        await api.put(`/admin/dashboard/quiz/questions`, {
+          _id: quizId,
+          questions: [newQuestion],
+        });
+        setSuccess(true);
 
-      );
+      
+        setQuestion("");
+        setOptions(["", "", "", ""]);
+        setCorrectOption(0);
+        setPoints(1);
+      }
 
-      console.log("Question Saved:", response.data);
-      setSuccess(true); 
-
-      setQuestion("");
-      setOptions(["", "", "", ""]);
-      setCorrectOption(0);
-      setPoints(1);
       setError("");
-
       setTimeout(() => {
         setSuccess(false);
       }, 2000);
@@ -69,9 +87,14 @@ const AddQuestions = () => {
   return (
     <div className="h-screen flex items-start justify-center bg-gray-100 pt-8">
       <div className="max-w-3xl w-full p-8 bg-white shadow-lg rounded-lg overflow-auto">
-        <h1 className="text-2xl font-bold text-purple-700 mb-5">Add Question</h1>
+        <h1 className="text-2xl font-bold text-purple-700 mb-5">
+          {mode === "edit" ? "Edit Question" : "Add Question"}
+        </h1>
+
         <div className="space-y-4">
-          <h2 className="text-lg font-semibold mb-2">Add New Question</h2>
+          <h2 className="text-lg font-semibold mb-2">
+            {mode === "edit" ? "Update this question" : "Add New Question"}
+          </h2>
 
           {error && <p className="text-red-500 bg-red-100 p-2 rounded-md">{error}</p>}
 
@@ -120,15 +143,19 @@ const AddQuestions = () => {
           </div>
 
           <button
-            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-md transition"
-            onClick={handleAddQuestion}
-            style={{ cursor: loading ? "not-allowed" : "pointer" }}
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-md transition cursor-pointer"
+            onClick={handleAddOrEditQuestion}
           >
-            + Add Question
+            {mode === "edit" ? "Update Question" : "+ Add Question"}
           </button>
         </div>
       </div>
-      {success && <SuccessBox message="Question added successfully!" />}
+
+      {success && (
+        <SuccessBox
+          message={mode === "edit" ? "Question updated successfully!" : "Question added successfully!"}
+        />
+      )}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaUsers, FaUser, FaEnvelope, FaIdBadge, FaLock, FaEye, FaEyeSlash, FaBrain } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import api from "../axiosInstance"; // Import the axios instance
+import api from "../axiosInstance"; 
 
 
 export default function SignupForm() {
@@ -26,14 +26,14 @@ export default function SignupForm() {
     setError("");
     setLoading(true);
 
-    // Validate email domain
+    
     if (!formData.email.endsWith("@akgec.ac.in")) {
       setError("Enter your college email");
       setLoading(false);
       return;
     }
 
-    // Validate student ID
+    
     if (!formData.studentId.startsWith("24")) {
       setError("Enter your student ID");
       setLoading(false);

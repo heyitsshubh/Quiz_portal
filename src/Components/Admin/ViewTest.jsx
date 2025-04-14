@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import api from "../axiosInstance";  
-
-import { useLocation } from "react-router-dom";
+import api from "../axiosInstance";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ViewTest = () => {
   const location = useLocation();
-  const { quizId } = location.state || {}; 
+  const navigate = useNavigate();
+  const { quizId } = location.state || {};
 
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,13 +25,11 @@ const ViewTest = () => {
           params: { _id: quizId },
         });
 
-        console.log("API Response:", response.data);
-
         const fetchedQuestions = response.data.data?.questions || [];
         setQuestions(fetchedQuestions);
       } catch (err) {
         console.error("Error fetching questions:", err.response?.data || err);
-        setError("Failed to load questions. Please try again.");
+        setError("Failed to load questions.");
       } finally {
         setLoading(false);
       }
@@ -40,18 +38,19 @@ const ViewTest = () => {
     fetchQuestions();
   }, [quizId]);
 
+  const handleDelete = async (questionId) => {
+    try {
+      await api.delete(`/admin/dashboard/quiz/${quizId}/question/${questionId}`);
+      setQuestions(prev => prev.filter(q => q._id !== questionId));
+    } catch (err) {
+      console.error("Error deleting question:", err.response?.data || err);
+      alert("Failed to delete question.");
+    }
+  };
 
-  if (loading) {
-    return <p className="text-center text-gray-600">Loading questions...</p>;
-  }
-
-  if (error) {
-    return <p className="text-center text-red-500">{error}</p>;
-  }
-
-  if (!Array.isArray(questions) || questions.length === 0) {
-    return <p className="text-center text-gray-500">No questions available.</p>;
-  }
+  if (loading) return <p className="text-center text-gray-600">Loading questions...</p>;
+  if (error) return <p className="text-center text-red-500">{error}</p>;
+  if (!questions.length) return <p className="text-center text-gray-500">No questions available.</p>;
 
   return (
     <div className="p-6">
@@ -73,24 +72,32 @@ const ViewTest = () => {
             </span>
 
             <div className="absolute top-3 right-3 flex gap-2 text-gray-500">
-              <button>
+              <button
+                onClick={() =>
+                  navigate("/dashboard/add-questions", {
+                    state: {
+                      mode: "edit",
+                      quizId,
+                      questionData: question,
+                    },
+                  })
+                }
+              >
                 <FaEdit className="hover:text-blue-600" />
               </button>
-              <button>
+              <button onClick={() => handleDelete(question._id)}>
                 <FaTrash className="hover:text-red-600" />
               </button>
             </div>
-
 
             <h3 className="text-base font-semibold mt-5 text-gray-800 mb-3">
               {question.questionText}
             </h3>
 
-  
             <div className="space-y-2 text-sm">
               {question.options.map((option, idx) => {
-                const isCorrect = idx === question.correctOption; 
-                const optionLabel = String.fromCharCode(65 + idx); 
+                const isCorrect = idx === question.correctOption;
+                const optionLabel = String.fromCharCode(65 + idx);
                 return (
                   <div
                     key={idx}
@@ -106,7 +113,6 @@ const ViewTest = () => {
                 );
               })}
             </div>
-
           </div>
         ))}
       </div>
@@ -115,4 +121,6 @@ const ViewTest = () => {
 };
 
 export default ViewTest;
+
+
 
