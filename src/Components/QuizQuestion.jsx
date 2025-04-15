@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { FaClock, FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import api from "./axiosInstance";
 
 const QuizQuestion = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { quizId } = location.state || {};
   const [questionIndex, setQuestionIndex] = useState(0);
   const [quizData, setQuizData] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
   const [error, setError] = useState("");
+  const [userAnswers, setUserAnswers] = useState([]);
 
   useEffect(() => {
     const fetchQuestion = async () => {
@@ -17,10 +19,9 @@ const QuizQuestion = () => {
         const res = await api.get(
           `/quiz/question?quizId=${quizId}&questionIndex=${questionIndex}`
         );
-        console.log("API Response:", res.data);
 
         if (res.data.success) {
-          setQuizData(res.data.data); 
+          setQuizData(res.data.data);
           setSelectedOption(null);
           setError("");
         } else {
@@ -36,6 +37,47 @@ const QuizQuestion = () => {
       fetchQuestion();
     }
   }, [quizId, questionIndex]);
+
+  const handleNextOrSubmit = () => {
+    if (selectedOption !== null) {
+      const newAnswers = [...userAnswers];
+      newAnswers[questionIndex] = {
+        questionId: questionIndex.toString(), 
+        selectedOption
+      };
+      setUserAnswers(newAnswers);
+    }
+
+    if (questionIndex + 1 >= quizData.totalQuestions) {
+      submitQuiz();
+    } else {
+      setQuestionIndex(prev => prev + 1);
+    }
+  };
+
+  const submitQuiz = async () => {
+    try {
+      const response = await api.post('/quiz/submit', {
+        _id: quizId, 
+        answers: userAnswers.filter(answer => answer !== undefined)
+      });
+
+      if (response.data.success) {
+        navigate('/quiz-question-success', {
+          state: {
+            quizId,
+            score: response.data.score,
+            totalQuestions: quizData.totalQuestions
+          }
+        });
+      } else {
+        setError(response.data.message || "Failed to submit quiz");
+      }
+    } catch (err) {
+      console.error("Error submitting quiz:", err);
+      setError(err.response?.data?.message || "Failed to submit quiz. Please try again.");
+    }
+  };
 
   if (!quizData) {
     return (
@@ -56,7 +98,6 @@ const QuizQuestion = () => {
   const {
     questionText = "",
     options = [],
-    
   } = questionData;
 
   return (
@@ -130,7 +171,7 @@ const QuizQuestion = () => {
                 ? "bg-purple-600 text-white hover:bg-purple-700"
                 : "bg-purple-200 text-white cursor-not-allowed"
             }`}
-            onClick={() => setQuestionIndex((prev) => prev + 1)}
+            onClick={handleNextOrSubmit}
             disabled={selectedOption === null}
           >
             {currentQuestion === totalQuestions ? "Submit" : "Next"}
