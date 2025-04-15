@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { FaClock, FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import api from "./axiosInstance";
 
 const QuizQuestion = () => {
-  const location = useLocation();
+  const { quizId, questionIndex: indexParam } = useParams();
   const navigate = useNavigate();
-  const { quizId } = location.state || {};
-  const [questionIndex, setQuestionIndex] = useState(0);
+  const [questionIndex, setQuestionIndex] = useState(parseInt(indexParam) || 0);
   const [quizData, setQuizData] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
   const [error, setError] = useState("");
   const [userAnswers, setUserAnswers] = useState([]);
+
+  // Update URL when question index changes
+  useEffect(() => {
+    navigate(`/quiz/${quizId}/${questionIndex}`, { replace: true });
+  }, [questionIndex, quizId, navigate]);
 
   useEffect(() => {
     const fetchQuestion = async () => {
@@ -22,7 +26,9 @@ const QuizQuestion = () => {
 
         if (res.data.success) {
           setQuizData(res.data.data);
-          setSelectedOption(null);
+          // Restore selected answer from userAnswers
+          const savedAnswer = userAnswers[questionIndex];
+          setSelectedOption(savedAnswer ? savedAnswer.selectedOption : null);
           setError("");
         } else {
           setError("Failed to load question data");
@@ -42,8 +48,8 @@ const QuizQuestion = () => {
     if (selectedOption !== null) {
       const newAnswers = [...userAnswers];
       newAnswers[questionIndex] = {
-        questionId: questionIndex.toString(), 
-        selectedOption
+        questionId: quizData.questionData._id,
+        selectedOption // Store the option index directly
       };
       setUserAnswers(newAnswers);
     }
@@ -55,19 +61,22 @@ const QuizQuestion = () => {
     }
   };
 
+  const handlePrevious = () => {
+    setQuestionIndex(prev => Math.max(prev - 1, 0));
+  };
+
   const submitQuiz = async () => {
     try {
       const response = await api.post('/quiz/submit', {
-        _id: quizId, 
+        quizId,
         answers: userAnswers.filter(answer => answer !== undefined)
       });
 
       if (response.data.success) {
         navigate('/quiz-question-success', {
           state: {
-            quizId,
-            score: response.data.score,
-            totalQuestions: quizData.totalQuestions
+            score: response.data.data.score,
+            totalPoints: response.data.data.totalPoints
           }
         });
       } else {
@@ -89,7 +98,6 @@ const QuizQuestion = () => {
 
   const {
     quizTitle = "Quiz",
-    currentQuestion = questionIndex + 1,
     totalQuestions = 1,
     timeLimit = 30,
     questionData = {}
@@ -102,7 +110,7 @@ const QuizQuestion = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <nav className="bg-purple-700 text-white px-10 py-6 flex justify-between items-center text-xl font-semibold">
+      <nav className="bg-purple-700 text-white px-10 py-6 flex justify-between items-center text-4xl font-bold">
         <h1>{quizTitle}</h1>
         <div className="flex items-center gap-2 text-lg font-medium">
           <FaClock size={18} />
@@ -113,7 +121,7 @@ const QuizQuestion = () => {
       <div className="max-w-6xl mx-auto mt-10 bg-white shadow-lg rounded-2xl p-6">
         <div className="flex justify-between mb-4 text-gray-500 text-lg">
           <span>
-            Question {currentQuestion} of {totalQuestions}
+            Question {questionIndex + 1} of {totalQuestions}
           </span>
           <span className="flex items-center gap-2 text-purple-600 font-semibold">
             <FaClock size={16} />
@@ -157,7 +165,7 @@ const QuizQuestion = () => {
                 ? "bg-gray-200 text-gray-700 hover:bg-gray-300"
                 : "bg-gray-100 text-gray-400 cursor-not-allowed"
             }`}
-            onClick={() => setQuestionIndex((prev) => Math.max(prev - 1, 0))}
+            onClick={handlePrevious}
             disabled={questionIndex === 0}
           >
             <FaArrowLeft />
@@ -174,13 +182,15 @@ const QuizQuestion = () => {
             onClick={handleNextOrSubmit}
             disabled={selectedOption === null}
           >
-            {currentQuestion === totalQuestions ? "Submit" : "Next"}
-            {currentQuestion !== totalQuestions && <FaArrowRight />}
+            {questionIndex === totalQuestions - 1 ? "Submit" : "Next"}
+            {questionIndex < totalQuestions - 1 && <FaArrowRight />}
           </button>
         </div>
 
         {error && (
-          <div className="mt-6 text-red-600 bg-red-100 p-3 rounded-md">{error}</div>
+          <div className="mt-6 text-red-600 bg-red-100 p-3 rounded-md">
+            {error}
+          </div>
         )}
       </div>
     </div>

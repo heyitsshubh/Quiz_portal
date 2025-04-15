@@ -71,7 +71,7 @@ const Userdashboard = () => {
 
                 <button
                   className="w-full bg-purple-600 text-white font-medium py-2 rounded-md hover:bg-purple-700 transition cursor-pointer"
-                  onClick={() => navigate("/quiz/:id", { state: { quizId: quiz._id } })}
+                  onClick={() => navigate(`/quiz/${quiz._id}/0`)}
                 >
                   Start Quiz
                 </button>
