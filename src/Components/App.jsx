@@ -11,6 +11,7 @@ import AdminLayout from "./Admin/AdminLayout";
 import AddQuestions from "./Admin/AddQuestion";
 import ViewTest from "./Admin/ViewTest";
 import QuizQuestion from "./QuizQuestion";
+import QuizSubmissionSuccess from "./QuizSubmissionSuccess";
 import { QuizProvider } from "./Admin/QuizContext";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Route path="/forgot" element={<Forgot />} />
         <Route path="/userdashboard" element={<Userdashboard />} />
         <Route path="quiz/:id" element={<QuizQuestion />} />
+        <Route path="quiz-submission-success" element={<QuizSubmissionSuccess />} />
         <Route path="/dashboard/*" element={<AdminLayout />}>
         <Route index element={<Admindashboard />} /> 
         <Route path="quiz-creator" element={<QuizCreator />} />

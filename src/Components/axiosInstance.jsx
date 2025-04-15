@@ -27,7 +27,9 @@ api.interceptors.response.use(
 
       if (!refreshToken) {
         localStorage.clear();
-        window.location.href = "/";
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 10000);
         return Promise.reject(error);
       }
 
@@ -46,7 +48,9 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError) {
         localStorage.clear();
-        window.location.href = "/";
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 10000);
         return Promise.reject(refreshError);
       }
     }

@@ -31,7 +31,7 @@ const Userdashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navbar */}
-      <nav className="bg-purple-700 text-white px-6 py-4 shadow-md flex items-center">
+      <nav className="bg-purple-700 text-white px-6 py-4 shadow-md flex items-center ">
         <span className="text-xl font-bold flex items-center gap-2">
           <FaBrain size={20} />
           Quiz Master
@@ -40,7 +40,7 @@ const Userdashboard = () => {
 
       {/* Main Content */}
       <main className="px-8 py-10">
-        <h2 className="text-2xl font-semibold mb-6">Available Quizzes</h2>
+        <h2 className="text-3xl font-bold mb-6  text-purple-700 ">Available Quizzes</h2>
 
         {loading ? (
           <p className="text-center text-gray-600">Loading quizzes...</p>
@@ -62,7 +62,7 @@ const Userdashboard = () => {
 
                 <div className="text-sm text-gray-600 mb-1 flex items-center gap-2">
                   <FaClock />
-                  {quiz. timeLimit|| "Duration N/A"}
+                  {quiz. timeLimit|| "Duration N/A"}minutes
                 </div>
 
                 <p className="text-sm text-gray-600 mb-4">
@@ -71,7 +71,7 @@ const Userdashboard = () => {
 
                 <button
                   className="w-full bg-purple-600 text-white font-medium py-2 rounded-md hover:bg-purple-700 transition cursor-pointer"
-                  onClick={() => navigate("/startquiz", { state: { quizId: quiz._id } })}
+                  onClick={() => navigate("/quiz/:id", { state: { quizId: quiz._id } })}
                 >
                   Start Quiz
                 </button>
