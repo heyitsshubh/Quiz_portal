@@ -3,15 +3,15 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignupForm from "./Auth/Signup";
 import Login from "./Auth/Login";
 import Forgot from "./Auth/Forgot";
-import Userdashboard from "./Userdashboard";
+import Userdashboard from "./User/Userdashboard";
 import Admindashboard from "./Admin/Admindashboard";
 import QuizCreator from "./Admin/Quizcreate";
 // import ResultsDashboard from "./ResultsDashboard";
 import AdminLayout from "./Admin/AdminLayout";
 import AddQuestions from "./Admin/AddQuestion";
 import ViewTest from "./Admin/ViewTest";
-import QuizQuestion from "./QuizQuestion";
-import QuizSubmissionSuccess from "./QuizSubmissionSuccess";
+import QuizQuestion from "./User/QuizQuestion";
+import QuizSubmissionSuccess from "./User/QuizSubmissionSuccess";
 import { QuizProvider } from "./Admin/QuizContext";
 
 function App() {
