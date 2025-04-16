@@ -11,12 +11,14 @@ const QuizQuestion = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [error, setError] = useState("");
   const [userAnswers, setUserAnswers] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Update URL when question index changes
+  // Update URL when questionIndex changes
   useEffect(() => {
     navigate(`/quiz/${quizId}/${questionIndex}`, { replace: true });
   }, [questionIndex, quizId, navigate]);
 
+  // Fetch question data
   useEffect(() => {
     const fetchQuestion = async () => {
       try {
@@ -26,30 +28,29 @@ const QuizQuestion = () => {
 
         if (res.data.success) {
           setQuizData(res.data.data);
-          // Restore selected answer from userAnswers
           const savedAnswer = userAnswers[questionIndex];
           setSelectedOption(savedAnswer ? savedAnswer.selectedOption : null);
           setError("");
         } else {
-          setError("Failed to load question data");
+          setError(res.data.message || "Failed to load question data");
         }
       } catch (err) {
         console.error("Error fetching question:", err);
-        setError("Failed to load question. Please try again.");
+        setError(err.response?.data?.message || "Failed to load question. Please try again.");
       }
     };
 
     if (quizId) {
       fetchQuestion();
     }
-  }, [quizId, questionIndex]);
+  }, [quizId, questionIndex, userAnswers]);
 
   const handleNextOrSubmit = () => {
     if (selectedOption !== null) {
       const newAnswers = [...userAnswers];
       newAnswers[questionIndex] = {
         questionId: quizData.questionData._id,
-        selectedOption // Store the option index directly
+        selectedOption 
       };
       setUserAnswers(newAnswers);
     }
@@ -58,6 +59,7 @@ const QuizQuestion = () => {
       submitQuiz();
     } else {
       setQuestionIndex(prev => prev + 1);
+      setSelectedOption(null);
     }
   };
 
@@ -66,27 +68,70 @@ const QuizQuestion = () => {
   };
 
   const submitQuiz = async () => {
+    setIsSubmitting(true);
+    setError("");
+
     try {
-      const response = await api.post('/quiz/submit', {
-        quizId,
-        answers: userAnswers.filter(answer => answer !== undefined)
-      });
+      // Final check to include current question's answer
+      const answersToSubmit = [...userAnswers];
+      if (selectedOption !== null && !answersToSubmit[questionIndex]) {
+        answersToSubmit[questionIndex] = {
+          questionId: quizData.questionData._id,
+          selectedOption
+        };
+      }
+
+      // Validate data before submission
+      if (!quizId) {
+        throw new Error("Quiz ID is missing");
+      }
+
+      const filteredAnswers = answersToSubmit
+        .filter(a => a !== undefined && a !== null)
+        .map(answer => ({
+          questionId: answer.questionId,
+          selectedOption: answer.selectedOption
+        }));
+
+      if (filteredAnswers.length === 0) {
+        throw new Error("No valid answers to submit");
+      }
+
+      // Prepare payload matching backend expectations
+      const submissionData = {
+        _id: quizId,  // Using _id instead of quizId to match backend
+        answers: filteredAnswers
+      };
+
+      console.log("Submitting quiz with:", submissionData);
+
+      const response = await api.post('/quiz/submit', submissionData);
 
       if (response.data.success) {
         navigate('/quiz-question-success', {
           state: {
             score: response.data.data.score,
-            totalPoints: response.data.data.totalPoints
+            totalPoints: response.data.data.totalPoints,
+            totalQuestions: quizData.totalQuestions
           }
         });
       } else {
-        setError(response.data.message || "Failed to submit quiz");
+        throw new Error(response.data.message || "Submission failed");
       }
     } catch (err) {
-      console.error("Error submitting quiz:", err);
-      setError(err.response?.data?.message || "Failed to submit quiz. Please try again.");
+      console.error("Submission error:", {
+        error: err,
+        response: err.response,
+        data: err.response?.data
+      });
+      
+      setError(err.response?.data?.message || err.message || "Submission failed. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  
 
   if (!quizData) {
     return (
@@ -171,7 +216,6 @@ const QuizQuestion = () => {
             <FaArrowLeft />
             Previous
           </button>
-
 
           <button
             className={`flex items-center gap-3 px-6 py-2 rounded-md text-lg font-semibold transition ${
