@@ -30,7 +30,6 @@ const Userdashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Navbar */}
       <nav className="bg-purple-700 text-white px-6 py-4 shadow-md flex items-center ">
         <span className="text-xl font-bold flex items-center gap-2">
           <FaBrain size={20} />
@@ -38,7 +37,7 @@ const Userdashboard = () => {
         </span>
       </nav>
 
-      {/* Main Content */}
+    
       <main className="px-8 py-10">
         <h2 className="text-3xl font-bold mb-6  text-purple-700 ">Available Quizzes</h2>
 

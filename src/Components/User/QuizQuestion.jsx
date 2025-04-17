@@ -13,12 +13,10 @@ const QuizQuestion = () => {
   const [userAnswers, setUserAnswers] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Update URL when questionIndex changes
   useEffect(() => {
     navigate(`/quiz/${quizId}/${questionIndex}`, { replace: true });
   }, [questionIndex, quizId, navigate]);
 
-  // Fetch question data
   useEffect(() => {
     const fetchQuestion = async () => {
       try {
@@ -72,7 +70,6 @@ const QuizQuestion = () => {
     setError("");
 
     try {
-      // Final check to include current question's answer
       const answersToSubmit = [...userAnswers];
       if (selectedOption !== null && !answersToSubmit[questionIndex]) {
         answersToSubmit[questionIndex] = {
@@ -81,7 +78,6 @@ const QuizQuestion = () => {
         };
       }
 
-      // Validate data before submission
       if (!quizId) {
         throw new Error("Quiz ID is missing");
       }
@@ -97,9 +93,8 @@ const QuizQuestion = () => {
         throw new Error("No valid answers to submit");
       }
 
-      // Prepare payload matching backend expectations
       const submissionData = {
-        _id: quizId,  // Using _id instead of quizId to match backend
+        _id: quizId,  
         answers: filteredAnswers
       };
 
@@ -108,7 +103,7 @@ const QuizQuestion = () => {
       const response = await api.post('/quiz/submit', submissionData);
 
       if (response.data.success) {
-        navigate('/quiz-question-success', {
+        navigate('/quiz-submission-success', {
           state: {
             score: response.data.data.score,
             totalPoints: response.data.data.totalPoints,
@@ -205,7 +200,7 @@ const QuizQuestion = () => {
 
         <div className="flex justify-between items-center mt-10">
           <button
-            className={`flex items-center gap-3 px-5 py-2 rounded-md text-lg font-medium ${
+            className={`flex items-center gap-3 px-5 py-2 rounded-md cursor-pointer text-lg font-medium ${
               questionIndex > 0
                 ? "bg-gray-200 text-gray-700 hover:bg-gray-300"
                 : "bg-gray-100 text-gray-400 cursor-not-allowed"
@@ -218,7 +213,7 @@ const QuizQuestion = () => {
           </button>
 
           <button
-            className={`flex items-center gap-3 px-6 py-2 rounded-md text-lg font-semibold transition ${
+            className={`flex items-center gap-3 px-6 py-2 rounded-md  cursor-pointer text-lg font-semibold transition ${
               selectedOption !== null
                 ? "bg-purple-600 text-white hover:bg-purple-700"
                 : "bg-purple-200 text-white cursor-not-allowed"

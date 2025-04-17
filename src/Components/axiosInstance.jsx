@@ -19,7 +19,8 @@ api.interceptors.response.use(
 
     if (
       error.response &&
-      error.response.status === 401 &&
+      (error.response.status === 401 ||
+        error.response.data?.message === "Invalid token") &&
       !originalRequest._retry
     ) {
       originalRequest._retry = true;

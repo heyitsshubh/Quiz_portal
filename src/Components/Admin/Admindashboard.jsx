@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../axiosInstance";
 import { FaClock, FaPlus, FaEye } from "react-icons/fa";
 import { FiTrash2 } from "react-icons/fi";
-import SuccessBox from "../SuccessBox"; 
+import SuccessBox from "../SuccessBox";
 
 const Admindashboard = () => {
   const [quizzes, setQuizzes] = useState([]);
@@ -32,6 +32,7 @@ const Admindashboard = () => {
           timeLimit: quiz.timeLimit || 0,
           difficulty: quiz.difficulty || "Unknown",
           id: quiz._id || quiz.id,
+          status: quiz.status || "pending", // Assuming status is part of the quiz object
         }));
 
         setQuizzes(transformedQuizzes);
@@ -59,6 +60,29 @@ const Admindashboard = () => {
     } catch (error) {
       console.error("Error deleting quiz:", error.response?.data || error);
       alert("Failed to delete quiz. Please try again.");
+    }
+  };
+
+  const handleActivateQuiz = async (quizId) => {
+    try {
+      const res = await api.patch("/admin/dashboard/quiz/status", {
+        _id: quizId,
+        status: "active",
+      });
+
+      if (res.data.success) {
+        // Update the status to 'active' in the local state
+        setQuizzes((prev) =>
+          prev.map((quiz) => (quiz.id === quizId ? { ...quiz, status: "active" } : quiz))
+        );
+        setShowSuccess(true);
+        setTimeout(() => setShowSuccess(false), 1500); // Show success message for a short time
+      } else {
+        alert(res.data.message || "Failed to activate quiz.");
+      }
+    } catch (error) {
+      console.error("Activation failed:", error.response?.data || error);
+      alert("Error activating quiz. Please try again.");
     }
   };
 
@@ -92,7 +116,7 @@ const Admindashboard = () => {
             </div>
             <p className="text-sm text-gray-500 mb-4">Difficulty: {quiz.difficulty}</p>
 
-            <div className="flex gap-3">
+            <div className="flex gap-3 flex-wrap">
               <button
                 className="bg-purple-600 text-white px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-purple-700 cursor-pointer"
                 onClick={() => handleAddQuestion(quiz.id)}
@@ -105,6 +129,20 @@ const Admindashboard = () => {
               >
                 <FaEye /> View Test
               </button>
+              {quiz.status !== "active" && (
+                <button
+                  className="border border-green-500 text-green-600 px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-green-50 cursor-pointer"
+                  onClick={() => handleActivateQuiz(quiz.id)}
+                >
+                  🔓 Activate
+                </button>
+              )}
+            </div>
+
+            <div className="mt-2">
+              <span className={`px-3 py-1 rounded-full text-xs ${quiz.status === "active" ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800'}`}>
+                {quiz.status}
+              </span>
             </div>
           </div>
         ))}
@@ -114,6 +152,7 @@ const Admindashboard = () => {
 };
 
 export default Admindashboard;
+
 
 
 
