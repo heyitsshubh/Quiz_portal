@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../axiosInstance";
-import { FaClock, FaPlus, FaEye } from "react-icons/fa";
+import { FaClock, FaPlus, FaEye,FaLockOpen } from "react-icons/fa";
 import { FiTrash2 } from "react-icons/fi";
 import SuccessBox from "../SuccessBox";
 
@@ -131,16 +131,16 @@ const Admindashboard = () => {
               </button>
               {quiz.status !== "active" && (
                 <button
-                  className="border border-green-500 text-green-600 px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-green-50 cursor-pointer"
+                  className="border border-purple-500 text-purple-600 px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-purple-50 cursor-pointer"
                   onClick={() => handleActivateQuiz(quiz.id)}
                 >
-                  🔓 Activate
+                 <FaLockOpen/> Activate
                 </button>
               )}
             </div>
 
             <div className="mt-2">
-              <span className={`px-3 py-1 rounded-full text-xs ${quiz.status === "active" ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800'}`}>
+              <span className={`px-3 py-1 rounded-full text-xs ${quiz.status === "active" ? 'bg-purple-200 text-purple-800' : 'bg-red-300 text-yellow-800'}`}>
                 {quiz.status}
               </span>
             </div>
