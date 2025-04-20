@@ -1,9 +1,11 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { FaHome, FaEdit, FaChartBar, FaCogs, FaSignOutAlt, FaBrain } from "react-icons/fa";
+import { FaHome, FaEdit, FaChartBar, FaSignOutAlt, FaBrain } from "react-icons/fa";
 
 export default function Sidebar() {
-    const adminEmail = localStorage.getItem("adminEmail"); 
+  const adminEmail = localStorage.getItem("adminEmail");
+  const quizId = localStorage.getItem("quizId"); // Fetch the quizId from local storage or state
+
   return (
     <aside className="w-64 h-screen fixed top-0 left-0 bg-purple-900 text-white flex flex-col justify-between p-4 z-50">
       <div>
@@ -13,21 +15,25 @@ export default function Sidebar() {
         <nav className="space-y-4">
           <SidebarLink to="/dashboard" icon={<FaHome />} text="Dashboard" />
           <SidebarLink to="/dashboard/quiz-creator" icon={<FaEdit />} text="Quiz Creator" />
-          <SidebarLink to="/dashboard/results-dashboard" icon={<FaChartBar />} text="Results Dashboard" />
-          {/* <SidebarLink to="/dashboard/quiz-control" icon={<FaCogs />} text="Quiz Control" /> */}
+          {/* Dynamically pass the quizId */}
+          <SidebarLink
+            to={`/dashboard/results-dashboard/${quizId}`}
+            icon={<FaChartBar />}
+            text="Results Dashboard"
+          />
         </nav>
       </div>
 
       <div className="text-sm space-y-2">
         <div>
-          <p className="font-semibold">Admin </p>
+          <p className="font-semibold">Admin</p>
           <p className="text-gray-300 text-sm">{adminEmail || "admin@quizmaster.com"}</p>
         </div>
         <button
           className="flex items-center gap-2 text-red-300 hover:text-red-400 mt-4 text-lg"
           onClick={() => {
-            localStorage.clear(); 
-            window.location.href = "/"; 
+            localStorage.clear();
+            window.location.href = "/";
           }}
         >
           <FaSignOutAlt /> Logout

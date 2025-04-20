@@ -19,7 +19,6 @@ function App() {
     <QuizProvider>
     <Router>
       <Routes>
-
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/forgot" element={<Forgot />} />
@@ -31,7 +30,7 @@ function App() {
         <Route path="quiz-creator" element={<QuizCreator />} />
         <Route path="add-questions" element={<AddQuestions />} />
         <Route path="view-test" element={<ViewTest />} />
-        /* <Route path="results-dashboard" element={<QuizResultsDashboard/>} /> 
+        <Route path="results-dashboard/:_id" element={<QuizResultsDashboard/>} /> 
         </Route>
       </Routes>
     </Router>

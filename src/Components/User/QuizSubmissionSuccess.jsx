@@ -24,7 +24,7 @@ const QuizSubmissionSuccess = () => {
             Your quiz has been submitted successfully.
           </p>
           <button
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/userdashboard")}
             className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md text-lg font-medium flex items-center gap-2 mx-auto"
           >
             <FaHome />

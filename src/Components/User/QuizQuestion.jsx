@@ -13,6 +13,9 @@ const QuizQuestion = () => {
   const [userAnswers, setUserAnswers] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [isTimerInitialized, setIsTimerInitialized] = useState(false); 
+
   useEffect(() => {
     navigate(`/quiz/${quizId}/${questionIndex}`, { replace: true });
   }, [questionIndex, quizId, navigate]);
@@ -29,6 +32,11 @@ const QuizQuestion = () => {
           const savedAnswer = userAnswers[questionIndex];
           setSelectedOption(savedAnswer ? savedAnswer.selectedOption : null);
           setError("");
+
+          if (!isTimerInitialized && res.data.data.timeLimit) {
+            setTimeLeft(res.data.data.timeLimit * 60); 
+            setIsTimerInitialized(true);
+          }
         } else {
           setError(res.data.message || "Failed to load question data");
         }
@@ -41,14 +49,33 @@ const QuizQuestion = () => {
     if (quizId) {
       fetchQuestion();
     }
-  }, [quizId, questionIndex, userAnswers]);
+  }, [quizId, questionIndex, userAnswers, isTimerInitialized]);
+
+  useEffect(() => {
+    if (timeLeft <= 0) {
+      submitQuiz(); 
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setTimeLeft((prevTime) => prevTime - 1);
+    }, 1000);
+
+    return () => clearInterval(timer); 
+  }, [timeLeft]);
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
 
   const handleNextOrSubmit = () => {
     if (selectedOption !== null) {
       const newAnswers = [...userAnswers];
       newAnswers[questionIndex] = {
         questionId: quizData.questionData._id,
-        selectedOption 
+        selectedOption,
       };
       setUserAnswers(newAnswers);
     }
@@ -56,13 +83,13 @@ const QuizQuestion = () => {
     if (questionIndex + 1 >= quizData.totalQuestions) {
       submitQuiz();
     } else {
-      setQuestionIndex(prev => prev + 1);
+      setQuestionIndex((prev) => prev + 1);
       setSelectedOption(null);
     }
   };
 
   const handlePrevious = () => {
-    setQuestionIndex(prev => Math.max(prev - 1, 0));
+    setQuestionIndex((prev) => Math.max(prev - 1, 0));
   };
 
   const submitQuiz = async () => {
@@ -74,7 +101,7 @@ const QuizQuestion = () => {
       if (selectedOption !== null && !answersToSubmit[questionIndex]) {
         answersToSubmit[questionIndex] = {
           questionId: quizData.questionData._id,
-          selectedOption
+          selectedOption,
         };
       }
 
@@ -83,10 +110,10 @@ const QuizQuestion = () => {
       }
 
       const filteredAnswers = answersToSubmit
-        .filter(a => a !== undefined && a !== null)
-        .map(answer => ({
+        .filter((a) => a !== undefined && a !== null)
+        .map((answer) => ({
           questionId: answer.questionId,
-          selectedOption: answer.selectedOption
+          selectedOption: answer.selectedOption,
         }));
 
       if (filteredAnswers.length === 0) {
@@ -94,21 +121,22 @@ const QuizQuestion = () => {
       }
 
       const submissionData = {
-        _id: quizId,  
-        answers: filteredAnswers
+        _id: quizId,
+        answers: filteredAnswers,
       };
 
       console.log("Submitting quiz with:", submissionData);
 
-      const response = await api.post('/quiz/submit', submissionData);
+      const response = await api.post("/quiz/submit", submissionData);
 
       if (response.data.success) {
-        navigate('/quiz-submission-success', {
+        localStorage.setItem("lastQuizId", quizId);
+        navigate("/quiz-submission-success", {
           state: {
             score: response.data.data.score,
             totalPoints: response.data.data.totalPoints,
-            totalQuestions: quizData.totalQuestions
-          }
+            totalQuestions: quizData.totalQuestions,
+          },
         });
       } else {
         throw new Error(response.data.message || "Submission failed");
@@ -117,16 +145,16 @@ const QuizQuestion = () => {
       console.error("Submission error:", {
         error: err,
         response: err.response,
-        data: err.response?.data
+        data: err.response?.data,
       });
-      
-      setError(err.response?.data?.message || err.message || "Submission failed. Please try again.");
+
+      setError(
+        err.response?.data?.message || err.message || "Submission failed. Please try again."
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
-
-  
 
   if (!quizData) {
     return (
@@ -139,14 +167,10 @@ const QuizQuestion = () => {
   const {
     quizTitle = "Quiz",
     totalQuestions = 1,
-    timeLimit = 30,
-    questionData = {}
+    questionData = {},
   } = quizData;
 
-  const {
-    questionText = "",
-    options = [],
-  } = questionData;
+  const { questionText = "", options = [] } = questionData;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -154,7 +178,7 @@ const QuizQuestion = () => {
         <h1>{quizTitle}</h1>
         <div className="flex items-center gap-2 text-lg font-medium">
           <FaClock size={18} />
-          <span>{timeLimit} min</span>
+          <span>{formatTime(timeLeft)}</span>
         </div>
       </nav>
 
@@ -165,7 +189,7 @@ const QuizQuestion = () => {
           </span>
           <span className="flex items-center gap-2 text-purple-600 font-semibold">
             <FaClock size={16} />
-            {timeLimit} min
+            {formatTime(timeLeft)}
           </span>
         </div>
 

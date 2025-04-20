@@ -32,7 +32,7 @@ const Admindashboard = () => {
           timeLimit: quiz.timeLimit || 0,
           difficulty: quiz.difficulty || "Unknown",
           id: quiz._id || quiz.id,
-          status: quiz.status || "pending", // Assuming status is part of the quiz object
+          status: quiz.status || "pending", 
         }));
 
         setQuizzes(transformedQuizzes);
@@ -71,12 +71,11 @@ const Admindashboard = () => {
       });
 
       if (res.data.success) {
-        // Update the status to 'active' in the local state
         setQuizzes((prev) =>
           prev.map((quiz) => (quiz.id === quizId ? { ...quiz, status: "active" } : quiz))
         );
         setShowSuccess(true);
-        setTimeout(() => setShowSuccess(false), 1500); // Show success message for a short time
+        setTimeout(() => setShowSuccess(false), 1500); 
       } else {
         alert(res.data.message || "Failed to activate quiz.");
       }
