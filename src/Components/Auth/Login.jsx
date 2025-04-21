@@ -3,7 +3,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineMail } from "react-icons/
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaBrain } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import api from "../axiosInstance"; // Import the axios instance
+import api from "../axiosInstance"; 
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,7 +22,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // Admin login API
+    
       const adminResponse = await api.post("/admin/login", formData);
 
       if (adminResponse.data && adminResponse.data.refreshToken) {
@@ -36,7 +36,7 @@ const Login = () => {
       }
     } catch (adminError) {
       try {
-        // User login API
+    
         const userResponse = await api.post("/auth/signin", formData);
 
         if (userResponse.data && userResponse.data.refreshToken) {
@@ -114,13 +114,13 @@ const Login = () => {
               <input type="checkbox" className="mr-1 accent-pink-500" />
               Remember me
             </label>
-            <a
+            {/* <a
               href="#"
               className="hover:underline"
               onClick={() => navigate("/forgot")}
             >
               Forgot password?
-            </a>
+            </a> */}
           </div>
 
           <button

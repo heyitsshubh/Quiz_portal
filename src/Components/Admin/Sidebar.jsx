@@ -33,7 +33,7 @@ export default function Sidebar() {
           onClick={() => {
             localStorage.clear();
             if (quizId) {
-              localStorage.setItem("quizId", quizId); // Restore the quizId
+              localStorage.setItem("quizId", quizId); // restore quizId if it exists
             }
             window.location.href = "/";
           }}

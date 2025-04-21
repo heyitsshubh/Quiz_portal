@@ -20,7 +20,7 @@ const Forgot = () => {
 
         <form onSubmit={handleEmailSubmit} className="space-y-4">
           <div className="relative">
-            <FaEnvelope className="absolute top-3 left-3 text-purple-300" size={18} /> {/* Email Icon */}
+            <FaEnvelope className="absolute top-3 left-3 text-purple-300" size={18} /> 
             <input
               type="email"
               placeholder="Enter your email"

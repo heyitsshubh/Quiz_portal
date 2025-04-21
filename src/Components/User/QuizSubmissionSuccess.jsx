@@ -6,13 +6,12 @@ const QuizSubmissionSuccess = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.clear(); // Clear all stored data
-    navigate("/"); // Redirect to the login page
+    localStorage.clear();
+    navigate("/"); 
   };
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Top Navbar */}
       <div className="bg-purple-700 text-white px-10 py-4 text-2xl font-semibold">
         <span className="flex items-center gap-2">
           <span className="w-3 h-3 rounded-full " />
@@ -20,7 +19,6 @@ const QuizSubmissionSuccess = () => {
         </span>
       </div>
 
-      {/* Center Card */}
       <div className="flex justify-center items-center mt-20 px-4">
         <div className="bg-white shadow-lg rounded-xl p-10 w-full max-w-xl text-center">
           <FaCheckCircle className="text-green-500 text-6xl mx-auto mb-6" />
