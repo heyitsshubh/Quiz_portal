@@ -16,7 +16,7 @@ export default function Sidebar() {
           <SidebarLink to="/dashboard" icon={<FaHome />} text="Dashboard" />
           <SidebarLink to="/dashboard/quiz-creator" icon={<FaEdit />} text="Quiz Creator" />
           <SidebarLink
-            to={`/dashboard/results-dashboard/${quizId}`}
+            to="/dashboard/results-dashboard"
             icon={<FaChartBar />}
             text="Results Dashboard"
           />

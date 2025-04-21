@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import api from "./axiosInstance";
+import api from "../axiosInstance";
 
-const QuizResultsDashboard = () => {
+const Results = () => {
+  const { quizId } = useParams(); 
   const [quizTitle, setQuizTitle] = useState("");
   const [scoreData, setScoreData] = useState([]);
   const [teamResults, setTeamResults] = useState([]);
@@ -10,10 +12,8 @@ const QuizResultsDashboard = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const quizId = localStorage.getItem("lastQuizId");
-
     if (!quizId) {
-      setError("Quiz ID not found. Please make sure a quiz has been submitted.");
+      setError("Quiz ID not found. Please check the URL.");
       setLoading(false);
       return;
     }
@@ -30,7 +30,7 @@ const QuizResultsDashboard = () => {
           const chartData = Object.keys(distribution).map((key) => ({
             name: key,
             teams: distribution[key],
-            fill: "#6b46c1", // Purple color for bars
+            fill: "#6b46c1", 
           }));
           setScoreData(chartData);
           setTeamResults(data.teamResults);
@@ -46,7 +46,7 @@ const QuizResultsDashboard = () => {
     };
 
     fetchResults();
-  }, []);
+  }, [quizId]);
 
   if (loading) {
     return <p className="text-center text-gray-600">Loading results...</p>;
@@ -68,7 +68,7 @@ const QuizResultsDashboard = () => {
               <BarChart
                 data={scoreData}
                 margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
-                layout="horizontal" // Set layout to horizontal for vertical bars
+                layout="horizontal"
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
@@ -124,4 +124,4 @@ const QuizResultsDashboard = () => {
   );
 };
 
-export default QuizResultsDashboard;
+export default Results;

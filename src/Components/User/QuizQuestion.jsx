@@ -130,7 +130,6 @@ const QuizQuestion = () => {
       const response = await api.post("/quiz/submit", submissionData);
 
       if (response.data.success) {
-        localStorage.setItem("lastQuizId", quizId);
         navigate("/quiz-submission-success", {
           state: {
             score: response.data.data.score,

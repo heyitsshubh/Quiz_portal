@@ -6,7 +6,8 @@ import Forgot from "./Auth/Forgot";
 import Userdashboard from "./User/Userdashboard";
 import Admindashboard from "./Admin/Admindashboard";
 import QuizCreator from "./Admin/Quizcreate";
-import QuizResultsDashboard from "./Result";
+import Resultdashboard from "./Admin/Resultboard";
+import Results from "./Admin/Result";
 import AdminLayout from "./Admin/AdminLayout";
 import AddQuestions from "./Admin/AddQuestion";
 import ViewTest from "./Admin/ViewTest";
@@ -30,7 +31,8 @@ function App() {
         <Route path="quiz-creator" element={<QuizCreator />} />
         <Route path="add-questions" element={<AddQuestions />} />
         <Route path="view-test" element={<ViewTest />} />
-        <Route path="results-dashboard/:_id" element={<QuizResultsDashboard/>} /> 
+        <Route path="results-dashboard" element={<Resultdashboard/>} /> 
+        <Route path="results/:quizId" element={<Results />} />
         </Route>
       </Routes>
     </Router>
