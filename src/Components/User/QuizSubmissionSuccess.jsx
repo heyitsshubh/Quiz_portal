@@ -1,9 +1,14 @@
 import React from "react";
-import { FaCheckCircle, FaHome } from "react-icons/fa";
+import { FaCheckCircle, FaSignOutAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const QuizSubmissionSuccess = () => {
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.clear(); // Clear all stored data
+    navigate("/"); // Redirect to the login page
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -24,11 +29,11 @@ const QuizSubmissionSuccess = () => {
             Your quiz has been submitted successfully.
           </p>
           <button
-            onClick={() => navigate("/userdashboard")}
+            onClick={handleLogout}
             className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md text-lg font-medium flex items-center gap-2 mx-auto"
           >
-            <FaHome />
-            Back to Dashboard
+            <FaSignOutAlt />
+            Logout
           </button>
         </div>
       </div>

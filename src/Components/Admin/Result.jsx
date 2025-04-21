@@ -62,7 +62,7 @@ const Results = () => {
       <p className="text-gray-600 mb-8">View team performance and score distribution</p>
       <div className="grid grid-cols-1 md:grid-rows-2 gap-8">
         <div className="bg-gray-50 p-6 rounded-lg">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Score Distribution</h2>
+          <h2 className="text-xl font-bold text-purple-700 mb-4">Score Distribution</h2>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
@@ -84,7 +84,7 @@ const Results = () => {
         </div>
 
         <div className="bg-gray-50 p-6 rounded-lg">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Team Results</h2>
+          <h2 className="text-xl font-bold text-purple-700 mb-4">Team Results</h2>
           <p className="text-sm text-gray-600 mb-4">Detailed performance of each team</p>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
