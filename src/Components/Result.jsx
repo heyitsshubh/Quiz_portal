@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import api from "./axiosInstance"; // Your API instance
+import api from "./axiosInstance";
 
 const QuizResultsDashboard = () => {
   const [quizTitle, setQuizTitle] = useState("");
@@ -30,7 +30,7 @@ const QuizResultsDashboard = () => {
           const chartData = Object.keys(distribution).map((key) => ({
             name: key,
             teams: distribution[key],
-            fill: distribution[key] > 0 ? "#fecaca" : "#e5e7eb",
+            fill: "#6b46c1", // Purple color for bars
           }));
           setScoreData(chartData);
           setTeamResults(data.teamResults);
@@ -45,22 +45,13 @@ const QuizResultsDashboard = () => {
       }
     };
 
-    // Fetch the quiz results based on the stored quiz ID
     fetchResults();
-
-    // Poll for updates every 10 seconds
-    const interval = setInterval(fetchResults, 10000);
-
-    // Cleanup interval on component unmount
-    return () => clearInterval(interval);
   }, []);
 
-  // Loading state
   if (loading) {
     return <p className="text-center text-gray-600">Loading results...</p>;
   }
 
-  // Error state
   if (error) {
     return <p className="text-center text-red-500">{error}</p>;
   }
@@ -77,16 +68,16 @@ const QuizResultsDashboard = () => {
               <BarChart
                 data={scoreData}
                 margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
-                layout="vertical"
+                layout="horizontal" // Set layout to horizontal for vertical bars
               >
-                <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                <XAxis type="number" domain={[0, "dataMax + 1"]} />
-                <YAxis dataKey="name" type="category" width={80} />
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis type="number" domain={[0, "dataMax + 1"]} />
                 <Tooltip
                   formatter={(value) => [`${value} teams`, "Count"]}
                   labelFormatter={(label) => `Score Range: ${label}`}
                 />
-                <Bar dataKey="teams" name="Number of teams" radius={[0, 4, 4, 0]} />
+                <Bar dataKey="teams" name="Number of teams" radius={[4, 4, 0, 0]} fill="#6b46c1" />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -119,7 +110,7 @@ const QuizResultsDashboard = () => {
                     <td className="px-4 py-3 whitespace-nowrap text-sm text-green-600">
                       {team.finalScore}
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-800">
                       {team.timeTaken}
                     </td>
                   </tr>
