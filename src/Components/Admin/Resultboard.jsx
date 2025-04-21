@@ -59,14 +59,14 @@ const Resultdashboard = () => {
     }
   };
 
-  if (loading) return <p className="text-center text-gray-600">Loading quizzes...</p>;
+  if (loading) return <p className="text-center text-gray-600">Loading results...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
-  if (quizzes.length === 0) return <p className="text-center text-gray-500">No quizzes available.</p>;
+  if (quizzes.length === 0) return <p className="text-center text-gray-500">No results available.</p>;
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold text-purple-700 mb-4">Results Dashboard</h1>
-      <p className="text-gray-600 mb-6">quizzes</p>
+      <p className="text-gray-600 mb-6">Mainage your results here.</p>
 
       {showSuccess && <SuccessBox message="Quiz deleted successfully!" />}
 
