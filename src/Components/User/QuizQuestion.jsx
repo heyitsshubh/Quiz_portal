@@ -241,8 +241,7 @@ const QuizQuestion = () => {
                       value={idx}
                       checked={selectedOption === idx}
                       onChange={() => setSelectedOption(idx)}
-                      className="form-radio text-purple-600 scale-125"
-                      style={{ accentColor: "#805ad5" }}
+                      className="form-radio text-purple-600 scale-125 accent-purple-600"
                       
                     />
                     <span>{option}</span>
