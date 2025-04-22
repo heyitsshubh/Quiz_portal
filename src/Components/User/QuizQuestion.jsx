@@ -268,7 +268,7 @@ const QuizQuestion = () => {
   </button>
 
   <button
-    className={`flex items-center gap-3 px-6 py-2 rounded-md cursor-pointer text-lg font-semibold transition ${
+    className={`flex items-center gap-3 px-6 py-2 rounded-md cursor-pointer text-lg font-semibold transition hover:bg-purple-500 ${
       questionIndex === totalQuestions - 1
         ? "bg-purple-600 text-white hover:bg-purple-700"
         : "bg-purple-600 text-white hover:bg-purple-700"
