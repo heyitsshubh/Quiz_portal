@@ -19,10 +19,10 @@ const Terms = () => {
   };
 
   return (
-    <div className="h-screen bg-gradient-to-br from-[#edf1fa] to-[#eef3fc] flex flex-col items-center px-4 py-4">
+    <div className="h-screen bg-gradient-to-br from-purple-800 to-purple-900 flex flex-col items-center px-4 py-4">
       <button
         onClick={() => navigate(-1)}
-        className="flex items-center gap-2 text-purple-600 hover:text-purple-800 mb-2 self-start"
+        className="flex items-center gap-2 text-red-500 hover:text-red-500 mb-2 self-start cursor-pointer"
       >
         <FaArrowLeft />
         Back
@@ -84,7 +84,7 @@ const Terms = () => {
         </div>
 
         <button
-          className="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition w-full"
+          className="mt-4 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold cursor-pointer rounded-xl hover:opacity-90 transition w-full"
           onClick={handleStartQuiz}
         >
           Start Quiz
