@@ -84,7 +84,7 @@ const Terms = () => {
         </div>
 
         <button
-          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition w-full"
+          className="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition w-full"
           onClick={handleStartQuiz}
         >
           Start Quiz
