@@ -69,11 +69,11 @@ const Userdashboard = () => {
                 </p>
 
                 <button
-                  className="w-full bg-purple-600 text-white font-medium py-2 rounded-md hover:bg-purple-700 transition cursor-pointer"
-                  onClick={() => navigate(`/quiz/${quiz._id}/0`)}
-                >
-                  Start Quiz
-                </button>
+  className="w-full bg-purple-600 text-white font-medium py-2 rounded-md hover:bg-purple-700 transition cursor-pointer"
+  onClick={() => navigate(`/terms`, { state: { quiz } })} // Pass quiz object via state
+>
+  Start Quiz
+</button>
               </div>
             ))}
           </div>
@@ -84,7 +84,6 @@ const Userdashboard = () => {
 };
 
 export default Userdashboard;
-
 
 
 

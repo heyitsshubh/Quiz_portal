@@ -1,69 +1,94 @@
-import React from "react";
+import { FaClock, FaCheckCircle, FaSyncAlt, FaArrowLeft, FaExclamationCircle, FaInfoCircle } from "react-icons/fa";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Terms = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const quiz = location.state?.quiz; // Retrieve quiz object from state
+
+  // Debugging: Log the quiz object
+  console.log("Quiz object:", quiz);
+
+  const handleStartQuiz = () => {
+    if (quiz && quiz._id) {
+      navigate(`/quiz/${quiz._id}/0`);
+    } else {
+      console.error("Quiz ID is missing");
+      alert("Quiz ID is not available. Please try again.");
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-purple-600 p-4">
-      <div className="max-w-3xl mx-auto bg-purple-300 shadow-md rounded-lg p-6">
-        <h1 className="text-2xl font-bold text-purple-700 mb-4">Terms and Conditions</h1>
-        <p className="text-black mb-3">
-          Welcome to Quiz Master! By participating in our quizzes, you agree to the following terms
-          and conditions. Please read them carefully before proceeding.
-        </p>
+    <div className="h-screen bg-gradient-to-br from-[#edf1fa] to-[#eef3fc] flex flex-col items-center px-4 py-4">
+      <button
+        onClick={() => navigate(-1)}
+        className="flex items-center gap-2 text-purple-600 hover:text-purple-800 mb-2 self-start"
+      >
+        <FaArrowLeft />
+        Back
+      </button>
 
-        <h2 className="text-lg font-semibold text-purple-600 mb-3">1. Eligibility</h2>
-        <p className="text-black mb-3">
-          Participants must be registered users of Quiz Master. By registering, you confirm that the
-          information provided is accurate and up-to-date.
-        </p>
+      <div className="bg-white rounded-lg shadow-lg p-4 md:p-6 w-full max-w-4xl text-center flex flex-col justify-between">
+        <div>
+          <div className="text-4xl text-blue-500 mb-2">📋</div>
+          <h1 className="text-xl font-bold mb-2">Quiz Rules</h1>
+          <p className="text-gray-600 mb-4">
+            Please read these rules carefully before starting the quiz
+          </p>
 
-        <h2 className="text-lg font-semibold text-purple-600 mb-3">2. Fair Play</h2>
-        <p className="text-black mb-3">
-          All participants are expected to play fairly. Any form of cheating, including but not
-          limited to using unauthorized resources or sharing answers, is strictly prohibited.
-        </p>
+          <ul className="space-y-3 text-left">
+            <li className="flex items-start gap-3 bg-blue-100 p-3 rounded-lg">
+              <FaClock className="text-blue-500 mt-1" />
+              <div>
+                <p className="font-semibold">Time Limit</p>
+                <p className="text-sm">{quiz?.timeLimit || "N/A"} minutes</p>
+              </div>
+            </li>
 
-        <h2 className="text-lg font-semibold text-purple-600 mb-3">3. Privacy</h2>
-        <p className="text-black mb-3">
-          Your personal information will be handled in accordance with our Privacy Policy. By
-          participating, you consent to the collection and use of your data for quiz-related
-          purposes.
-        </p>
+            <li className="flex items-start gap-3 bg-green-100 p-3 rounded-lg">
+              <FaCheckCircle className="text-green-500 mt-1" />
+              <div>
+                <p className="font-semibold">No Negative Marking</p>
+                <p className="text-sm">Don't worry about wrong answers – there's no penalty for incorrect responses.</p>
+              </div>
+            </li>
 
-        <h2 className="text-lg font-semibold text-purple-600 mb-3">4. Intellectual Property</h2>
-        <p className="text-black mb-3">
-          All quiz content, including questions, answers, and designs, is the intellectual property
-          of Quiz Master. Unauthorized reproduction or distribution is prohibited.
-        </p>
+            <li className="flex items-start gap-3 bg-purple-100 p-3 rounded-lg">
+              <FaSyncAlt className="text-purple-500 mt-1" />
+              <div>
+                <p className="font-semibold">One Attempt Only</p>
+                <p className="text-sm">You can attempt the quiz only once. Make sure you're well prepared.</p>
+              </div>
+            </li>
 
-        <h2 className="text-lg font-semibold text-purple-600 mb-3">5. Disqualification</h2>
-        <p className="text-black mb-3">
-          Quiz Master reserves the right to disqualify any participant found violating these terms
-          and conditions or engaging in unethical behavior.
-        </p>
+            <li className="flex items-start gap-3 bg-orange-100 p-3 rounded-lg">
+              <FaExclamationCircle className="text-orange-500 mt-1" />
+              <div>
+                <p className="font-semibold">Auto-Submit</p>
+                <p className="text-sm">The quiz will be automatically submitted when the time limit expires.</p>
+              </div>
+            </li>
 
-        <h2 className="text-lg font-semibold text-purple-600 mb-3">6. Changes to Terms</h2>
-        <p className="text-black mb-3">
-          Quiz Master reserves the right to update these terms and conditions at any time. Changes
-          will be communicated through our platform.
-        </p>
-
-        <h2 className="text-lg font-semibold text-purple-600 mb-3">7. Contact Us</h2>
-        <p className="text-black mb-3">
-          If you have any questions or concerns about these terms, please contact us at{" "}
-          <a href="mailto:support@quizmaster.com" className="text-purple-600 underline">
-            support@quizmaster.com
-          </a>
-          .
-        </p>
-
-        <div className="mt-4">
-          <button
-            onClick={() => window.history.back()}
-            className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md text-md font-medium"
-          >
-            Back
-          </button>
+            <li className="flex items-start gap-3 bg-gray-100 p-3 rounded-lg">
+              <FaInfoCircle className="text-gray-500 mt-1" />
+              <div>
+                <p className="font-semibold">Additional Information</p>
+                <ul className="list-disc pl-5 text-sm space-y-1">
+                  <li>Ensure you have a stable internet connection</li>
+                  <li>Don’t refresh or close the browser during the quiz</li>
+                  <li>You can review your answers before final submission</li>
+                </ul>
+              </div>
+            </li>
+          </ul>
         </div>
+
+        <button
+          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition w-full"
+          onClick={handleStartQuiz}
+        >
+          Start Quiz
+        </button>
       </div>
     </div>
   );
