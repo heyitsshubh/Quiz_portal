@@ -34,8 +34,8 @@ export default function SignupForm() {
     }
 
     
-    if (!formData.studentId.startsWith("24")) {
-      setError("Enter your student ID");
+    if (!formData.studentId.startsWith("24") && !formData.studentId.startsWith("23")) {
+      setError("Enter a valid student ID starting with '24' or '23'");
       setLoading(false);
       return;
     }
