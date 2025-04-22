@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import api from "../axiosInstance";
+import api from "../../utils/axiosInstance";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const ViewTest = () => {

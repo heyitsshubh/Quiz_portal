@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../axiosInstance";
+import api from "../../utils/axiosInstance";
 import { FaClock, FaPlus, FaEye,FaLockOpen } from "react-icons/fa";
 import { FiTrash2 } from "react-icons/fi";
-import SuccessBox from "../SuccessBox";
+import SuccessBox from "../User/SuccessBox";
 
 const Admindashboard = () => {
   const [quizzes, setQuizzes] = useState([]);

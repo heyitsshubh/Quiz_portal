@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import api from "../axiosInstance";
+import api from "../../utils/axiosInstance";
 
 const Results = () => {
   const { quizId } = useParams(); 

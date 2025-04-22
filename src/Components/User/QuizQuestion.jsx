@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaClock, FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
-import api from "../axiosInstance";
+import api from "../../utils/axiosInstance";
 
 const QuizQuestion = () => {
   const { quizId, questionIndex: indexParam } = useParams();

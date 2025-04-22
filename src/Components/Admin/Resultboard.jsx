@@ -1,10 +1,10 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../axiosInstance";
+import api from "../../utils/axiosInstance";
 import { FaChartBar } from "react-icons/fa";
 import { FiTrash2 } from "react-icons/fi";
-import SuccessBox from "../SuccessBox";
+import SuccessBox from "../User/SuccessBox";
 
 const Resultdashboard = () => {
   const [quizzes, setQuizzes] = useState([]);

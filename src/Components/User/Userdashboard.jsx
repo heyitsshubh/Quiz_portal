@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaClock, FaBrain } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import api from "../axiosInstance"; 
+import api from "../../utils/axiosInstance"; 
 
 const Userdashboard = () => {
   const [quizzes, setQuizzes] = useState([]);

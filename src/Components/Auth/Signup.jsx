@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaUsers, FaUser, FaEnvelope, FaIdBadge, FaLock, FaEye, FaEyeSlash, FaBrain } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import api from "../axiosInstance"; 
+import api from "../../utils/axiosInstance"; 
 
 
 export default function SignupForm() {

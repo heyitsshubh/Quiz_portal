@@ -3,7 +3,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineMail } from "react-icons/
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaBrain } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import api from "../axiosInstance"; 
+import api from "../../utils/axiosInstance"; 
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
