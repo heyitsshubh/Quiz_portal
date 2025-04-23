@@ -26,21 +26,18 @@ export default function SignupForm() {
     setError("");
     setLoading(true);
 
-    
     if (!formData.email.endsWith("@akgec.ac.in")) {
       setError("Enter your college email");
       setLoading(false);
       return;
     }
 
-    
     if (!formData.studentId.startsWith("24") && !formData.studentId.startsWith("23")) {
       setError("Enter a valid student ID starting with '24' or '23'");
       setLoading(false);
       return;
     }
 
-    
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(formData.password)) {
@@ -51,7 +48,6 @@ export default function SignupForm() {
       return;
     }
 
-    
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match.");
       setLoading(false);
@@ -59,14 +55,11 @@ export default function SignupForm() {
     }
 
     try {
-    
       const response = await api.post("/auth/signup", formData);
 
-      
       localStorage.setItem("refreshToken", response.data.refreshToken);
       localStorage.setItem("accessToken", response.data.accessToken);
 
-    
       navigate("/userdashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed. Please try again.");
@@ -76,20 +69,20 @@ export default function SignupForm() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-purple-800 to-purple-900 flex items-center justify-center">
+    <div className="relative min-h-screen bg-gradient-to-br from-purple-800 to-purple-900 flex items-center justify-center px-4">
       {loading && (
         <div className="fixed inset-0 bg-opacity-80 flex items-center justify-center z-50">
           <div className="w-16 h-16 border-8 border-gray-300 border-t-purple-500 rounded-full animate-spin"></div>
         </div>
       )}
 
-      <div className="bg-purple-950 p-8 rounded-2xl w-full max-w-md shadow-2xl">
-        <div className="flex items-center justify-center mb-6">
-          <FaBrain className="text-white text-5xl mr-2" />
-          <h1 className="text-white text-5xl font-bold">Quiz Master</h1>
+      <div className="bg-purple-950 p-6 sm:p-8 rounded-2xl w-full max-w-sm sm:max-w-md shadow-2xl">
+        <div className="flex items-center justify-center mb-4 sm:mb-6">
+          <FaBrain className="text-white text-4xl sm:text-5xl mr-2" />
+          <h1 className="text-white text-4xl sm:text-5xl font-bold">Quiz Master</h1>
         </div>
-        <h2 className="text-2xl font-bold text-white text-center mb-1">Sign Up</h2>
-        <p className="text-sm text-purple-200 text-center mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold text-white text-center mb-2 sm:mb-4">Sign Up</h2>
+        <p className="text-sm text-purple-200 text-center mb-4 sm:mb-6">
           Create your team account to participate in quizzes
         </p>
 
