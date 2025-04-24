@@ -4,9 +4,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 const Terms = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const quiz = location.state?.quiz; // Retrieve quiz object from state
+  const quiz = location.state?.quiz; 
 
-  // Debugging: Log the quiz object
   console.log("Quiz object:", quiz);
 
   const handleStartQuiz = () => {
@@ -19,7 +18,7 @@ const Terms = () => {
   };
 
   return (
-    <div className="h-screen bg-gradient-to-br from-purple-800 to-purple-900 flex flex-col items-center px-4 py-4">
+    <div className=" min-h-screen bg-gradient-to-br from-purple-800 to-purple-900 flex flex-col items-center px-4 py-4">
       <button
         onClick={() => navigate(-1)}
         className="flex items-center gap-2 text-red-500 hover:text-red-500 mb-2 self-start cursor-pointer"

@@ -177,17 +177,15 @@ const QuizQuestion = () => {
 
   return (
 <div className="min-h-screen bg-gray-50 flex flex-col">
-  {/* Full-Width Navbar */}
   <nav className="bg-purple-700 text-white px-10 py-6 flex justify-between items-center text-4xl font-bold">
     <h1>{quizTitle}</h1>
-    <div className="flex items-center gap-2 text-lg font-medium">
+    {/* <div className="flex items-center gap-2 text-lg font-medium">
       <FaClock size={18} />
       <span>{formatTime(timeLeft)}</span>
-    </div>
+    </div> */}
   </nav>
 
   <div className="flex flex-1">
-    {/* Sidebar - Hidden for screens smaller than 768px */}
     <aside className="hidden md:block w-54 bg-gray-50 text-white p-4">
       <div className="grid grid-cols-3 gap-2">
         {Array.from({ length: totalQuestions }).map((_, index) => (
@@ -208,7 +206,6 @@ const QuizQuestion = () => {
       </div>
     </aside>
 
-    {/* Main Content */}
     <div className="flex-1">
       <div className="max-w-7xl mx-auto mt-14 bg-white shadow-lg rounded-2xl p-6">
         <div className="flex justify-between mb-4 text-gray-500 text-lg">
