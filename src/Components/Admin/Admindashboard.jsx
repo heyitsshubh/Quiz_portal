@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../utils/axiosInstance";
-import { FaClock, FaPlus, FaEye,FaLockOpen } from "react-icons/fa";
+import { FaClock, FaPlus, FaEye, FaLockOpen } from "react-icons/fa";
 import { FiTrash2 } from "react-icons/fi";
 import SuccessBox from "../User/SuccessBox";
 
@@ -9,7 +9,8 @@ const Admindashboard = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [showSuccess, setShowSuccess] = useState(false); 
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(""); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,7 +33,7 @@ const Admindashboard = () => {
           timeLimit: quiz.timeLimit || 0,
           difficulty: quiz.difficulty || "Unknown",
           id: quiz._id || quiz.id,
-          status: quiz.status || "pending", 
+          status: quiz.status || "pending",
         }));
 
         setQuizzes(transformedQuizzes);
@@ -55,8 +56,9 @@ const Admindashboard = () => {
     try {
       await api.delete(`/admin/dashboard/quiz/details?_id=${quizId}`);
       setQuizzes((prev) => prev.filter((quiz) => quiz.id !== quizId));
+      setSuccessMessage("Quiz deleted successfully!"); 
       setShowSuccess(true);
-      setTimeout(() => setShowSuccess(false), 1000); 
+      setTimeout(() => setShowSuccess(false), 1500);
     } catch (error) {
       console.error("Error deleting quiz:", error.response?.data || error);
       alert("Failed to delete quiz. Please try again.");
@@ -74,8 +76,9 @@ const Admindashboard = () => {
         setQuizzes((prev) =>
           prev.map((quiz) => (quiz.id === quizId ? { ...quiz, status: "active" } : quiz))
         );
+        setSuccessMessage("Quiz activated successfully!");
         setShowSuccess(true);
-        setTimeout(() => setShowSuccess(false), 1500); 
+        setTimeout(() => setShowSuccess(false), 1500);
       } else {
         alert(res.data.message || "Failed to activate quiz.");
       }
@@ -94,7 +97,7 @@ const Admindashboard = () => {
       <h1 className="text-3xl font-bold text-purple-700 mb-4">Admin Dashboard</h1>
       <p className="text-gray-600 mb-6">Manage your quizzes</p>
 
-      {showSuccess && <SuccessBox message="Quiz deleted successfully!" />}
+      {showSuccess && <SuccessBox message={successMessage} />} {/* Use dynamic success message */}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {quizzes.map((quiz, idx) => (
@@ -133,13 +136,19 @@ const Admindashboard = () => {
                   className="border border-purple-500 text-purple-600 px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-purple-50 cursor-pointer"
                   onClick={() => handleActivateQuiz(quiz.id)}
                 >
-                 <FaLockOpen/> Activate
+                  <FaLockOpen /> Activate
                 </button>
               )}
             </div>
 
             <div className="mt-2">
-              <span className={`px-3 py-1 rounded-full text-xs ${quiz.status === "active" ? 'bg-purple-200 text-purple-800' : 'bg-red-300 text-yellow-800'}`}>
+              <span
+                className={`px-3 py-1 rounded-full text-xs ${
+                  quiz.status === "active"
+                    ? "bg-purple-200 text-purple-800"
+                    : "bg-red-300 text-yellow-800"
+                }`}
+              >
                 {quiz.status}
               </span>
             </div>
