@@ -1,7 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { FaClock, FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { FaClock, FaArrowLeft, FaArrowRight, FaSearch, FaTimes } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../../utils/axiosInstance";
+
+
+// Image Modal Component
+const ImageModal = ({ imageUrl, onClose }) => {
+  if (!imageUrl) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="relative bg-white rounded-lg p-4 max-w-4xl max-h-[90vh] overflow-auto">
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 p-2"
+        >
+          <FaTimes size={24} />
+        </button>
+        <img
+          src={imageUrl}
+          alt="Question"
+          className="max-w-full h-auto"
+          style={{ maxHeight: "80vh" }}
+        />
+      </div>
+    </div>
+  );
+};
 
 const QuizQuestion = () => {
   const { quizId, questionIndex: indexParam } = useParams();
@@ -14,6 +39,7 @@ const QuizQuestion = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isTimerInitialized, setIsTimerInitialized] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   // 🧠 Load question and timer logic
   useEffect(() => {
@@ -207,7 +233,7 @@ const QuizQuestion = () => {
   }
 
   const { quizTitle = "Quiz", totalQuestions = 1, questionData = {} } = quizData;
-  const { questionText = "", options = [] } = questionData;
+  const { questionText = "", options = [] , imageUrl = null} = questionData;
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -251,6 +277,25 @@ const QuizQuestion = () => {
             </div>
 
             <h2 className="text-3xl font-bold mb-6">{questionText}</h2>
+
+             {/* Add Image Section */}
+             {imageUrl && (
+              <div className="mb-6 relative group">
+                <img
+                  src={imageUrl}
+                  alt="Question"
+                  className="max-w-full h-auto rounded-lg shadow-md cursor-pointer transition-all hover:opacity-95"
+                  style={{ maxHeight: "400px" }}
+                  onClick={() => setSelectedImage(imageUrl)}
+                />
+                <button
+                  className="absolute top-2 right-2 bg-white/90 p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                  onClick={() => setSelectedImage(imageUrl)}
+                >
+                  <FaSearch className="text-gray-700" size={16} />
+                </button>
+              </div>
+            )}
 
             <div className="flex flex-col gap-5">
               {options.length > 0 ? (
@@ -310,6 +355,13 @@ const QuizQuestion = () => {
           </div>
         </div>
       </div>
+         {/* Image Modal */}
+         {selectedImage && (
+        <ImageModal
+          imageUrl={selectedImage}
+          onClose={() => setSelectedImage(null)}
+        />
+      )}
     </div>
   );
 };

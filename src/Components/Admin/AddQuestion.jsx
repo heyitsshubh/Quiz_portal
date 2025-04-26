@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import api from "../../utils/axiosInstance";
 import { useLocation, useNavigate } from "react-router-dom";
 import SuccessBox from "../User/SuccessBox";
@@ -6,15 +6,22 @@ import SuccessBox from "../User/SuccessBox";
 const AddQuestions = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
   const { quizId, mode, questionData } = location.state || {};
+  const fileInputRef = useRef(null);
 
+  // Existing state
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", "", "", ""]);
   const [correctOption, setCorrectOption] = useState(0);
   const [points, setPoints] = useState(1);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+
+  // New state for image handling
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [imageLoading, setImageLoading] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -24,14 +31,71 @@ const AddQuestions = () => {
   }, []);
 
   useEffect(() => {
-    // Pre-fill fields in edit mode
     if (mode === "edit" && questionData) {
       setQuestion(questionData.questionText);
       setOptions(questionData.options);
       setCorrectOption(questionData.correctOption);
       setPoints(questionData.points || 1);
+      setImageUrl(questionData.imageUrl || "");
+      setImagePreview(questionData.imageUrl || null);
     }
   }, [mode, questionData]);
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      setError("Image size should be less than 5MB");
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      setError("Please upload an image file");
+      return;
+    }
+
+    setImageLoading(true);
+    setError("");
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const response = await api.post('/images/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      if (response.data.success) {
+        setImageUrl(response.data.data.imageUrl);
+        setImage(file);
+        setError("");
+      }
+    } catch (err) {
+      setError("Failed to upload image. Please try again.");
+      console.error("Image upload error:", err);
+      setImagePreview(null);
+    } finally {
+      setImageLoading(false);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImage(null);
+    setImagePreview(null);
+    setImageUrl("");
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
 
   const handleOptionChange = (index, value) => {
     const updated = [...options];
@@ -50,6 +114,7 @@ const AddQuestions = () => {
       options,
       correctOption,
       points,
+      imageUrl
     };
 
     try {
@@ -58,23 +123,23 @@ const AddQuestions = () => {
           `/admin/dashboard/quiz/${quizId}/question/${questionData._id}`,
           newQuestion
         );
-        setSuccess(true);
       } else {
-      
         await api.put(`/admin/dashboard/quiz/questions`, {
           _id: quizId,
           questions: [newQuestion],
         });
-        setSuccess(true);
 
-      
+        // Reset form for new questions
         setQuestion("");
         setOptions(["", "", "", ""]);
         setCorrectOption(0);
         setPoints(1);
+        handleRemoveImage();
       }
 
+      setSuccess(true);
       setError("");
+      
       setTimeout(() => {
         setSuccess(false);
       }, 2000);
@@ -107,6 +172,52 @@ const AddQuestions = () => {
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
             />
+          </div>
+
+          {/* Image Upload Section */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Question Image (Optional)</label>
+            <div className="mt-2">
+              <input
+                type="file"
+                ref={fileInputRef}
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+                id="image-upload"
+              />
+              <div className="flex items-center gap-4">
+                <label
+                  htmlFor="image-upload"
+                  className="px-4 py-2 bg-purple-100 text-purple-700 rounded-md cursor-pointer hover:bg-purple-200 transition"
+                >
+                  {imageLoading ? 'Uploading...' : imageUrl ? 'Change Image' : 'Upload Image'}
+                </label>
+                {imagePreview && (
+                  <button
+                    onClick={handleRemoveImage}
+                    className="text-red-500 hover:text-red-700 font-medium"
+                    disabled={imageLoading}
+                  >
+                    Remove Image
+                  </button>
+                )}
+              </div>
+
+              {imagePreview && (
+                <div className="mt-4">
+                  <img
+                    src={imagePreview}
+                    alt="Question preview"
+                    className="max-w-xs rounded-md shadow-sm"
+                  />
+                </div>
+              )}
+
+              <p className="mt-2 text-sm text-gray-500">
+                Maximum file size: 5MB. Supported formats: JPG, PNG, GIF
+              </p>
+            </div>
           </div>
 
           <div>
@@ -143,8 +254,9 @@ const AddQuestions = () => {
           </div>
 
           <button
-            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-md transition cursor-pointer"
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-md transition cursor-pointer disabled:opacity-50"
             onClick={handleAddOrEditQuestion}
+            disabled={imageLoading}
           >
             {mode === "edit" ? "Update Question" : "+ Add Question"}
           </button>
