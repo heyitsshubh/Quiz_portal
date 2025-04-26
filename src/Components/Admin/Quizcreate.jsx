@@ -147,6 +147,7 @@ const QuizCreator = () => {
 
       {showSuccess && <SuccessBox message="Quiz details saved successfully!" />}
     </div>
+    
   );
 };
 
