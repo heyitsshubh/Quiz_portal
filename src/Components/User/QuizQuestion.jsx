@@ -239,10 +239,10 @@ const QuizQuestion = () => {
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <nav className="bg-purple-700 text-white px-10 py-6 flex justify-between items-center text-4xl font-bold">
         <h1>{quizTitle}</h1>
-        <div className="flex items-center gap-2 text-lg font-medium">
+        {/* <div className="flex items-center gap-2 text-lg font-medium">
           <FaClock size={18} />
           <span>{formatTime(timeLeft)}</span>
-        </div>
+        </div> */}
       </nav>
 
       <div className="flex flex-1">
