@@ -25,13 +25,29 @@ export default function SignupForm() {
     e.preventDefault();
     setError("");
     setLoading(true);
-
+  
+    // Validate student ID format and length
+    if (!/^\d{6,8}$/.test(formData.studentId)) {
+      setError("Student ID must be between 6 to 8 digits");
+      setLoading(false);
+      return;
+    }
+  
+    // Extract student number from email
+    const emailStudentId = formData.email.split('@')[0];
+    if (!emailStudentId.includes(formData.studentId)) {
+      setError("Email must contain your student ID");
+      setLoading(false);
+      return;
+    }
+  
+    // College email validation
     if (!formData.email.endsWith("@akgec.ac.in")) {
       setError("Enter your college email");
       setLoading(false);
       return;
     }
-
+  
     if (!formData.studentId.startsWith("24") && !formData.studentId.startsWith("23")) {
       setError("Enter a valid student ID starting with '24' or '23'");
       setLoading(false);
