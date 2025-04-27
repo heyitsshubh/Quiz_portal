@@ -339,7 +339,7 @@ const QuizQuestion = () => {
               </button>
 
               <button
-                className="flex items-center gap-3 px-6 py-2 rounded-md text-lg font-semibold bg-purple-600 text-white hover:bg-purple-700"
+                className="flex items-center gap-3 px-6 py-2 rounded-md text-lg font-semibold bg-purple-600 text-white hover:bg-purple-700 cursor-pointer"
                 onClick={handleNextOrSubmit}
               >
                 {questionIndex === totalQuestions - 1 ? "Submit" : "Next"}
