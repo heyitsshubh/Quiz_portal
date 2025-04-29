@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-baseURL: "https://quiz-portal-owum.onrender.com/api",
+baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 api.interceptors.request.use((config) => {
@@ -35,7 +35,7 @@ api.interceptors.response.use(
 
       try {
         const res = await axios.post(
-          "https://quiz-portal-owum.onrender.com/api/auth/refresh-token",
+          `${import.meta.env.VITE_API_BASE_URL}/auth/refresh-token`,
           { refreshToken }
         );
 
