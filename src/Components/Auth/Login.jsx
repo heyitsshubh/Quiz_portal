@@ -26,8 +26,8 @@ const Login = () => {
       const adminResponse = await api.post("/admin/login", formData);
 
       if (adminResponse.data && adminResponse.data.refreshToken) {
-        console.log(" Refresh Token:", adminResponse.data.refreshToken);
-        console.log(" Access Token:", adminResponse.data.accessToken);
+        // console.log(" Refresh Token:", adminResponse.data.refreshToken);
+        // console.log(" Access Token:", adminResponse.data.accessToken);
         localStorage.setItem("refreshToken", adminResponse.data.refreshToken);
           localStorage.setItem("accessToken", adminResponse.data.accessToken);
           localStorage.setItem("adminEmail", formData.email);
@@ -40,8 +40,8 @@ const Login = () => {
         const userResponse = await api.post("/auth/signin", formData);
 
         if (userResponse.data && userResponse.data.refreshToken) {
-          console.log("User Refresh Token:", userResponse.data.refreshToken);
-          console.log("User Access Token:", userResponse.data.accessToken);
+          // console.log("User Refresh Token:", userResponse.data.refreshToken);
+          // console.log("User Access Token:", userResponse.data.accessToken);
           localStorage.setItem("refreshToken", userResponse.data.refreshToken);
           localStorage.setItem("accessToken", userResponse.data.accessToken);
           navigate("/userdashboard");

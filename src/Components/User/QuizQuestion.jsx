@@ -4,7 +4,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import api from "../../utils/axiosInstance";
 
 
-// Image Modal Component
 const ImageModal = ({ imageUrl, onClose }) => {
   if (!imageUrl) return null;
 
@@ -41,20 +40,20 @@ const QuizQuestion = () => {
   const [isTimerInitialized, setIsTimerInitialized] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // 🧠 Load question and timer logic
+
   useEffect(() => {
     const fetchQuestion = async () => {
       try {
         const res = await api.get(`/quiz/question?quizId=${quizId}&questionIndex=${questionIndex}`);
         if (res.data.success) {
-          console.log("Fetched quizData:", res.data.data);
+          // console.log("Fetched quizData:", res.data.data);
           setQuizData(res.data.data);
           setError("");
         } else {
           setError(res.data.message || "Failed to load question data");
         }
       } catch (err) {
-        console.error("Error fetching question:", err);
+        // console.error("Error fetching question:", err);
         setError(err.response?.data?.message || "Failed to load question. Please try again.");
       }
     };
@@ -62,7 +61,7 @@ const QuizQuestion = () => {
     if (quizId) fetchQuestion();
   }, [quizId, questionIndex]);
 
-  // 🕒 Timer init logic
+  
   useEffect(() => {
     if (!quizData || isTimerInitialized || !quizData.timeLimit) return;
   
@@ -74,7 +73,7 @@ const QuizQuestion = () => {
     }
   
     let savedStartTime = localStorage.getItem(`quiz-${quizId}-startTime`);
-    let startTime = Date.now(); // fallback
+    let startTime = Date.now(); 
     let remaining = totalTime;
   
     if (savedStartTime) {
@@ -100,7 +99,6 @@ const QuizQuestion = () => {
   }, [quizData, isTimerInitialized, quizId]);
   
 
-  // 🕑 Countdown tick
   useEffect(() => {
     if (!isTimerInitialized || timeLeft <= 0) return;
 
@@ -118,7 +116,6 @@ const QuizQuestion = () => {
     return () => clearInterval(interval);
   }, [timeLeft, isTimerInitialized]);
 
-  // 💾 Restore localStorage
   useEffect(() => {
     const savedIndex = parseInt(localStorage.getItem(`quiz-${quizId}-questionIndex`), 10);
     const savedAnswers = JSON.parse(localStorage.getItem(`quiz-${quizId}-answers`) || "[]");
@@ -139,7 +136,6 @@ const QuizQuestion = () => {
     navigate(`/quiz/${quizId}/${questionIndex}`, { replace: true });
   }, [questionIndex, quizId, navigate]);
 
-  // Restore selected option when question changes
   useEffect(() => {
     const savedAnswers = JSON.parse(localStorage.getItem(`quiz-${quizId}-answers`) || "[]");
     if (savedAnswers[questionIndex]) {
@@ -217,7 +213,7 @@ const QuizQuestion = () => {
         throw new Error(response.data.message || "Submission failed");
       }
     } catch (err) {
-      console.error("Submission error:", err);
+      // console.error("Submission error:", err);
       setError(err.response?.data?.message || err.message || "Submission failed.");
     } finally {
       setIsSubmitting(false);

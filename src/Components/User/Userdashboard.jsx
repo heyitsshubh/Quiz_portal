@@ -13,12 +13,12 @@ const Userdashboard = () => {
     const fetchQuizzes = async () => {
       try {
         const response = await api.get("/quiz/available");
-        console.log("Quiz API Response:", response.data);
+        // console.log("Quiz API Response:", response.data);
 
         const quizList = Array.isArray(response.data.data) ? response.data.data : [];
         setQuizzes(quizList);
       } catch (err) {
-        console.error("Error fetching quizzes:", err);
+        // console.error("Error fetching quizzes:", err);
         setError("Failed to load quizzes. Please try again later.");
       } finally {
         setLoading(false);
@@ -70,7 +70,7 @@ const Userdashboard = () => {
 
                 <button
   className="w-full bg-purple-600 text-white font-medium py-2 rounded-md hover:bg-purple-700 transition cursor-pointer"
-  onClick={() => navigate(`/terms`, { state: { quiz } })} // Pass quiz object via state
+  onClick={() => navigate(`/terms`, { state: { quiz } })} 
 >
   Start Quiz
 </button>
