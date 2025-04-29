@@ -28,7 +28,7 @@ export default function SignupForm() {
   
     // Validate student ID format and length
     if (!/^\d{6,8}$/.test(formData.studentId)) {
-      setError("Student ID must be between 6 to 8 digits");
+      setError("Enter a valid student ID");
       setLoading(false);
       return;
     }

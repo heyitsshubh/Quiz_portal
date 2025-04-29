@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://quiz-portal-3ax0.onrender.com/api",
+baseURL: "https://quiz-portal-owum.onrender.com/api",
 });
 
 api.interceptors.request.use((config) => {
@@ -25,7 +25,6 @@ api.interceptors.response.use(
     ) {
       originalRequest._retry = true;
       const refreshToken = localStorage.getItem("refreshToken");
-
       if (!refreshToken) {
         localStorage.clear();
       
@@ -36,7 +35,7 @@ api.interceptors.response.use(
 
       try {
         const res = await axios.post(
-          "https://quiz-portal-3ax0.onrender.com/api/auth/refresh-token",
+          "https://quiz-portal-owum.onrender.com/api/auth/refresh-token",
           { refreshToken }
         );
 
