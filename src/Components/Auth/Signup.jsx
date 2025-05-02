@@ -93,7 +93,7 @@ export default function SignupForm() {
 
       <div className="bg-purple-950 p-6 sm:p-8 rounded-2xl w-full max-w-sm sm:max-w-md shadow-2xl">
         <div className="flex items-center justify-center mb-4 sm:mb-6">
-          <FaBrain className="text-white text-4xl sm:text-5xl mr-2" />
+          {/* <FaBrain className="text-white text-4xl sm:text-5xl mr-2" /> */}
           <h1 className="text-white text-4xl sm:text-5xl font-bold">Quiz Master</h1>
         </div>
         <h2 className="text-xl sm:text-2xl font-bold text-white text-center mb-2 sm:mb-4">Sign Up</h2>

@@ -21,8 +21,8 @@ function App() {
     <QuizProvider>
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<SignupForm />} />
+        <Route path="/signin" element={<Login />} />
+        <Route path="/" element={<SignupForm />} />
         <Route path="/forgot" element={<Forgot />} />
         <Route path="/userdashboard" element={<Userdashboard />} />
         <Route path="/quiz/:quizId/:questionIndex" element={<QuizQuestion />} />
