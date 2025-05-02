@@ -72,7 +72,6 @@ export default function SignupForm() {
 
     try {
       const response = await api.post("/auth/signup", formData);
-
       localStorage.setItem("refreshToken", response.data.refreshToken);
       localStorage.setItem("accessToken", response.data.accessToken);
 
@@ -160,7 +159,7 @@ export default function SignupForm() {
           </button>
         </form>
 
-        <p className="text-center text-purple-200 text-sm mt-4">
+        {/* <p className="text-center text-purple-200 text-sm mt-4">
           Already have an account?{" "}
           <span
             onClick={() => navigate("/")}
@@ -172,7 +171,7 @@ export default function SignupForm() {
 
         <div className="text-white text-xs mt-6 text-center opacity-50">
           © 2025 Quiz Master
-        </div>
+        </div> */}
       </div>
     </div>
   );

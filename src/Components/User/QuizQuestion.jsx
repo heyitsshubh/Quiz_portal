@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { FaClock, FaArrowLeft, FaArrowRight, FaSearch, FaTimes } from "react-icons/fa";
+import {
+  FaClock,
+  FaArrowLeft,
+  FaArrowRight,
+  FaSearch,
+  FaTimes,
+} from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../../utils/axiosInstance";
 
-
 const ImageModal = ({ imageUrl, onClose }) => {
   if (!imageUrl) return null;
-
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="relative bg-white rounded-lg p-4 max-w-4xl max-h-[90vh] overflow-auto">
@@ -40,68 +44,50 @@ const QuizQuestion = () => {
   const [isTimerInitialized, setIsTimerInitialized] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
-
   useEffect(() => {
     const fetchQuestion = async () => {
       try {
         const res = await api.get(`/quiz/question?quizId=${quizId}&questionIndex=${questionIndex}`);
         if (res.data.success) {
-          // console.log("Fetched quizData:", res.data.data);
           setQuizData(res.data.data);
           setError("");
         } else {
           setError(res.data.message || "Failed to load question data");
         }
       } catch (err) {
-        // console.error("Error fetching question:", err);
         setError(err.response?.data?.message || "Failed to load question. Please try again.");
       }
     };
-
     if (quizId) fetchQuestion();
   }, [quizId, questionIndex]);
 
-  
   useEffect(() => {
     if (!quizData || isTimerInitialized || !quizData.timeLimit) return;
-  
     const totalTime = parseInt(quizData.timeLimit, 10) * 60;
-  
-    if (isNaN(totalTime)) {
-      console.error("Invalid timeLimit:", quizData.timeLimit);
-      return;
-    }
-  
+    if (isNaN(totalTime)) return;
+
     let savedStartTime = localStorage.getItem(`quiz-${quizId}-startTime`);
-    let startTime = Date.now(); 
     let remaining = totalTime;
-  
     if (savedStartTime) {
       const parsed = new Date(savedStartTime).getTime();
       if (!isNaN(parsed)) {
         const elapsed = Math.floor((Date.now() - parsed) / 1000);
         remaining = Math.max(totalTime - elapsed, 0);
-        console.log(`⏳ Valid savedStartTime. Elapsed: ${elapsed}s. Remaining: ${remaining}s`);
       } else {
-        console.warn("⚠️ Invalid savedStartTime. Replacing it.");
         savedStartTime = null;
       }
     }
-  
+
     if (!savedStartTime) {
-      const newStart = new Date().toISOString();
-      localStorage.setItem(`quiz-${quizId}-startTime`, newStart);
-      console.log("🆕 Start time saved:", newStart);
+      localStorage.setItem(`quiz-${quizId}-startTime`, new Date().toISOString());
     }
-  
+
     setTimeLeft(remaining);
     setIsTimerInitialized(true);
   }, [quizData, isTimerInitialized, quizId]);
-  
 
   useEffect(() => {
     if (!isTimerInitialized || timeLeft <= 0) return;
-
     const interval = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
@@ -112,14 +98,12 @@ const QuizQuestion = () => {
         return prev - 1;
       });
     }, 1000);
-
     return () => clearInterval(interval);
   }, [timeLeft, isTimerInitialized]);
 
   useEffect(() => {
     const savedIndex = parseInt(localStorage.getItem(`quiz-${quizId}-questionIndex`), 10);
     const savedAnswers = JSON.parse(localStorage.getItem(`quiz-${quizId}-answers`) || "[]");
-
     if (!isNaN(savedIndex)) setQuestionIndex(savedIndex);
     if (savedAnswers.length > 0) setUserAnswers(savedAnswers);
   }, [quizId]);
@@ -145,6 +129,17 @@ const QuizQuestion = () => {
     }
   }, [questionIndex, quizId]);
 
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden && quizData && !isSubmitting) {
+        console.log("🚨 Tab switched or minimized. Submitting quiz...");
+        submitQuiz();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, [quizData, isSubmitting]);
+
   const formatTime = (seconds) => {
     const min = Math.floor(seconds / 60);
     const sec = seconds % 60;
@@ -160,7 +155,6 @@ const QuizQuestion = () => {
       };
       setUserAnswers(updated);
     }
-
     if (questionIndex + 1 >= quizData.totalQuestions) {
       submitQuiz();
     } else {
@@ -177,6 +171,12 @@ const QuizQuestion = () => {
   };
 
   const submitQuiz = async () => {
+    if (isSubmitting) return;
+    if (!quizData || !quizData.questionData) {
+      setError("Quiz data not loaded. Cannot submit.");
+      return;
+    }
+
     setIsSubmitting(true);
     setError("");
 
@@ -202,6 +202,10 @@ const QuizQuestion = () => {
       });
 
       if (response.data.success) {
+        localStorage.removeItem(`quiz-${quizId}-startTime`);
+        localStorage.removeItem(`quiz-${quizId}-questionIndex`);
+        localStorage.removeItem(`quiz-${quizId}-answers`);
+
         navigate("/quiz-submission-success", {
           state: {
             score: response.data.data.score,
@@ -213,14 +217,13 @@ const QuizQuestion = () => {
         throw new Error(response.data.message || "Submission failed");
       }
     } catch (err) {
-      // console.error("Submission error:", err);
       setError(err.response?.data?.message || err.message || "Submission failed.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (!quizData) {
+  if (!quizData || !quizData.questionData) {
     return (
       <div className="h-screen flex items-center justify-center">
         <p className="text-xl text-gray-500">Loading question...</p>
@@ -229,16 +232,12 @@ const QuizQuestion = () => {
   }
 
   const { quizTitle = "Quiz", totalQuestions = 1, questionData = {} } = quizData;
-  const { questionText = "", options = [] , imageUrl = null} = questionData;
+  const { questionText = "", options = [], imageUrl = null } = questionData;
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <nav className="bg-purple-700 text-white px-10 py-6 flex justify-between items-center text-4xl font-bold">
         <h1>{quizTitle}</h1>
-        {/* <div className="flex items-center gap-2 text-lg font-medium">
-          <FaClock size={18} />
-          <span>{formatTime(timeLeft)}</span>
-        </div> */}
       </nav>
 
       <div className="flex flex-1">
@@ -263,9 +262,7 @@ const QuizQuestion = () => {
         <div className="flex-1">
           <div className="max-w-6xl mx-auto mt-14 bg-white shadow-lg rounded-2xl p-6">
             <div className="flex justify-between mb-4 text-gray-500 text-lg">
-              <span>
-                Question {questionIndex + 1} of {totalQuestions}
-              </span>
+              <span>Question {questionIndex + 1} of {totalQuestions}</span>
               <span className="flex items-center gap-2 text-purple-600 font-semibold">
                 <FaClock size={16} />
                 {formatTime(timeLeft)}
@@ -274,8 +271,7 @@ const QuizQuestion = () => {
 
             <h2 className="text-3xl font-bold mb-6">{questionText}</h2>
 
-             {/* Add Image Section */}
-             {imageUrl && (
+            {imageUrl && (
               <div className="mb-6 relative group">
                 <img
                   src={imageUrl}
@@ -351,18 +347,17 @@ const QuizQuestion = () => {
           </div>
         </div>
       </div>
-         {/* Image Modal */}
-         {selectedImage && (
-        <ImageModal
-          imageUrl={selectedImage}
-          onClose={() => setSelectedImage(null)}
-        />
+
+      {selectedImage && (
+        <ImageModal imageUrl={selectedImage} onClose={() => setSelectedImage(null)} />
       )}
     </div>
   );
 };
 
 export default QuizQuestion;
+
+
 
 
 

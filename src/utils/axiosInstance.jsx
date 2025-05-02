@@ -1,8 +1,11 @@
 import axios from "axios";
 
 const api = axios.create({
-baseURL: import.meta.env.VITE_API_BASE_URL|| "https://quizze-portal.netlify.app/api",
+  baseURL: import.meta.env.VITE_API_BASE_URL
 });
+
+// Add token expiration time constant (in milliseconds)
+const TOKEN_EXPIRATION_TIME = 15 * 60 * 1000; // 15 minutes
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
@@ -19,7 +22,7 @@ api.interceptors.response.use(
 
     if (
       error.response &&
-      (error.response.status === 401 ||
+      (error.response.status === 401 || 
         error.response.data?.message === "Invalid token") &&
       !originalRequest._retry
     ) {
@@ -27,30 +30,35 @@ api.interceptors.response.use(
       const refreshToken = localStorage.getItem("refreshToken");
       if (!refreshToken) {
         localStorage.clear();
-      
-          window.location.href = "/";
-      
+        window.location.href = "/";
         return Promise.reject(error);
       }
 
       try {
         const res = await axios.post(
-          `${VITE_API_BASE_URL}/auth/refresh-token`,
+          `${import.meta.env.VITE_API_BASE_URL}/auth/refresh-token`,
           { refreshToken }
         );
 
         const newAccessToken = res.data.accessToken;
+        console.log("New Access Token Generated:", newAccessToken);
 
         localStorage.setItem("accessToken", newAccessToken);
         api.defaults.headers.common["Authorization"] = `Bearer ${newAccessToken}`;
         originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
 
+        // Set timeout to handle token expiration
+        setTimeout(() => {
+          console.log("Access token expired, logging out...");
+          localStorage.clear();
+          window.location.href = "/";
+        }, TOKEN_EXPIRATION_TIME);
+
         return api(originalRequest);
       } catch (refreshError) {
+        console.error("Refresh Token Error:", refreshError);
         localStorage.clear();
-      
-          window.location.href = "/";
-       
+        window.location.href = "/";
         return Promise.reject(refreshError);
       }
     }
