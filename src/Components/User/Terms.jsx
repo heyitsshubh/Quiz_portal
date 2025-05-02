@@ -152,6 +152,7 @@ const Terms = () => {
                 checked={agreed}
                 onChange={() => setAgreed(!agreed)}
                 className="w-5 h-5 text-purple-600 rounded focus:ring-purple-500"
+                style ={{ accentColor: "#6b46c1" }} // Custom accent color for checkbox
               />
               <label htmlFor="agree-terms" className="text-gray-700">
                 I have read and agree to the quiz rules
@@ -162,7 +163,7 @@ const Terms = () => {
           {/* Start button footer */}
           <div className="p-6 bg-gray-50 border-t border-gray-100">
             <button
-              className={`w-full py-3 px-6 rounded-xl font-medium text-white flex items-center justify-center gap-2 transition-all duration-300 ${
+              className={`w-full py-3 px-6 rounded-xl font-medium text-white flex items-center justify-center gap-2 transition-all duration-300  cursor-pointer hover:bg-purple-600 hover:text-white ${
                 agreed 
                   ? "bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 shadow-lg hover:shadow-purple-500/20" 
                   : "bg-gray-400 cursor-not-allowed"
