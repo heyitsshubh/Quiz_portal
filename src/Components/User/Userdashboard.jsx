@@ -122,11 +122,11 @@ const Userdashboard = () => {
             >
               <div className="h-3 bg-gradient-to-r from-purple-500 to-purple-600 rounded-t-xl -mx-10 -mt-6 mb-8"></div>
               
-              <div className="mb-4">
+              {/* <div className="mb-4">
                 <span className="text-xs font-bold uppercase tracking-wide text-purple-600 bg-purple-100 rounded-full px-4 py-1.5">
                   {quiz.category || "General Knowledge"}
                 </span>
-              </div>
+              </div> */}
               
               <h3 className="text-2xl font-bold text-gray-800 mb-4">{quiz.title}</h3>
               

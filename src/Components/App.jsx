@@ -33,8 +33,7 @@ function App() {
         <Route path="quiz-creator" element={<QuizCreator />} />
         <Route path="add-questions" element={<AddQuestions />} />
         <Route path="view-test" element={<ViewTest />} />
-        <Route path="results-dashboard" element={<Resultdashboard/>} /> 
-       
+        <Route path="results-dashboard" element={<Resultdashboard/>} />                
         <Route path="results/:quizId" element={<Results />} />
         </Route>
       </Routes>
