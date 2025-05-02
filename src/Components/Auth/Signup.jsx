@@ -110,7 +110,7 @@ export default function SignupForm() {
       localStorage.setItem("refreshToken", response.data.refreshToken);
       localStorage.setItem("accessToken", response.data.accessToken);
   
-      navigate("/userdashboard");
+      navigate("/userdashboard", { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed. Please try again.");
     } finally {

@@ -30,7 +30,6 @@ const Userdashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white flex flex-col">
-      {/* Header */}
       <header className="bg-gradient-to-r from-purple-700 via-purple-800 to-purple-900 text-white shadow-lg">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-center md:justify-between">
@@ -40,26 +39,11 @@ const Userdashboard = () => {
               </div> */}
               <span className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-purple-200">Quiz Master</span>
             </div>
-            
-            {/* Profile section - can be expanded later */}
-            {/* <div className="hidden md:flex items-center gap-4">
-              <div className="bg-white/10 px-4 py-2 rounded-lg hover:bg-white/15 transition cursor-pointer">
-                <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 rounded-full bg-purple-500 flex items-center justify-center">
-                    <span className="text-sm font-bold">TM</span>
-                  </div>
-                  <span className="font-medium">My Account</span>
-                </div>
-              </div>
-            </div> */}
           </div>
         </div>
       </header>
 
-      {/* Stats Panel */}
-     {/* Stats Panel */}
-{/* Stats Panel */}
-<div className="bg-white shadow-md border-b border-purple-100">
+  <div className="bg-white shadow-md border-b border-purple-100">
   <div className="container mx-auto px-5 py-5">
     <div className="flex flex-col md:flex-row justify-center items-center gap-10 max-w-3xl mx-auto">
       <div className="flex items-center gap-4">
@@ -136,10 +120,8 @@ const Userdashboard = () => {
               key={quiz._id}
               className="bg-white p-10 pt-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col transform hover:-translate-y-1 w-full max-w-[480px]"
             >
-              {/* Decorative header */}
               <div className="h-3 bg-gradient-to-r from-purple-500 to-purple-600 rounded-t-xl -mx-10 -mt-6 mb-8"></div>
               
-              {/* Quiz category tag - can be dynamically set based on quiz type */}
               <div className="mb-4">
                 <span className="text-xs font-bold uppercase tracking-wide text-purple-600 bg-purple-100 rounded-full px-4 py-1.5">
                   {quiz.category || "General Knowledge"}
