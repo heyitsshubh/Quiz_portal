@@ -26,34 +26,69 @@ export default function SignupForm() {
     setError("");
     setLoading(true);
   
+    // Validate required fields
+    if (!formData.teamName) {
+      setError("Team Name is required.");
+      setLoading(false);
+      return;
+    }
   
+    if (!formData.teamLeaderName) {
+      setError("Team Leader Name is required.");
+      setLoading(false);
+      return;
+    }
+  
+    if (!formData.email) {
+      setError("Email Address is required.");
+      setLoading(false);
+      return;
+    }
+  
+    if (!formData.studentId) {
+      setError("Student ID is required.");
+      setLoading(false);
+      return;
+    }
+  
+    if (!formData.password) {
+      setError("Password is required.");
+      setLoading(false);
+      return;
+    }
+  
+    if (!formData.confirmPassword) {
+      setError("Confirm Password is required.");
+      setLoading(false);
+      return;
+    }
+  
+    // Additional validations
     if (!/^\d{6,8}$/.test(formData.studentId)) {
-      setError("Enter a valid student ID");
+      setError("Enter a valid student ID.");
       setLoading(false);
       return;
     }
   
-    
-    const emailStudentId = formData.email.split('@')[0];
+    const emailStudentId = formData.email.split("@")[0];
     if (!emailStudentId.includes(formData.studentId)) {
-      setError("Email must contain your student ID");
+      setError("Email must contain your student ID.");
       setLoading(false);
       return;
     }
   
-    
     if (!formData.email.endsWith("@akgec.ac.in")) {
-      setError("Enter your college email");
+      setError("Enter your college email.");
       setLoading(false);
       return;
     }
   
     if (!formData.studentId.startsWith("24") && !formData.studentId.startsWith("23")) {
-      setError("Leader student ID ");
+      setError("Leader student ID is invalid.");
       setLoading(false);
       return;
     }
-
+  
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(formData.password)) {
@@ -63,18 +98,18 @@ export default function SignupForm() {
       setLoading(false);
       return;
     }
-
+  
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match.");
       setLoading(false);
       return;
     }
-
+  
     try {
       const response = await api.post("/auth/signup", formData);
       localStorage.setItem("refreshToken", response.data.refreshToken);
       localStorage.setItem("accessToken", response.data.accessToken);
-
+  
       navigate("/userdashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed. Please try again.");
@@ -110,6 +145,7 @@ export default function SignupForm() {
             name="teamName"
             value={formData.teamName}
             onChange={handleChange}
+            required
           />
           <InputField
             icon={<FaUser />}
@@ -117,6 +153,7 @@ export default function SignupForm() {
             name="teamLeaderName"
             value={formData.teamLeaderName}
             onChange={handleChange}
+            required
           />
           <InputField
             icon={<FaEnvelope />}
