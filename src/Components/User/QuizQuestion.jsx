@@ -260,7 +260,7 @@ const QuizQuestion = () => {
         </aside>
 
         <div className="flex-1">
-          <div className="max-w-6xl mx-auto mt-14 bg-white shadow-lg rounded-2xl p-6">
+          <div className="max-w-7xl mx-auto mt-14 bg-white shadow-lg rounded-2xl p-6">
             <div className="flex justify-between mb-4 text-gray-500 text-lg">
               <span>Question {questionIndex + 1} of {totalQuestions}</span>
               <span className="flex items-center gap-2 text-purple-600 font-semibold">
