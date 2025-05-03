@@ -7,11 +7,13 @@ import {
   FaLock,
   FaEye,
   FaEyeSlash,
-  FaArrowRight
+  FaArrowRight,
+  FaBrain
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import api from "../../utils/axiosInstance";
+import conatus from "../../assets/conatus.svg";
 
 export default function SignupForm() {
   const navigate = useNavigate();
@@ -94,7 +96,23 @@ export default function SignupForm() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-[#003E8A] to-[#003E8A]/90 flex items-center justify-center px-4">
+    <div className="relative min-h-screen bg-gradient-to-br from-[#003E8A] to-[#003E8A]/90 flex flex-col items-center justify-center px-4">
+      {/* Logo Section in Top Left */}
+      <div className="absolute top-6 left-6 sm:top-8 sm:left-10 flex items-center">
+        <div className="h-10 w-10 sm:h-12 sm:w-12 bg-white rounded-full flex items-center justify-center shadow-lg mr-3">
+          <img 
+            src={conatus} 
+            alt="Quiz Master Logo" 
+            className="h-13 w-full "
+            onError={(e) => {
+              e.target.onerror = null; 
+              e.target.style.display = "none";
+              e.target.nextSibling.style.display = "block";
+            }}
+          />
+        </div>
+      </div>
+
       {loading && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="w-16 h-16 border-8 border-gray-300 border-t-[#003E8A] rounded-full animate-spin"></div>
@@ -122,7 +140,7 @@ export default function SignupForm() {
 
           <div className="flex justify-center mt-6">
             <ReCAPTCHA
-              sitekey="6LeD9iwrAAAAALR6Hio8cGHTyM0C_4oAS5cGzXCj"
+              sitekey="6LdTDS0rAAAAABU0t5ADxll6NJ3ZT03f_wPaLesv"
               onChange={() => setCaptchaVerified(true)}
               onExpired={() => setCaptchaVerified(false)}
               theme="dark"
