@@ -13,7 +13,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import api from "../../utils/axiosInstance";
-import conatus from "../../assets/conatus.svg";
+import conatus from "../../assets/conaatus.png";
 
 export default function SignupForm() {
   const navigate = useNavigate();
@@ -99,18 +99,19 @@ export default function SignupForm() {
     <div className="relative min-h-screen bg-gradient-to-br from-[#003E8A] to-[#003E8A]/90 flex flex-col items-center justify-center px-4">
       {/* Logo Section in Top Left */}
       <div className="absolute top-6 left-6 sm:top-8 sm:left-10 flex items-center">
-        <div className="h-10 w-10 sm:h-12 sm:w-12 bg-white rounded-full flex items-center justify-center shadow-lg mr-3">
-          <img 
-            src={conatus} 
-            alt="Quiz Master Logo" 
-            className="h-13 w-full "
-            onError={(e) => {
-              e.target.onerror = null; 
-              e.target.style.display = "none";
-              e.target.nextSibling.style.display = "block";
-            }}
-          />
-        </div>
+      <div className="h-full w-full sm:h-30 sm:w-40  flex items-center justify-center shadow-lg mr-3 overflow-hidden">
+  <img
+    src={conatus}
+    alt="Quiz Master Logo"
+    className="h-full w-full object-contain p-1 bg-white rounded-lg shadow-lg"
+    onError={(e) => {
+      e.target.onerror = null;
+      e.target.style.display = "none";
+    }}
+  />
+</div>
+
+
       </div>
 
       {loading && (
