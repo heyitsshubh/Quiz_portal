@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaUsers, FaUser, FaEnvelope, FaIdBadge, FaLock, FaEye, FaEyeSlash, FaBrain } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import api from "../../utils/axiosInstance"; 
-
 
 export default function SignupForm() {
   const navigate = useNavigate();
@@ -16,6 +15,18 @@ export default function SignupForm() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Check for existing session when component mounts
+  useEffect(() => {
+    // If user already has a token, redirect to dashboard
+    const accessToken = localStorage.getItem("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
+    
+    if (accessToken && refreshToken) {
+      // User is already logged in, redirect to dashboard
+      navigate("/userdashboard", { replace: true });
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -107,9 +118,17 @@ export default function SignupForm() {
   
     try {
       const response = await api.post("/auth/signup", formData);
+      
+      // Store tokens and user info
       localStorage.setItem("refreshToken", response.data.refreshToken);
       localStorage.setItem("accessToken", response.data.accessToken);
+      
+      // Optional: Store user info if available
+      if (response.data.user) {
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+      }
   
+      // Navigate with replace:true to prevent going back
       navigate("/userdashboard", { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed. Please try again.");

@@ -4,8 +4,7 @@ const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL
 });
 
-// Add token expiration time constant (in milliseconds)
-const TOKEN_EXPIRATION_TIME = 15 * 60 * 1000; // 15 minutes
+const TOKEN_EXPIRATION_TIME = 15 * 60 * 1000; 
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
