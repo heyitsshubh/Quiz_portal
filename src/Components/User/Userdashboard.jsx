@@ -34,7 +34,7 @@ const Userdashboard = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-center md:justify-between">
             <div className="flex items-center gap-3">
-              {/* <div className="bg-white/10 p-2 rounded-lg">
+               {/* <div className="bg-white/10 p-2 rounded-lg">
                 <FaBrain size={28} className="text-purple-200" />
               </div> */}
               <span className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-purple-200">Quiz Master</span>
@@ -158,7 +158,7 @@ const Userdashboard = () => {
                 className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-medium py-4 rounded-lg transition shadow hover:shadow-lg flex items-center justify-center space-x-3"
                 onClick={() => navigate(`/terms`, { state: { quiz } })} 
               >
-                <span className="text-base">Start Quiz</span>
+                <span className="text-base cursor-pointer">Start Quiz</span>
                 <FaArrowRight size={14} />
               </button>
             </div>
