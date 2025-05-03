@@ -37,7 +37,7 @@ const Userdashboard = () => {
                {/* <div className="bg-white/10 p-2 rounded-lg">
                 <FaBrain size={28} className="text-[#003E8A]/30" />
               </div> */}
-              <span className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-[#003E8A]/30">Quiz Master</span>
+              <span className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-white">Quiz Master</span>
             </div>
           </div>
         </div>
