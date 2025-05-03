@@ -12,10 +12,9 @@ const QuizSubmissionSuccess = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="bg-purple-700 text-white px-10 py-4 text-2xl font-semibold">
+      <div className="bg-purple-700 text-white px-10 py-8 text-2xl font-semibold">
         <span className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full " />
-          Quiz Master
+        <span className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-purple-200">Quiz Master</span>
         </span>
       </div>
 
@@ -28,7 +27,7 @@ const QuizSubmissionSuccess = () => {
           </p>
           <button
             onClick={handleLogout}
-            className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md text-lg font-medium flex items-center gap-2 mx-auto"
+            className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md text-lg font-medium flex items-center gap-2 mx-auto cursor-pointer"
           >
             <FaSignOutAlt />
             Logout
