@@ -28,7 +28,7 @@ const Terms = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-800 to-purple-900 flex flex-col items-center py-8 px-4 md:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#003E8A] to-[#003E8A]/90 flex flex-col items-center py-8 px-4 md:px-8">
       {/* Back button with improved styling */}
       {/* <div className="w-full max-w-5xl mb-6">
         <button
@@ -44,7 +44,7 @@ const Terms = () => {
         {/* Left panel - Quiz details */}
         <div className="w-full md:w-1/3 bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-white shadow-xl">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 bg-gradient-to-br from-[#003E8A] to-[#003E8A]/70 rounded-full flex items-center justify-center shadow-lg">
               <FaBookOpen size={20} />
             </div>
             <h2 className="text-2xl font-bold">Quiz Details</h2>
@@ -84,7 +84,7 @@ const Terms = () => {
         {/* Right panel - Rules and start button */}
         <div className="w-full md:w-2/3 bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col">
           {/* Header */}
-          <div className="bg-gradient-to-r from-purple-600 to-purple-700 py-5 px-6">
+          <div className="bg-gradient-to-r from-[#003E8A] to-[#003E8A]/90 py-5 px-6">
             <h1 className="text-2xl font-bold text-white flex items-center gap-2">
               <FaShieldAlt />
               Quiz Rules & Guidelines
@@ -114,8 +114,8 @@ const Terms = () => {
                 </div>
               </li>
 
-              <li className="flex items-start gap-3 bg-purple-50 p-4 rounded-xl border-l-4 border-purple-500 transition-all duration-300 hover:shadow-md">
-                <FaSyncAlt className="text-purple-500 text-lg mt-1 flex-shrink-0" />
+              <li className="flex items-start gap-3 bg-[#003E8A]/5 p-4 rounded-xl border-l-4 border-[#003E8A] transition-all duration-300 hover:shadow-md">
+                <FaSyncAlt className="text-[#003E8A] text-lg mt-1 flex-shrink-0" />
                 <div>
                   <p className="font-semibold text-gray-800">One Attempt Only</p>
                   <p className="text-gray-600">You can attempt the quiz only once. Make sure you're well prepared.</p>
@@ -151,8 +151,8 @@ const Terms = () => {
                 id="agree-terms" 
                 checked={agreed}
                 onChange={() => setAgreed(!agreed)}
-                className="w-5 h-5 text-purple-600 rounded focus:ring-purple-500"
-                style ={{ accentColor: "#6b46c1" }} // Custom accent color for checkbox
+                className="w-5 h-5 text-[#003E8A] rounded focus:ring-[#003E8A]"
+                style={{ accentColor: "#003E8A" }} // Custom accent color for checkbox
               />
               <label htmlFor="agree-terms" className="text-gray-700">
                 I have read and agree to the quiz rules
@@ -163,9 +163,9 @@ const Terms = () => {
           {/* Start button footer */}
           <div className="p-6 bg-gray-50 border-t border-gray-100">
             <button
-              className={`w-full py-3 px-6 rounded-xl font-medium text-white flex items-center justify-center gap-2 transition-all duration-300  cursor-pointer hover:bg-purple-600 hover:text-white ${
+              className={`w-full py-3 px-6 rounded-xl font-medium text-white flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer ${
                 agreed 
-                  ? "bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 shadow-lg hover:shadow-purple-500/20" 
+                  ? "bg-gradient-to-r from-[#003E8A] to-[#003E8A]/90 hover:from-[#003E8A]/90 hover:to-[#003E8A] shadow-lg hover:shadow-[#003E8A]/20" 
                   : "bg-gray-400 cursor-not-allowed"
               }`}
               onClick={handleStartQuiz}

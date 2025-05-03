@@ -29,26 +29,26 @@ const Userdashboard = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white flex flex-col">
-      <header className="bg-gradient-to-r from-purple-700 via-purple-800 to-purple-900 text-white shadow-lg">
+    <div className="min-h-screen bg-gradient-to-b from-[#003E8A]/10 to-white flex flex-col">
+      <header className="bg-gradient-to-r from-[#003E8A] via-[#003E8A]/90 to-[#003E8A]/80 text-white shadow-lg">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-center md:justify-between">
             <div className="flex items-center gap-3">
                {/* <div className="bg-white/10 p-2 rounded-lg">
-                <FaBrain size={28} className="text-purple-200" />
+                <FaBrain size={28} className="text-[#003E8A]/30" />
               </div> */}
-              <span className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-purple-200">Quiz Master</span>
+              <span className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-[#003E8A]/30">Quiz Master</span>
             </div>
           </div>
         </div>
       </header>
 
-  <div className="bg-white shadow-md border-b border-purple-100">
+  <div className="bg-white shadow-md border-b border-[#003E8A]/10">
   <div className="container mx-auto px-5 py-5">
     <div className="flex flex-col md:flex-row justify-center items-center gap-10 max-w-3xl mx-auto">
       <div className="flex items-center gap-4">
-        <div className="p-2.5 bg-purple-100 rounded-lg">
-          <FaGraduationCap className="text-purple-600 text-lg" />
+        <div className="p-2.5 bg-[#003E8A]/10 rounded-lg">
+          <FaGraduationCap className="text-[#003E8A] text-lg" />
         </div>
         <div>
           <p className="text-gray-500 text-sm">Total Quizzes</p>
@@ -70,13 +70,13 @@ const Userdashboard = () => {
 
       <main className="flex-1 container mx-auto px-6 py-10 flex flex-col items-center ">
   <div className="text-center max-w-3xl mx-auto mb-10">
-    <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-purple-800 mb-4">Available Quizzes</h2>
+    <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#003E8A] to-[#003E8A]/70 mb-4">Available Quizzes</h2>
     <p className="text-gray-600">Select a quiz below to begin your assessment journey</p>
   </div>
 
   {loading ? (
     <div className="flex flex-col items-center justify-center py-16">
-      <div className="w-20 h-20 border-4 border-gray-200 border-t-purple-600 rounded-full animate-spin mb-6"></div>
+      <div className="w-20 h-20 border-4 border-gray-200 border-t-[#003E8A] rounded-full animate-spin mb-6"></div>
       <p className="text-gray-600 text-lg">Loading available quizzes...</p>
     </div>
   ) : error ? (
@@ -105,7 +105,7 @@ const Userdashboard = () => {
       <p className="text-gray-500 mt-3 mb-6">Check back soon for new challenges!</p>
       <button 
         onClick={() => window.location.reload()} 
-        className="px-6 py-2 bg-purple-100 text-purple-700 rounded-full font-medium hover:bg-purple-200 transition"
+        className="px-6 py-2 bg-[#003E8A]/10 text-[#003E8A] rounded-full font-medium hover:bg-[#003E8A]/20 transition"
       >
         Refresh
       </button>
@@ -120,17 +120,17 @@ const Userdashboard = () => {
               key={quiz._id}
               className="bg-white p-10 pt-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col transform hover:-translate-y-1 w-full max-w-[480px]"
             >
-              <div className="h-3 bg-gradient-to-r from-purple-500 to-purple-600 rounded-t-xl -mx-10 -mt-6 mb-8"></div>
+              <div className="h-3 bg-gradient-to-r from-[#003E8A] to-[#003E8A]/80 rounded-t-xl -mx-10 -mt-6 mb-8"></div>
               
               {/* <div className="mb-4">
-                <span className="text-xs font-bold uppercase tracking-wide text-purple-600 bg-purple-100 rounded-full px-4 py-1.5">
+                <span className="text-xs font-bold uppercase tracking-wide text-[#003E8A] bg-[#003E8A]/10 rounded-full px-4 py-1.5">
                   {quiz.category || "General Knowledge"}
                 </span>
               </div> */}
               
               <h3 className="text-2xl font-bold text-gray-800 mb-4">{quiz.title}</h3>
               
-              <div className="bg-purple-50 rounded-lg p-5 mb-6">
+              <div className="bg-[#003E8A]/5 rounded-lg p-5 mb-6">
                 <p className="text-gray-700 text-sm flex-grow line-clamp-3">
                   {quiz.description || "No description provided for this quiz."}
                 </p>
@@ -155,7 +155,7 @@ const Userdashboard = () => {
               </div>
         
               <button
-                className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-medium py-4 rounded-lg transition shadow hover:shadow-lg flex items-center justify-center space-x-3"
+                className="w-full bg-gradient-to-r from-[#003E8A] to-[#003E8A]/90 hover:from-[#003E8A]/90 hover:to-[#003E8A] text-white font-medium py-4 rounded-lg transition shadow hover:shadow-lg flex items-center justify-center space-x-3"
                 onClick={() => navigate(`/terms`, { state: { quiz } })} 
               >
                 <span className="text-base cursor-pointer">Start Quiz</span>
@@ -174,7 +174,7 @@ const Userdashboard = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-2 mb-4 md:mb-0">
-              {/* <FaBrain className="text-purple-600" /> */}
+              {/* <FaBrain className="text-[#003E8A]" /> */}
               <span className="text-gray-700 font-medium">Quiz Master</span>
             </div>
             <div className="text-gray-500 text-sm">

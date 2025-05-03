@@ -236,7 +236,7 @@ const QuizQuestion = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <nav className="bg-purple-700 text-white px-10 py-6 flex justify-between items-center text-4xl font-bold">
+      <nav className="bg-[#003E8A] text-white px-10 py-6 flex justify-between items-center text-4xl font-bold">
         <h1>{quizTitle}</h1>
       </nav>
 
@@ -249,9 +249,9 @@ const QuizQuestion = () => {
                 onClick={() => handleQuestionClick(index)}
                 className={`w-12 h-12 flex items-center justify-center rounded-md text-sm font-bold cursor-pointer ${
                   userAnswers[index]
-                    ? "bg-purple-700 hover:bg-purple-600"
+                    ? "bg-[#003E8A] hover:bg-[#003E8A]/90"
                     : "bg-gray-300 hover:bg-gray-300"
-                } ${questionIndex === index ? "ring-2 ring-purple-700 ring-opacity-20" : ""}`}
+                } ${questionIndex === index ? "ring-2 ring-[#003E8A] ring-opacity-20" : ""}`}
               >
                 {index + 1}
               </button>
@@ -263,7 +263,7 @@ const QuizQuestion = () => {
           <div className="max-w-6xl mx-auto mt-14 bg-white shadow-lg rounded-2xl p-6">
             <div className="flex justify-between mb-4 text-gray-500 text-lg">
               <span>Question {questionIndex + 1} of {totalQuestions}</span>
-              <span className="flex items-center gap-2 text-purple-600 font-semibold">
+              <span className="flex items-center gap-2 text-[#003E8A] font-semibold">
                 <FaClock size={16} />
                 {formatTime(timeLeft)}
               </span>
@@ -294,9 +294,9 @@ const QuizQuestion = () => {
                 options.map((option, idx) => (
                   <label
                     key={idx}
-                    className={`border px-4 py-4 rounded-lg cursor-pointer flex items-center gap-4 text-lg transition hover:border-purple-500 ${
+                    className={`border px-4 py-4 rounded-lg cursor-pointer flex items-center gap-4 text-lg transition hover:border-[#003E8A] ${
                       selectedOption === idx
-                        ? "border-purple-600 bg-purple-50"
+                        ? "border-[#003E8A] bg-[#003E8A]/5"
                         : "border-gray-200"
                     }`}
                   >
@@ -306,7 +306,7 @@ const QuizQuestion = () => {
                       value={idx}
                       checked={selectedOption === idx}
                       onChange={() => setSelectedOption(idx)}
-                      className="form-radio text-purple-600 scale-125 accent-purple-600"
+                      className="form-radio text-[#003E8A] scale-125 accent-[#003E8A]"
                     />
                     <span>{option}</span>
                   </label>
@@ -331,7 +331,7 @@ const QuizQuestion = () => {
               </button>
 
               <button
-                className="flex items-center gap-3 px-6 py-2 rounded-md text-lg font-semibold bg-purple-600 text-white hover:bg-purple-700 cursor-pointer"
+                className="flex items-center gap-3 px-6 py-2 rounded-md text-lg font-semibold bg-[#003E8A] text-white hover:bg-[#003E8A]/90 cursor-pointer"
                 onClick={handleNextOrSubmit}
               >
                 {questionIndex === totalQuestions - 1 ? "Submit" : "Next"}

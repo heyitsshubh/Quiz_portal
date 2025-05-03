@@ -7,6 +7,7 @@ import {
   FaLock,
   FaEye,
   FaEyeSlash,
+  FaArrowRight
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -93,23 +94,23 @@ export default function SignupForm() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-purple-800 to-purple-900 flex items-center justify-center px-4">
+    <div className="relative min-h-screen bg-gradient-to-br from-[#003E8A] to-[#003E8A]/90 flex items-center justify-center px-4">
       {loading && (
-        <div className="fixed inset-0 bg-opacity-80 flex items-center justify-center z-50">
-          <div className="w-16 h-16 border-8 border-gray-300 border-t-purple-500 rounded-full animate-spin"></div>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="w-16 h-16 border-8 border-gray-300 border-t-[#003E8A] rounded-full animate-spin"></div>
         </div>
       )}
 
-      <div className="bg-purple-950 p-6 sm:p-8 rounded-2xl w-full max-w-sm sm:max-w-md shadow-2xl">
+      <div className="bg-[#003E8A]/95 p-6 sm:p-8 rounded-2xl w-full max-w-sm sm:max-w-md shadow-2xl">
         <div className="flex items-center justify-center mb-4 sm:mb-6">
           <h1 className="text-white text-4xl sm:text-5xl font-bold">Quiz Master</h1>
         </div>
         <h2 className="text-xl sm:text-2xl font-bold text-white text-center mb-2 sm:mb-4">Sign Up</h2>
-        <p className="text-sm text-purple-200 text-center mb-4 sm:mb-6">
+        <p className="text-sm text-blue-200 text-center mb-4 sm:mb-6">
           Create your team account to participate in quizzes
         </p>
 
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+        {error && <p className="text-red-300 text-center mb-4 bg-red-900/30 p-2 rounded">{error}</p>}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <InputField icon={<FaUsers />} placeholder="Team Name" name="teamName" value={formData.teamName} onChange={handleChange} />
@@ -119,17 +120,34 @@ export default function SignupForm() {
           <InputField icon={<FaLock />} placeholder="Password" type="password" name="password" value={formData.password} onChange={handleChange} isPassword />
           <InputField icon={<FaLock />} placeholder="Confirm Password" type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} isPassword />
 
-          {/* 👇 ReCAPTCHA component */}
-          <div className="flex justify-center">
+          <div className="flex justify-center mt-6">
             <ReCAPTCHA
-              sitekey="6LeD9iwrAAAAALR6Hio8cGHTyM0C_4oAS5cGzXCj" // <-- Replace this
+              sitekey="6LeD9iwrAAAAALR6Hio8cGHTyM0C_4oAS5cGzXCj"
               onChange={() => setCaptchaVerified(true)}
               onExpired={() => setCaptchaVerified(false)}
+              theme="dark"
             />
           </div>
 
-          <button type="submit" className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-2 rounded-xl hover:opacity-90 transition cursor-pointer">
-            Sign Up
+          <button 
+            type="submit" 
+            disabled={!captchaVerified}
+            className={`relative w-full mt-4 group overflow-hidden ${
+              captchaVerified 
+                ? "bg-gradient-to-r from-sky-400 to-[#003E8A] hover:from-sky-500 hover:to-[#003E8A]" 
+                : "bg-gray-600"
+            } text-white font-bold py-4 rounded-xl transition-all duration-300 ${
+              captchaVerified ? "cursor-pointer shadow-lg hover:shadow-sky-500/20" : "opacity-60 cursor-not-allowed"
+            }`}
+          >
+            {captchaVerified && (
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/10 via-white/30 to-transparent transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-700"></span>
+            )}
+            
+            <span className="relative flex items-center justify-center gap-2">
+              <span className={`text-lg ${captchaVerified ? "group-hover:mr-1 transition-all duration-300" : ""}`}>Sign Up</span>
+              {captchaVerified && <FaArrowRight className="transform group-hover:translate-x-1 transition-transform duration-300" />}
+            </span>
           </button>
         </form>
       </div>
@@ -139,10 +157,11 @@ export default function SignupForm() {
 
 function InputField({ icon, placeholder, type = "text", name, value, onChange, isPassword }) {
   const [showPassword, setShowPassword] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   return (
     <div className="relative">
-      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-300">
+      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-200 z-10">
         {icon}
       </span>
       <input
@@ -151,12 +170,16 @@ function InputField({ icon, placeholder, type = "text", name, value, onChange, i
         name={name}
         value={value}
         onChange={onChange}
-        className="w-full bg-purple-900 text-white py-2 px-10 rounded-md border border-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        className={`w-full bg-[#003E8A]/40 text-white py-2.5 px-10 rounded-lg border ${
+          isFocused ? "border-white border-2" : "border-white/50"
+        } focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-blue-200/70`}
       />
       {isPassword && (
         <span
           onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-purple-300 cursor-pointer"
+          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-200 cursor-pointer z-10"
         >
           {showPassword ? <FaEyeSlash /> : <FaEye />}
         </span>
@@ -164,4 +187,3 @@ function InputField({ icon, placeholder, type = "text", name, value, onChange, i
     </div>
   );
 }
-
