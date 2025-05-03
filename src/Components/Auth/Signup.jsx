@@ -13,7 +13,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import api from "../../utils/axiosInstance";
-import conatus from "../../assets/conaatus.png";
+import conatus from "../../assets/Conats.png";
 
 export default function SignupForm() {
   const navigate = useNavigate();
@@ -103,7 +103,7 @@ export default function SignupForm() {
   <img
     src={conatus}
     alt="Quiz Master Logo"
-    className="h-full w-full object-contain p-1 bg-white rounded-lg shadow-lg"
+    className="h-full w-full object-contain p-1 "
     onError={(e) => {
       e.target.onerror = null;
       e.target.style.display = "none";
