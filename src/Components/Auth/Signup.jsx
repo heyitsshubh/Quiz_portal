@@ -8,7 +8,6 @@ import {
   FaEye,
   FaEyeSlash,
   FaArrowRight,
-  FaBrain
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -28,9 +27,15 @@ export default function SignupForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [captchaVerified, setCaptchaVerified] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState(""); // ✅ Token state
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const setErrorMsg = (msg) => {
+    setError(msg);
+    setLoading(false);
   };
 
   const handleSubmit = async (e) => {
@@ -38,6 +43,7 @@ export default function SignupForm() {
     setError("");
     setLoading(true);
 
+    // Basic validations
     if (!formData.teamName) return setErrorMsg("Team Name is required.");
     if (!formData.teamLeaderName) return setErrorMsg("Team Leader Name is required.");
     if (!formData.email) return setErrorMsg("Email Address is required.");
@@ -74,12 +80,16 @@ export default function SignupForm() {
       return setErrorMsg("Passwords do not match.");
     }
 
-    if (!captchaVerified) {
+    if (!captchaVerified || !recaptchaToken) {
       return setErrorMsg("Please complete the reCAPTCHA verification.");
     }
 
     try {
-      const response = await api.post("/auth/signup", formData);
+      const response = await api.post("/auth/signup", {
+        ...formData,
+        recaptchaToken, // ✅ Sending token
+      });
+
       localStorage.setItem("refreshToken", response.data.refreshToken);
       localStorage.setItem("accessToken", response.data.accessToken);
       navigate("/userdashboard", { replace: true });
@@ -90,28 +100,20 @@ export default function SignupForm() {
     }
   };
 
-  const setErrorMsg = (msg) => {
-    setError(msg);
-    setLoading(false);
-  };
-
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-[#003E8A] to-[#003E8A]/90 flex flex-col items-center justify-center px-4">
-      {/* Logo Section in Top Left */}
       <div className="absolute top-6 left-6 sm:top-8 sm:left-10 flex items-center">
-      <div className="h-12 w-12 sm:h-30 sm:w-40  flex items-center justify-center  shadow-lg mr-3 overflow-hidden">
-  <img
-    src={conatus}
-    alt="Quiz Master Logo"
-    className="h-full w-full object-contain p-1 "
-    onError={(e) => {
-      e.target.onerror = null;
-      e.target.style.display = "none";
-    }}
-  />
-</div>
-
-
+        <div className="h-12 w-12 sm:h-30 sm:w-40 flex items-center justify-center shadow-lg mr-3 overflow-hidden">
+          <img
+            src={conatus}
+            alt="Quiz Master Logo"
+            className="h-full w-full object-contain p-1"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.style.display = "none";
+            }}
+          />
+        </div>
       </div>
 
       {loading && (
@@ -142,8 +144,14 @@ export default function SignupForm() {
           <div className="flex justify-center mt-6">
             <ReCAPTCHA
               sitekey="6LdTDS0rAAAAABU0t5ADxll6NJ3ZT03f_wPaLesv"
-              onChange={() => setCaptchaVerified(true)}
-              onExpired={() => setCaptchaVerified(false)}
+              onChange={(token) => {
+                setCaptchaVerified(true);
+                setRecaptchaToken(token); // ✅ Capture token
+              }}
+              onExpired={() => {
+                setCaptchaVerified(false);
+                setRecaptchaToken(""); // ❌ Token expired
+              }}
               theme="dark"
             />
           </div>
@@ -206,3 +214,4 @@ function InputField({ icon, placeholder, type = "text", name, value, onChange, i
     </div>
   );
 }
+
