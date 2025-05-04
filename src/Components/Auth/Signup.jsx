@@ -28,7 +28,7 @@ export default function SignupForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [captchaVerified, setCaptchaVerified] = useState(false);
-  const [recaptchaToken, setRecaptchaToken] = useState(""); // ✅ Token state
+  const [recaptchaToken, setRecaptchaToken] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -88,7 +88,7 @@ export default function SignupForm() {
     try {
       const response = await api.post("/auth/signup", {
         ...formData,
-        recaptchaToken, // ✅ Sending token
+        recaptchaToken,
       });
 
       localStorage.setItem("refreshToken", response.data.refreshToken);
@@ -102,15 +102,15 @@ export default function SignupForm() {
   };
 
   return (
-    <div 
-    className="relative min-h-screen flex flex-col items-center justify-center px-2"
-    style={{
-      backgroundImage: `url(${bgquiz})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat'
-    }}
-  >
+    <div
+      className="relative min-h-screen flex flex-col items-center justify-center px-2"
+      style={{
+        backgroundImage: `url(${bgquiz})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <div className="absolute top-6 left-6 sm:top-8 sm:left-10 flex items-center">
         <div className="h-12 w-12 sm:h-30 sm:w-40 flex items-center justify-center shadow-lg mr-3 overflow-hidden">
           <img
@@ -126,72 +126,138 @@ export default function SignupForm() {
       </div>
 
       {loading && (
-        <div className="fixed inset-0  bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
           <div className="w-16 h-16 border-8 border-gray-300 border-t-[#003E8A] rounded-full animate-spin"></div>
         </div>
       )}
 
-      <div className="bg-[#003E8A]/95 p-6 sm:p-8 rounded-2xl w-full max-w-sm sm:max-w-md shadow-2xl">
+      <div className="bg-[#003E8A]/45 p-6 sm:p-8 rounded-2xl w-full max-w-4xl shadow-2xl">
         <div className="flex items-center justify-center mb-4 sm:mb-6">
           <h1 className="text-white text-4xl sm:text-5xl font-bold">Quiz Master</h1>
         </div>
-        <h2 className="text-xl sm:text-2xl font-bold text-white text-center mb-2 sm:mb-4">Sign Up</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-white text-center mb-2 sm:mb-4">
+          Sign Up
+        </h2>
         <p className="text-sm text-blue-200 text-center mb-4 sm:mb-6">
           Create your team account to participate in quizzes
         </p>
 
-        {error && <p className="text-red-300 text-center mb-4 bg-red-900/30 p-2 rounded">{error}</p>}
+        {error && (
+          <p className="text-red-300 text-center mb-4 bg-red-900/30 p-2 rounded">
+            {error}
+          </p>
+        )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <InputField icon={<FaUsers />} placeholder="Team Name" name="teamName" value={formData.teamName} onChange={handleChange} />
-          <InputField icon={<FaUser />} placeholder="Team Leader Name" name="teamLeaderName" value={formData.teamLeaderName} onChange={handleChange} />
-          <InputField icon={<FaEnvelope />} placeholder="Email Address" name="email" value={formData.email} onChange={handleChange} />
-          <InputField icon={<FaIdBadge />} placeholder="Student ID" name="studentId" value={formData.studentId} onChange={handleChange} />
-          <InputField icon={<FaLock />} placeholder="Password" type="password" name="password" value={formData.password} onChange={handleChange} isPassword />
-          <InputField icon={<FaLock />} placeholder="Confirm Password" type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} isPassword />
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <InputField
+            icon={<FaUsers />}
+            placeholder="Team Name"
+            name="teamName"
+            value={formData.teamName}
+            onChange={handleChange}
+          />
+          <InputField
+            icon={<FaUser />}
+            placeholder="Team Leader Name"
+            name="teamLeaderName"
+            value={formData.teamLeaderName}
+            onChange={handleChange}
+          />
+          <InputField
+            icon={<FaEnvelope />}
+            placeholder="Email Address"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+          <InputField
+            icon={<FaIdBadge />}
+            placeholder="Student ID"
+            name="studentId"
+            value={formData.studentId}
+            onChange={handleChange}
+          />
+          <InputField
+            icon={<FaLock />}
+            placeholder="Password"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            isPassword
+          />
+          <InputField
+            icon={<FaLock />}
+            placeholder="Confirm Password"
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            isPassword
+          />
 
-          <div className="flex justify-center mt-6">
+          <div className="sm:col-span-2 flex justify-center mt-2">
             <ReCAPTCHA
               sitekey="6LdTDS0rAAAAABU0t5ADxll6NJ3ZT03f_wPaLesv"
               onChange={(token) => {
                 setCaptchaVerified(true);
-                setRecaptchaToken(token); // ✅ Capture token
+                setRecaptchaToken(token);
               }}
               onExpired={() => {
                 setCaptchaVerified(false);
-                setRecaptchaToken(""); // ❌ Token expired
+                setRecaptchaToken("");
               }}
               theme="dark"
             />
           </div>
 
-          <button 
-            type="submit" 
-            disabled={!captchaVerified}
-            className={`relative w-full mt-4 group overflow-hidden ${
-              captchaVerified 
-                ? "bg-gradient-to-r from-sky-400 to-[#003E8A] hover:from-sky-500 hover:to-[#003E8A]" 
-                : "bg-gray-600"
-            } text-white font-bold py-4 rounded-xl transition-all duration-300 ${
-              captchaVerified ? "cursor-pointer shadow-lg hover:shadow-sky-500/20" : "opacity-60 cursor-not-allowed"
-            }`}
-          >
-            {captchaVerified && (
-              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/10 via-white/30 to-transparent transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-700"></span>
-            )}
-            
-            <span className="relative flex items-center justify-center gap-2">
-              <span className={`text-lg ${captchaVerified ? "group-hover:mr-1 transition-all duration-300" : ""}`}>Sign Up</span>
-              {captchaVerified && <FaArrowRight className="transform group-hover:translate-x-1 transition-transform duration-300" />}
-            </span>
-          </button>
+          <div className="sm:col-span-2">
+            <button
+              type="submit"
+              disabled={!captchaVerified}
+              className={`relative w-full mt-2 group overflow-hidden ${
+                captchaVerified
+                  ? "bg-gradient-to-r from-sky-400 to-[#003E8A] hover:from-sky-500 hover:to-[#003E8A]"
+                  : "bg-gray-600"
+              } text-white font-bold py-4 rounded-xl transition-all duration-300 ${
+                captchaVerified
+                  ? "cursor-pointer shadow-lg hover:shadow-sky-500/20"
+                  : "opacity-60 cursor-not-allowed"
+              }`}
+            >
+              {captchaVerified && (
+                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/10 via-white/30 to-transparent transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-700"></span>
+              )}
+
+              <span className="relative flex items-center justify-center gap-2">
+                <span
+                  className={`text-lg ${
+                    captchaVerified ? "group-hover:mr-1 transition-all duration-300" : ""
+                  }`}
+                >
+                  Sign Up
+                </span>
+                {captchaVerified && (
+                  <FaArrowRight className="transform group-hover:translate-x-1 transition-transform duration-300" />
+                )}
+              </span>
+            </button>
+          </div>
         </form>
       </div>
     </div>
   );
 }
 
-function InputField({ icon, placeholder, type = "text", name, value, onChange, isPassword }) {
+function InputField({
+  icon,
+  placeholder,
+  type = "text",
+  name,
+  value,
+  onChange,
+  isPassword,
+}) {
   const [showPassword, setShowPassword] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -223,4 +289,5 @@ function InputField({ icon, placeholder, type = "text", name, value, onChange, i
     </div>
   );
 }
+
 
