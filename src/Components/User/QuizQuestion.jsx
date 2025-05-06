@@ -44,6 +44,7 @@ const QuizQuestion = () => {
   const [timeSinceStart, setTimeSinceStart] = useState(0);
   const [isTimerInitialized, setIsTimerInitialized] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [tabSwitchCount, setTabSwitchCount] = useState(0); 
 
   useEffect(() => {
     const fetchQuestion = async () => {
@@ -137,14 +138,20 @@ const QuizQuestion = () => {
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.hidden && quizData && !isSubmitting) {
-        alert("⚠️ Don't switch the tab! The quiz will be auto-submitted.");
-        submitQuiz();
+        setTabSwitchCount((prev) => prev + 1); // Increment tab switch count
+
+        if (tabSwitchCount === 0) {
+          alert("⚠️ Don't switch the tab! The quiz will be auto-submitted if you switch again.");
+        } else if (tabSwitchCount >= 1) {
+          alert("You switched tabs again. The quiz will now be auto-submitted.");
+          submitQuiz(); // Auto-submit the quiz
+        }
       }
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
-  }, [quizData, isSubmitting]);
+  }, [quizData, isSubmitting, tabSwitchCount]);
 
   const formatTime = (seconds) => {
     const min = Math.floor(seconds / 60);
