@@ -41,6 +41,7 @@ const QuizQuestion = () => {
   const [userAnswers, setUserAnswers] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
+  const [timeSinceStart, setTimeSinceStart] = useState(0);
   const [isTimerInitialized, setIsTimerInitialized] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -68,10 +69,11 @@ const QuizQuestion = () => {
 
     let savedStartTime = localStorage.getItem(`quiz-${quizId}-startTime`);
     let remaining = totalTime;
+    let elapsed = 0;
     if (savedStartTime) {
       const parsed = new Date(savedStartTime).getTime();
       if (!isNaN(parsed)) {
-        const elapsed = Math.floor((Date.now() - parsed) / 1000);
+        elapsed = Math.floor((Date.now() - parsed) / 1000);
         remaining = Math.max(totalTime - elapsed, 0);
       } else {
         savedStartTime = null;
@@ -79,10 +81,12 @@ const QuizQuestion = () => {
     }
 
     if (!savedStartTime) {
-      localStorage.setItem(`quiz-${quizId}-startTime`, new Date().toISOString());
+      const now = new Date();
+      localStorage.setItem(`quiz-${quizId}-startTime`, now.toISOString());
     }
 
     setTimeLeft(remaining);
+    setTimeSinceStart(elapsed);
     setIsTimerInitialized(true);
   }, [quizData, isTimerInitialized, quizId]);
 
@@ -97,6 +101,7 @@ const QuizQuestion = () => {
         }
         return prev - 1;
       });
+      setTimeSinceStart((prev) => prev + 1);
     }, 1000);
     return () => clearInterval(interval);
   }, [timeLeft, isTimerInitialized]);
@@ -136,7 +141,7 @@ const QuizQuestion = () => {
         submitQuiz();
       }
     };
-  
+
     document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, [quizData, isSubmitting]);
@@ -234,6 +239,7 @@ const QuizQuestion = () => {
 
   const { quizTitle = "Quiz", totalQuestions = 1, questionData = {} } = quizData;
   const { questionText = "", options = [], imageUrl = null } = questionData;
+  const canSubmit = timeSinceStart >= 900;
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -332,8 +338,15 @@ const QuizQuestion = () => {
               </button>
 
               <button
-                className="flex items-center gap-3 px-6 py-2 rounded-md text-lg font-semibold bg-[#003E8A] text-white hover:bg-[#003E8A]/90 cursor-pointer"
+                className={`flex items-center gap-3 px-6 py-2 rounded-md text-lg font-semibold ${
+                  questionIndex === totalQuestions - 1
+                    ? canSubmit
+                      ? "bg-[#003E8A] text-white hover:bg-[#003E8A]/90 cursor-pointer"
+                      : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    : "bg-[#003E8A] text-white hover:bg-[#003E8A]/90 cursor-pointer"
+                }`}
                 onClick={handleNextOrSubmit}
+                disabled={questionIndex === totalQuestions - 1 && !canSubmit}
               >
                 {questionIndex === totalQuestions - 1 ? "Submit" : "Next"}
                 {questionIndex < totalQuestions - 1 && <FaArrowRight />}
@@ -357,6 +370,7 @@ const QuizQuestion = () => {
 };
 
 export default QuizQuestion;
+
 
 
 
