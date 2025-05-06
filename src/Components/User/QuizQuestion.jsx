@@ -132,10 +132,11 @@ const QuizQuestion = () => {
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.hidden && quizData && !isSubmitting) {
-        // console.log("🚨 Tab switched or minimized. Submitting quiz...");
+        alert("⚠️ Don't switch the tab! The quiz will be auto-submitted.");
         submitQuiz();
       }
     };
+  
     document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, [quizData, isSubmitting]);

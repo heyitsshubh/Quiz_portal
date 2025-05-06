@@ -43,7 +43,7 @@ export default function SignupForm() {
     e.preventDefault();
     setError("");
     setLoading(true);
-
+  
     // Basic validations
     if (!formData.teamName) return setErrorMsg("Team Name is required.");
     if (!formData.teamLeaderName) return setErrorMsg("Team Leader Name is required.");
@@ -51,24 +51,24 @@ export default function SignupForm() {
     if (!formData.studentId) return setErrorMsg("Student ID is required.");
     if (!formData.password) return setErrorMsg("Password is required.");
     if (!formData.confirmPassword) return setErrorMsg("Confirm Password is required.");
-
+  
     if (!/^\d{6,8}$/.test(formData.studentId)) {
       return setErrorMsg("Enter a valid student ID.");
     }
-
+  
     const emailStudentId = formData.email.split("@")[0];
     if (!emailStudentId.includes(formData.studentId)) {
       return setErrorMsg("Email must contain your student ID.");
     }
-
+  
     if (!formData.email.endsWith("@akgec.ac.in")) {
       return setErrorMsg("Enter your college email.");
     }
-
+  
     if (!formData.studentId.startsWith("24") && !formData.studentId.startsWith("23")) {
       return setErrorMsg("Leader student ID is invalid.");
     }
-
+  
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(formData.password)) {
@@ -76,23 +76,29 @@ export default function SignupForm() {
         "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character."
       );
     }
-
+  
     if (formData.password !== formData.confirmPassword) {
       return setErrorMsg("Passwords do not match.");
     }
-
+  
     if (!captchaVerified || !recaptchaToken) {
       return setErrorMsg("Please complete the reCAPTCHA verification.");
     }
-
+  
     try {
       const response = await api.post("/auth/signup", {
         ...formData,
         recaptchaToken,
       });
-
+  
       localStorage.setItem("refreshToken", response.data.refreshToken);
       localStorage.setItem("accessToken", response.data.accessToken);
+  
+      // Enter full-screen mode
+      if (document.documentElement.requestFullscreen) {
+        await document.documentElement.requestFullscreen();
+      }
+  
       navigate("/userdashboard", { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed. Please try again.");
