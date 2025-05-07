@@ -4,13 +4,13 @@ import {
   FaUser,
   FaEnvelope,
   FaIdBadge,
-  FaLock,
-  FaEye,
-  FaEyeSlash,
+  // FaLock,
+  // FaEye,
+  // FaEyeSlash,
   FaArrowRight,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import ReCAPTCHA from "react-google-recaptcha";
+// import ReCAPTCHA from "react-google-recaptcha";
 import api from "../../utils/axiosInstance";
 import conatus from "../../assets/Conats.png";
 import bgquiz from "../../assets/bgquiz.jpeg";
@@ -22,13 +22,13 @@ export default function SignupForm() {
     teamLeaderName: "",
     email: "",
     studentId: "",
-    password: "",
-    confirmPassword: "",
+    // password: "",
+    // confirmPassword: "",
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [captchaVerified, setCaptchaVerified] = useState(false);
-  const [recaptchaToken, setRecaptchaToken] = useState("");
+  // const [captchaVerified, setCaptchaVerified] = useState(false);
+  // const [recaptchaToken, setRecaptchaToken] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -43,62 +43,61 @@ export default function SignupForm() {
     e.preventDefault();
     setError("");
     setLoading(true);
-  
-    // Basic validations
+
     if (!formData.teamName) return setErrorMsg("Team Name is required.");
     if (!formData.teamLeaderName) return setErrorMsg("Team Leader Name is required.");
     if (!formData.email) return setErrorMsg("Email Address is required.");
     if (!formData.studentId) return setErrorMsg("Student ID is required.");
-    if (!formData.password) return setErrorMsg("Password is required.");
-    if (!formData.confirmPassword) return setErrorMsg("Confirm Password is required.");
-  
+    // if (!formData.password) return setErrorMsg("Password is required.");
+    // if (!formData.confirmPassword) return setErrorMsg("Confirm Password is required.");
+
     if (!/^\d{6,8}$/.test(formData.studentId)) {
       return setErrorMsg("Enter a valid student ID.");
     }
-  
+
     const emailStudentId = formData.email.split("@")[0];
     if (!emailStudentId.includes(formData.studentId)) {
       return setErrorMsg("Email must contain your student ID.");
     }
-  
+
     if (!formData.email.endsWith("@akgec.ac.in")) {
       return setErrorMsg("Enter your college email.");
     }
-  
+
     if (!formData.studentId.startsWith("24") && !formData.studentId.startsWith("23")) {
       return setErrorMsg("Leader student ID is invalid.");
     }
-  
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!passwordRegex.test(formData.password)) {
-      return setErrorMsg(
-        "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character."
-      );
-    }
-  
-    if (formData.password !== formData.confirmPassword) {
-      return setErrorMsg("Passwords do not match.");
-    }
-  
-    if (!captchaVerified || !recaptchaToken) {
-      return setErrorMsg("Please complete the reCAPTCHA verification.");
-    }
-  
+
+    // const passwordRegex =
+    //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    // if (!passwordRegex.test(formData.password)) {
+    //   return setErrorMsg(
+    //     "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character."
+    //   );
+    // }
+
+    // if (formData.password !== formData.confirmPassword) {
+    //   return setErrorMsg("Passwords do not match.");
+    // }
+
+    // if (!captchaVerified || !recaptchaToken) {
+    //   return setErrorMsg("Please complete the reCAPTCHA verification.");
+    // }
+
     try {
       const response = await api.post("/auth/signup", {
         ...formData,
-        recaptchaToken,
+        // recaptchaToken,
       });
-  
+
       localStorage.setItem("refreshToken", response.data.refreshToken);
       localStorage.setItem("accessToken", response.data.accessToken);
-  
+
       // Enter full-screen mode
       if (document.documentElement.requestFullscreen) {
         await document.documentElement.requestFullscreen();
       }
-  
+
       navigate("/userdashboard", { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed. Please try again.");
@@ -183,7 +182,7 @@ export default function SignupForm() {
             value={formData.studentId}
             onChange={handleChange}
           />
-          <InputField
+          {/* <InputField
             icon={<FaLock />}
             placeholder="Password"
             type="password"
@@ -200,9 +199,9 @@ export default function SignupForm() {
             value={formData.confirmPassword}
             onChange={handleChange}
             isPassword
-          />
+          /> */}
 
-          <div className="sm:col-span-2 flex justify-center mt-2">
+          {/* <div className="sm:col-span-2 flex justify-center mt-2">
             <ReCAPTCHA
               sitekey="6LdTDS0rAAAAABU0t5ADxll6NJ3ZT03f_wPaLesv"
               onChange={(token) => {
@@ -215,37 +214,19 @@ export default function SignupForm() {
               }}
               theme="dark"
             />
-          </div>
+          </div> */}
 
           <div className="sm:col-span-2">
             <button
               type="submit"
-              disabled={!captchaVerified}
-              className={`relative w-full mt-2 group overflow-hidden ${
-                captchaVerified
-                  ? "bg-gradient-to-r from-sky-400 to-[#003E8A] hover:from-sky-500 hover:to-[#003E8A]"
-                  : "bg-gray-600"
-              } text-white font-bold py-4 rounded-xl transition-all duration-300 ${
-                captchaVerified
-                  ? "cursor-pointer shadow-lg hover:shadow-sky-500/20"
-                  : "opacity-60 cursor-not-allowed"
-              }`}
+              className="relative w-full mt-2 group overflow-hidden bg-gradient-to-r from-sky-400 to-[#003E8A] hover:from-sky-500 hover:to-[#003E8A] text-white font-bold py-4 rounded-xl transition-all duration-300 cursor-pointer shadow-lg hover:shadow-sky-500/20"
             >
-              {captchaVerified && (
-                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/10 via-white/30 to-transparent transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-700"></span>
-              )}
-
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/10 via-white/30 to-transparent transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-700"></span>
               <span className="relative flex items-center justify-center gap-2">
-                <span
-                  className={`text-lg ${
-                    captchaVerified ? "group-hover:mr-1 transition-all duration-300" : ""
-                  }`}
-                >
+                <span className="text-lg group-hover:mr-1 transition-all duration-300">
                   Sign Up
                 </span>
-                {captchaVerified && (
-                  <FaArrowRight className="transform group-hover:translate-x-1 transition-transform duration-300" />
-                )}
+                <FaArrowRight className="transform group-hover:translate-x-1 transition-transform duration-300" />
               </span>
             </button>
           </div>
@@ -295,5 +276,3 @@ function InputField({
     </div>
   );
 }
-
-
