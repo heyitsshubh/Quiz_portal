@@ -355,7 +355,7 @@ const QuizQuestion = () => {
                 onClick={handleNextOrSubmit}
                 disabled={questionIndex === totalQuestions - 1 && !canSubmit}
               >
-                {questionIndex === totalQuestions - 1 ? "Submit" : "Next"}
+                {questionIndex === totalQuestions - 1 ? "Submit" : "Save"}
                 {questionIndex < totalQuestions - 1 && <FaArrowRight />}
               </button>
             </div>
