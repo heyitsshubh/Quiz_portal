@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../utils/axiosInstance";
@@ -65,7 +64,7 @@ const Resultdashboard = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-bold text-purple-700 mb-4">Results Dashboard</h1>
+      <h1 className="text-3xl font-bold text-[#003E8A] mb-4">Results Dashboard</h1>
       <p className="text-gray-600 mb-6">Manage your results here.</p>
 
       {showSuccess && <SuccessBox message="Quiz deleted successfully!" />}
@@ -90,7 +89,7 @@ const Resultdashboard = () => {
 
             <div className="flex gap-3 flex-wrap">
               <button
-                className="bg-purple-600 text-white px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-purple-700 cursor-pointer"
+                className="bg-[#003E8A] text-white px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-[#003E8A]/90 cursor-pointer"
                 onClick={() => navigate(`/dashboard/results/${quiz.id}`)}
               >
                 <FaChartBar /> View Results

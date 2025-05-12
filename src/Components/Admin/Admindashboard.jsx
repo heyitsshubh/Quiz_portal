@@ -10,7 +10,7 @@ const Admindashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
-  const [successMessage, setSuccessMessage] = useState(""); 
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const Admindashboard = () => {
     try {
       await api.delete(`/admin/dashboard/quiz/details?_id=${quizId}`);
       setQuizzes((prev) => prev.filter((quiz) => quiz.id !== quizId));
-      setSuccessMessage("Quiz deleted successfully!"); 
+      setSuccessMessage("Quiz deleted successfully!");
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 1500);
     } catch (error) {
@@ -94,7 +94,7 @@ const Admindashboard = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-bold text-purple-700 mb-4">Admin Dashboard</h1>
+      <h1 className="text-3xl font-bold text-[#003E8A] mb-4">Admin Dashboard</h1>
       <p className="text-gray-600 mb-6">Manage your quizzes</p>
 
       {showSuccess && <SuccessBox message={successMessage} />} {/* Use dynamic success message */}
@@ -120,7 +120,7 @@ const Admindashboard = () => {
 
             <div className="flex gap-3 flex-wrap">
               <button
-                className="bg-purple-600 text-white px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-purple-700 cursor-pointer"
+                className="bg-[#003E8A] text-white px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-[#003E8A]/90 cursor-pointer"
                 onClick={() => handleAddQuestion(quiz.id)}
               >
                 <FaPlus /> Add Question
@@ -133,7 +133,7 @@ const Admindashboard = () => {
               </button>
               {quiz.status !== "active" && (
                 <button
-                  className="border border-purple-500 text-purple-600 px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-purple-50 cursor-pointer"
+                  className="border border-[#003E8A] text-[#003E8A] px-4 py-1.5 rounded-md flex items-center gap-2 hover:bg-[#003E8A]/10 cursor-pointer"
                   onClick={() => handleActivateQuiz(quiz.id)}
                 >
                   <FaLockOpen /> Activate
@@ -145,7 +145,7 @@ const Admindashboard = () => {
               <span
                 className={`px-3 py-1 rounded-full text-xs ${
                   quiz.status === "active"
-                    ? "bg-purple-200 text-purple-800"
+                    ? "bg-[#003E8A]/20 text-[#003E8A]"
                     : "bg-red-300 text-yellow-800"
                 }`}
               >

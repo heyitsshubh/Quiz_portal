@@ -29,27 +29,23 @@ const QuizCreator = () => {
       title: quizTitle,
       description,
       timeLimit,
-      difficulty :difficulty.toLowerCase(),
+      difficulty: difficulty.toLowerCase(),
     };
 
     try {
-    
       const response = await api.put("/admin/dashboard/quiz/details", quizData);
 
       console.log("API Response:", response.data);
 
       addQuiz(quizData);
 
-
       setShowSuccess(true);
-
 
       setQuizTitle("");
       setDescription("");
       setTimeLimit(30);
       setDifficulty("Medium");
 
-      
       setTimeout(() => {
         setShowSuccess(false); 
         navigate("/dashboard");
@@ -64,13 +60,13 @@ const QuizCreator = () => {
 
   return (
     <div className="max-w-4xl mx-auto bg-white shadow-md rounded-md p-6">
-      <h1 className="text-3xl font-bold text-purple-700 mb-2">Quiz Creator</h1>
+      <h1 className="text-3xl font-bold text-[#003E8A] mb-2">Quiz Creator</h1>
       <p className="text-gray-600 mb-6">
         Create engaging quizzes for your students or audience
       </p>
 
       <div className="border-b mb-6">
-        <button className="text-purple-700 border-b-2 border-purple-700 px-4 py-2 font-medium">
+        <button className="text-[#003E8A] border-b-2 border-[#003E8A] px-4 py-2 font-medium">
           Details
         </button>
       </div>
@@ -83,12 +79,11 @@ const QuizCreator = () => {
 
         {error && <p className="text-red-500 mb-4">{error}</p>}
     
-
         <div className="mb-4">
           <label className="block mb-1 font-medium">Quiz Title</label>
           <input
             type="text"
-            className="w-full border border-gray-300 rounded-md p-2  focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#003E8A]"
             placeholder="Enter quiz title"
             value={quizTitle}
             onChange={(e) => setQuizTitle(e.target.value)}
@@ -98,7 +93,7 @@ const QuizCreator = () => {
         <div className="mb-4">
           <label className="block mb-1 font-medium">Description</label>
           <textarea
-            className="w-full border border-gray-300 rounded-md p-2  focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#003E8A]"
             rows="4"
             placeholder="Enter quiz description"
             value={description}
@@ -110,7 +105,7 @@ const QuizCreator = () => {
           <label className="block mb-1 font-medium">Time Limit (minutes)</label>
           <input
             type="number"
-            className="w-full border border-gray-300 rounded-md p-2  focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#003E8A]"
             value={timeLimit}
             onChange={(e) => setTimeLimit(e.target.value)}
           />
@@ -127,7 +122,7 @@ const QuizCreator = () => {
                   value={level}
                   checked={difficulty === level}
                   onChange={() => setDifficulty(level)}
-                  className="accent-purple-600 "
+                  className="accent-[#003E8A]"
                 />
                 {level}
               </label>
@@ -137,7 +132,7 @@ const QuizCreator = () => {
 
         <button
           onClick={handleSave}
-          className="bg-purple-600 text-white px-6 py-2 rounded-md hover:bg-purple-700 transition"
+          className="bg-[#003E8A] text-white px-6 py-2 rounded-md hover:bg-[#003E8A]/90 transition"
           disabled={loading}
           style={{ cursor: loading ? "not-allowed" : "pointer" }}
         >
@@ -147,7 +142,6 @@ const QuizCreator = () => {
 
       {showSuccess && <SuccessBox message="Quiz details saved successfully!" />}
     </div>
-    
   );
 };
 

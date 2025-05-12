@@ -9,7 +9,6 @@ const AddQuestions = () => {
   const { quizId, mode, questionData } = location.state || {};
   const fileInputRef = useRef(null);
 
-  // Existing state
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", "", "", ""]);
   const [correctOption, setCorrectOption] = useState(0);
@@ -17,7 +16,6 @@ const AddQuestions = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  // New state for image handling
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
@@ -50,7 +48,7 @@ const AddQuestions = () => {
       return;
     }
 
-    if (!file.type.startsWith('image/')) {
+    if (!file.type.startsWith("image/")) {
       setError("Please upload an image file");
       return;
     }
@@ -66,12 +64,12 @@ const AddQuestions = () => {
 
     try {
       const formData = new FormData();
-      formData.append('image', file);
+      formData.append("image", file);
 
-      const response = await api.post('/images/upload', formData, {
+      const response = await api.post("/images/upload", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          "Content-Type": "multipart/form-data",
+        },
       });
 
       if (response.data.success) {
@@ -114,7 +112,7 @@ const AddQuestions = () => {
       options,
       correctOption,
       points,
-      imageUrl
+      imageUrl,
     };
 
     try {
@@ -129,7 +127,6 @@ const AddQuestions = () => {
           questions: [newQuestion],
         });
 
-        // Reset form for new questions
         setQuestion("");
         setOptions(["", "", "", ""]);
         setCorrectOption(0);
@@ -139,7 +136,7 @@ const AddQuestions = () => {
 
       setSuccess(true);
       setError("");
-      
+
       setTimeout(() => {
         setSuccess(false);
       }, 2000);
@@ -152,7 +149,7 @@ const AddQuestions = () => {
   return (
     <div className="h-screen flex items-start justify-center bg-gray-100 pt-8">
       <div className="max-w-3xl w-full p-8 bg-white shadow-lg rounded-lg overflow-auto">
-        <h1 className="text-2xl font-bold text-purple-700 mb-5">
+        <h1 className="text-2xl font-bold text-[#003E8A] mb-5">
           {mode === "edit" ? "Edit Question" : "Add Question"}
         </h1>
 
@@ -166,7 +163,7 @@ const AddQuestions = () => {
           <div>
             <label className="block text-sm font-medium mb-1">Question</label>
             <textarea
-              className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-[#003E8A]"
               rows="3"
               placeholder="Enter your question here"
               value={question}
@@ -174,7 +171,6 @@ const AddQuestions = () => {
             />
           </div>
 
-          {/* Image Upload Section */}
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">Question Image (Optional)</label>
             <div className="mt-2">
@@ -189,9 +185,9 @@ const AddQuestions = () => {
               <div className="flex items-center gap-4">
                 <label
                   htmlFor="image-upload"
-                  className="px-4 py-2 bg-purple-100 text-purple-700 rounded-md cursor-pointer hover:bg-purple-200 transition"
+                  className="px-4 py-2 bg-[#003E8A]/10 text-[#003E8A] rounded-md cursor-pointer hover:bg-[#003E8A]/20 transition"
                 >
-                  {imageLoading ? 'Uploading...' : imageUrl ? 'Change Image' : 'Upload Image'}
+                  {imageLoading ? "Uploading..." : imageUrl ? "Change Image" : "Upload Image"}
                 </label>
                 {imagePreview && (
                   <button
@@ -227,13 +223,13 @@ const AddQuestions = () => {
                 <input
                   type="radio"
                   name="correctOption"
-                  className="accent-purple-600"
+                  className="accent-[#003E8A]"
                   checked={correctOption === idx}
                   onChange={() => setCorrectOption(idx)}
                 />
                 <input
                   type="text"
-                  className="flex-1 border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="flex-1 border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-[#003E8A]"
                   placeholder={`Option ${idx + 1}`}
                   value={opt}
                   onChange={(e) => handleOptionChange(idx, e.target.value)}
@@ -246,7 +242,7 @@ const AddQuestions = () => {
             <label className="block text-sm font-medium mb-1">Points</label>
             <input
               type="number"
-              className="w-24 border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-24 border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-[#003E8A]"
               value={points}
               onChange={(e) => setPoints(Number(e.target.value))}
               min="1"
@@ -254,7 +250,7 @@ const AddQuestions = () => {
           </div>
 
           <button
-            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-md transition cursor-pointer disabled:opacity-50"
+            className="w-full bg-[#003E8A] hover:bg-[#003E8A]/90 text-white font-semibold py-3 rounded-md transition cursor-pointer disabled:opacity-50"
             onClick={handleAddOrEditQuestion}
             disabled={imageLoading}
           >
@@ -265,7 +261,11 @@ const AddQuestions = () => {
 
       {success && (
         <SuccessBox
-          message={mode === "edit" ? "Question updated successfully!" : "Question added successfully!"}
+          message={
+            mode === "edit"
+              ? "Question updated successfully!"
+              : "Question added successfully!"
+          }
         />
       )}
     </div>

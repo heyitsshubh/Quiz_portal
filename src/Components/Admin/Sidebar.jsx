@@ -11,7 +11,7 @@ export default function Sidebar() {
     <>
       {/* Hamburger Icon for smaller screens */}
       <button
-        className="md:hidden fixed top-4 left-4 z-50 text-white bg-purple-900 p-2 rounded-full"
+        className="md:hidden fixed top-4 left-4 z-50 text-white bg-[#003E8A] p-2 rounded-full"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       >
         {isSidebarOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
@@ -19,7 +19,7 @@ export default function Sidebar() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-screen bg-purple-900 text-white flex flex-col justify-between p-4 z-40 transform ${
+        className={`fixed top-0 left-0 h-screen bg-[#003E8A] text-white flex flex-col justify-between p-4 z-40 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform md:translate-x-0 md:w-64`}
       >
@@ -75,7 +75,7 @@ function SidebarLink({ to, icon, text }) {
       to={to}
       className={({ isActive }) =>
         `flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer ${
-          isActive ? "bg-purple-700" : "hover:bg-purple-800"
+          isActive ? "bg-[#003E8A]/80" : "hover:bg-[#003E8A]/90"
         }`
       }
     >

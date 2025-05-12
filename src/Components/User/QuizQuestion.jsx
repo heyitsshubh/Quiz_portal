@@ -45,6 +45,7 @@ const QuizQuestion = () => {
   const [isTimerInitialized, setIsTimerInitialized] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [tabSwitchCount, setTabSwitchCount] = useState(0); 
+  
 
   useEffect(() => {
     const fetchQuestion = async () => {

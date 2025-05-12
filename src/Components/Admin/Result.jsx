@@ -30,7 +30,7 @@ const Results = () => {
           const chartData = Object.keys(distribution).map((key) => ({
             name: key,
             teams: distribution[key],
-            fill: "#6b46c1", 
+            fill: "#003E8A", 
           }));
           setScoreData(chartData);
           setTeamResults(data.teamResults);
@@ -58,11 +58,11 @@ const Results = () => {
 
   return (
     <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold text-purple-800 mb-6">{quizTitle} Results Dashboard</h1>
+      <h1 className="text-2xl font-bold text-[#003E8A] mb-6">{quizTitle} Results Dashboard</h1>
       <p className="text-gray-600 mb-8">View team performance and score distribution</p>
       <div className="grid grid-cols-1 md:grid-rows-2 gap-8">
         <div className="bg-gray-50 p-6 rounded-lg">
-          <h2 className="text-xl font-bold text-purple-700 mb-4">Score Distribution</h2>
+          <h2 className="text-xl font-bold text-[#003E8A] mb-4">Score Distribution</h2>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
@@ -77,14 +77,14 @@ const Results = () => {
                   formatter={(value) => [`${value} teams`, "Count"]}
                   labelFormatter={(label) => `Score Range: ${label}`}
                 />
-                <Bar dataKey="teams" name="Number of teams" radius={[4, 4, 0, 0]} fill="#6b46c1" />
+                <Bar dataKey="teams" name="Number of teams" radius={[4, 4, 0, 0]} fill="#003E8A" />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         <div className="bg-gray-50 p-6 rounded-lg">
-          <h2 className="text-xl font-bold text-purple-700 mb-4">Team Results</h2>
+          <h2 className="text-xl font-bold text-[#003E8A] mb-4">Team Results</h2>
           <p className="text-sm text-gray-600 mb-4">Detailed performance of each team</p>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
