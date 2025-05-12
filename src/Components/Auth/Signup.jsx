@@ -12,7 +12,6 @@ import {
 import { useNavigate } from "react-router-dom";
 // import ReCAPTCHA from "react-google-recaptcha";
 import api from "../../utils/axiosInstance";
-import conatus from "../../assets/Conats.png";
 import bgquiz from "../../assets/bgquiz.jpeg";
 
 export default function SignupForm() {
@@ -116,19 +115,6 @@ export default function SignupForm() {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="absolute top-6 left-6 sm:top-8 sm:left-10 flex items-center">
-        <div className="h-12 w-12 sm:h-30 sm:w-40 flex items-center justify-center shadow-lg mr-3 overflow-hidden">
-          <img
-            src={conatus}
-            alt="Quiz Master Logo"
-            className="h-full w-full object-contain p-1"
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.style.display = "none";
-            }}
-          />
-        </div>
-      </div>
 
       {loading && (
         <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
