@@ -25,7 +25,7 @@ export default function Sidebar() {
       >
         <div>
           <h1 className="text-2xl font-bold mb-8 flex items-center gap-2">
-            <FaBrain /> Quiz Master
+            Quiz Master
           </h1>
           <nav className="space-y-4">
             <SidebarLink to="/dashboard" icon={<FaHome />} text="Dashboard" />

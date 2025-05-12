@@ -70,7 +70,7 @@ const Login = () => {
     >
       {/* Loading overlay */}
       {loading && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 backdrop-blur-sm">
+        <div className="fixed inset-0  bg-opacity-50 flex items-center justify-center z-50 backdrop-blur-sm">
           <div className="w-16 h-16 border-4 border-[#003E8A]/50 border-t-[#003E8A] rounded-full animate-spin"></div>
         </div>
       )}
@@ -83,11 +83,11 @@ const Login = () => {
         {/* Logo and header */}
         <div className="flex flex-col items-center mb-8">
           <div className="flex items-center justify-center mb-4 relative">
-            <FaBrain
+            {/* <FaBrain
               className={`text-white text-5xl mr-2 transition-transform duration-700 ${
                 animateLogo ? "transform rotate-0" : "transform rotate-180"
               }`}
-            />
+            /> */}
             <h1 className="text-white text-4xl font-bold">Quiz Master</h1>
           </div>
           <h2 className="text-2xl font-bold text-center">Sign In</h2>
