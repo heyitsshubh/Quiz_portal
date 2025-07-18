@@ -389,6 +389,7 @@ import {
 } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../../utils/axiosInstance";
+import { toast } from "react-toastify";
 import { useQuizStore } from "../../store/quizStore";
 
 const ImageModal = ({ imageUrl, onClose }) => {
@@ -414,7 +415,9 @@ const ImageModal = ({ imageUrl, onClose }) => {
 };
 
 const QuizQuestion = () => {
-  const { quizId } = useParams();
+  const { quizId, questionIndex: indexParam } = useParams();
+  const currentIndex = Number(indexParam) || 0;
+
   const navigate = useNavigate();
 
   const {
@@ -438,6 +441,15 @@ const QuizQuestion = () => {
   const [isTimerInitialized, setIsTimerInitialized] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
+  // Sync questionIndex from URL param
+  useEffect(() => {
+    const idx = parseInt(indexParam, 10);
+    if (!isNaN(idx) && idx !== questionIndex) {
+      setQuestionIndex(idx);
+    }
+  }, [indexParam, setQuestionIndex, questionIndex]);
+
+  // Fetch question data
   useEffect(() => {
     const fetchQuestion = async () => {
       try {
@@ -455,18 +467,20 @@ const QuizQuestion = () => {
     if (quizId) fetchQuestion();
   }, [quizId, questionIndex]);
 
-  // ...existing code...
-
-useEffect(() => {
+  // Timer initialization
+  useEffect(() => {
     if (!quizData || isTimerInitialized) return;
     let timeLimitMinutes = 10;
     if (
-      quizData.timeLimit !== undefined &&
-      quizData.timeLimit !== null &&
-      !isNaN(Number(quizData.timeLimit)) &&
-      Number(quizData.timeLimit) > 0
+      typeof quizData.timeLimit === "number" && quizData.timeLimit > 0
     ) {
-      timeLimitMinutes = Number(quizData.timeLimit);
+      timeLimitMinutes = quizData.timeLimit;
+    } else if (
+      typeof quizData.timeLimit === "string" &&
+      !isNaN(parseInt(quizData.timeLimit, 10)) &&
+      parseInt(quizData.timeLimit, 10) > 0
+    ) {
+      timeLimitMinutes = parseInt(quizData.timeLimit, 10);
     }
     const totalTime = timeLimitMinutes * 60;
 
@@ -488,11 +502,12 @@ useEffect(() => {
       localStorage.setItem(`quiz-${quizId}-startTime`, now.toISOString());
     }
 
-    setTimeLeft(remaining || 0);
-    setTimeSinceStart(elapsed || 0);
+    setTimeLeft(remaining);
+    setTimeSinceStart(elapsed);
     setIsTimerInitialized(true);
-  }, [quizData, isTimerInitialized, quizId]);
+  }, [quizData, isTimerInitialized, quizId, setTimeLeft, setTimeSinceStart]);
 
+  // Timer countdown
   useEffect(() => {
     if (!isTimerInitialized || timeLeft <= 0 || isNaN(timeLeft)) return;
     const interval = setInterval(() => {
@@ -520,32 +535,24 @@ useEffect(() => {
     return () => clearInterval(interval);
   }, [isTimerInitialized, timeLeft]);
 
-  useEffect(() => {
-    const savedAnswers = JSON.parse(localStorage.getItem(`quiz-${quizId}-answers`) || "[]");
-    if (savedAnswers.length > 0) setUserAnswers(savedAnswers);
-  }, [quizId]);
-
-  useEffect(() => {
-    localStorage.setItem(`quiz-${quizId}-questionIndex`, questionIndex);
-  }, [questionIndex, quizId]);
-
-  useEffect(() => {
-    localStorage.setItem(`quiz-${quizId}-answers`, JSON.stringify(userAnswers));
-  }, [userAnswers, quizId]);
-
+  // Load answers from localStorage
   useEffect(() => {
     const savedAnswers = JSON.parse(localStorage.getItem(`quiz-${quizId}-answers`) || "[]");
     if (savedAnswers.length > 0) setUserAnswers(savedAnswers);
   }, [quizId, setUserAnswers]);
 
+  // Save questionIndex to localStorage and update URL
   useEffect(() => {
     localStorage.setItem(`quiz-${quizId}-questionIndex`, questionIndex);
-  }, [questionIndex, quizId]);
+    navigate(`/quiz/${quizId}/${questionIndex}`, { replace: true });
+  }, [questionIndex, quizId, navigate]);
 
+  // Save answers to localStorage
   useEffect(() => {
     localStorage.setItem(`quiz-${quizId}-answers`, JSON.stringify(userAnswers));
   }, [userAnswers, quizId]);
 
+  // Set selected option for current question
   useEffect(() => {
     if (!quizData) return;
     const savedAnswers = JSON.parse(localStorage.getItem(`quiz-${quizId}-answers`) || "[]");
@@ -556,14 +563,19 @@ useEffect(() => {
     }
   }, [questionIndex, quizId, quizData, setSelectedOption]);
 
+  // Tab switch warning using react-toastify
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.hidden && quizData && !isSubmitting) {
         incrementTabSwitch();
         if (tabSwitchCount === 0) {
-          alert("⚠️ Don't switch the tab! The quiz will be auto-submitted if you switch again.");
+          toast.warn("⚠️ Don't switch the tab! The quiz will be auto-submitted if you switch again.", {
+            autoClose: 3000,
+          });
         } else if (tabSwitchCount >= 1) {
-          alert("You switched tabs again. The quiz will now be auto-submitted.");
+          toast.error("You switched tabs again. The quiz will now be auto-submitted.", {
+            autoClose: 3000,
+          });
           submitQuiz();
         }
       }
@@ -578,30 +590,35 @@ useEffect(() => {
     return `${min}:${sec < 10 ? "0" : ""}${sec}`;
   };
 
-  const handleNextOrSubmit = () => {
-    if (selectedOption !== null) {
-      const updated = [...userAnswers];
-      updated[questionIndex] = {
-        questionId: quizData.questionData._id,
-        selectedOption,
-      };
-      setUserAnswers(updated);
-    }
-    if (questionIndex + 1 >= quizData.totalQuestions) {
-      submitQuiz();
-    } else {
-      setQuestionIndex(questionIndex + 1);
-    }
-  };
+  // Navigation handlers
+const handleNextOrSubmit = () => {
+  if (selectedOption !== null) {
+    const updated = [...userAnswers];
+    updated[currentIndex] = {
+      questionId: quizData.questionData._id,
+      selectedOption,
+    };
+    setUserAnswers(updated);
+  }
 
-  const handlePrevious = () => {
-    setQuestionIndex(Math.max(questionIndex - 1, 0));
-  };
+  if (currentIndex + 1 >= quizData.totalQuestions) {
+    submitQuiz();
+  } else {
+    navigate(`/quiz/${quizId}/${currentIndex + 1}`);
+  }
+};
 
-  const handleQuestionClick = (index) => {
-    setQuestionIndex(index);
-  };
+const handlePrevious = () => {
+  if (currentIndex > 0) {
+    navigate(`/quiz/${quizId}/${currentIndex - 1}`);
+  }
+};
 
+const handleQuestionClick = (index) => {
+  navigate(`/quiz/${quizId}/${index}`);
+};
+
+ // Submit quiz
   const submitQuiz = async () => {
     if (isSubmitting) return;
     if (!quizData || !quizData.questionData) {
@@ -638,13 +655,17 @@ useEffect(() => {
         localStorage.removeItem(`quiz-${quizId}-questionIndex`);
         localStorage.removeItem(`quiz-${quizId}-answers`);
 
-        navigate("/quiz-submission-success", {
-          state: {
-            score: response.data.data.score,
-            totalPoints: response.data.data.totalPoints,
-            totalQuestions: quizData.totalQuestions,
-          },
-        });
+        toast.success("Quiz submitted successfully!");
+
+        setTimeout(() => {
+          navigate("/quiz-submission-success", {
+            state: {
+              score: response.data.data.score,
+              totalPoints: response.data.data.totalPoints,
+              totalQuestions: quizData.totalQuestions,
+            },
+          });
+        }, 1200);
       } else {
         throw new Error(response.data.message || "Submission failed");
       }

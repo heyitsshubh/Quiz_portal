@@ -15,11 +15,14 @@ import QuizQuestion from "./User/QuizQuestion";
 import Terms from "./User/Terms";
 import QuizSubmissionSuccess from "./User/QuizSubmissionSuccess";
 import { QuizProvider } from "./Admin/QuizContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <QuizProvider>
     <Router>
+      <ToastContainer position="top-center" autoClose={2000} />
       <Routes>
         <Route path="/signin" element={<Login />} />
         <Route path="/" element={<SignupForm />} />
