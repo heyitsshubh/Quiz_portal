@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import {
   FaUsers,
   FaUser,
@@ -34,8 +35,9 @@ export default function SignupForm() {
   };
 
   const setErrorMsg = (msg) => {
-    setError(msg);
-    setLoading(false);
+  setError(msg);
+  setLoading(false);
+  toast.error(msg);
   };
 
   const handleSubmit = async (e) => {
@@ -97,9 +99,12 @@ export default function SignupForm() {
         await document.documentElement.requestFullscreen();
       }
 
-      navigate("/userdashboard", { replace: true });
+  toast.success("Signup successful! ");
+  navigate("/userdashboard", { replace: true });
     } catch (err) {
-      setError(err.response?.data?.message || "Signup failed. Please try again.");
+  const errorMsg = err.response?.data?.message || "Signup failed. Please try again.";
+  setError(errorMsg);
+  toast.error(errorMsg);
     } finally {
       setLoading(false);
     }

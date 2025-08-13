@@ -19,6 +19,7 @@ const Userdashboard = () => {
         const quizList = Array.isArray(response.data.data) ? response.data.data : [];
         setQuizzes(quizList);
       } catch (err) {
+        console.error("Error fetching quizzes:", err);
         setError("Failed to load quizzes. Please try again later.");
       } finally {
         setLoading(false);

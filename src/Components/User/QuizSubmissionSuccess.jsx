@@ -1,4 +1,5 @@
 import React from "react";
+import { toast } from "react-toastify";
 import { FaCheckCircle, FaSignOutAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -6,8 +7,9 @@ const QuizSubmissionSuccess = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.clear();
-    navigate("/"); 
+  localStorage.clear();
+  toast.success("Logged out successfully!");
+  navigate("/"); 
   };
 
   return (
