@@ -99,8 +99,10 @@ export default function SignupForm() {
         await document.documentElement.requestFullscreen();
       }
 
-  toast.success("Signup successful! ");
+  toast.success("Signup successful!");
+setTimeout(() => {
   navigate("/userdashboard", { replace: true });
+}, 1200);
     } catch (err) {
   const errorMsg = err.response?.data?.message || "Signup failed. Please try again.";
   setError(errorMsg);
