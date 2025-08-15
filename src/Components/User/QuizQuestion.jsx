@@ -10,7 +10,7 @@ import {
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
-import { useQuizStore } from "../../store/quizStore";
+import { useQuizStore } from "../../store/Quizstore";
 
 const ImageModal = ({ imageUrl, onClose }) => {
   if (!imageUrl) return null;
