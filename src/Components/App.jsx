@@ -25,10 +25,6 @@ function App() {
         <ToastContainer
           position="top-center"
           autoClose={2000}
-          toastClassName={() =>
-            "bg-[#003E8A] text-white font-semibold rounded-lg shadow-lg"
-          }
-          bodyClassName={() => "text-white text-base"}
         />
         <Routes>
           <Route path="/signin" element={<Login />} />
