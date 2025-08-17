@@ -39,7 +39,7 @@ const Login = () => {
         navigate("/dashboard", { replace: true });
         return;
       }
-    } catch (adminError) {
+    } catch {
       try {
         const userResponse = await api.post("/auth/signin", formData);
 
@@ -76,7 +76,7 @@ const Login = () => {
       )}
 
       <div
-        className={`w-full max-w-md bg-[#003E8A] text-white p-8 rounded-3xl shadow-2xl transition-all duration-300 ${
+        className={`w-full max-w-md bg-[#003E8A]/45 text-white p-8 rounded-3xl shadow-2xl transition-all duration-300 ${
           animateLogo ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
         }`}
       >
@@ -153,7 +153,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full py-3 bg-[#003E8A] text-white font-medium rounded-xl hover:opacity-95 active:opacity-90 transition-all transform hover:scale-[1.01] active:scale-[0.99] shadow-md"
+            className="w-full py-3w-full mt-2 group overflow-hidden bg-gradient-to-r from-sky-400 to-[#003E8A] hover:from-sky-500 hover:to-[#003E8A] text-white font-bold py-4 rounded-xl transition-all duration-300 cursor-pointer shadow-lg hover:shadow-sky-500/20"
             disabled={loading}
           >
             {loading ? "Signing in..." : "Sign In"}
@@ -163,7 +163,7 @@ const Login = () => {
         <p className="text-center text-sm text-[#cce4ff] mt-6">
           Need a participant account?{" "}
           <span
-            onClick={() => !loading && navigate("/signup")}
+            onClick={() => !loading && navigate("/")}
             className="text-white hover:underline cursor-pointer font-medium transition-colors"
           >
             Sign up
