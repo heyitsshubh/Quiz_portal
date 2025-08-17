@@ -189,7 +189,7 @@ const QuizQuestion = () => {
       if (document.hidden && quizData && !isSubmitting) {
         incrementTabSwitch();
         if (tabSwitchCount === 0) {
-          toast.warn("⚠️ Don't switch the tab! The quiz will be auto-submitted if you switch again.", {
+          toast.warn("Don't switch the tab! The quiz will be auto-submitted if you switch again.", {
             autoClose: 3000,
           });
         } else if (tabSwitchCount >= 1) {
@@ -415,7 +415,7 @@ const handleQuestionClick = (index) => {
                 onClick={handleNextOrSubmit}
                 disabled={questionIndex === totalQuestions - 1 && !canSubmit}
               >
-                {questionIndex === totalQuestions - 1 ? "Submit" : "Save"}
+                {questionIndex === totalQuestions - 1 ? "Submit" : "Next"}
                 {questionIndex < totalQuestions - 1 && <FaArrowRight />}
               </button>
             </div>

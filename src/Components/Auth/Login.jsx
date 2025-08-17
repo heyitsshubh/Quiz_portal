@@ -4,7 +4,7 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { FaBrain } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import api from "../../utils/axiosInstance";
-import bgquiz from "../../assets/bgquiz.jpeg"; // Background image
+import bgquiz from "../../assets/bgquiz.jpeg"; 
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,7 +14,7 @@ const Login = () => {
   const [animateLogo, setAnimateLogo] = useState(false);
   const navigate = useNavigate();
 
-  // Add logo animation on load
+ 
   useEffect(() => {
     setTimeout(() => setAnimateLogo(true), 300);
   }, []);
@@ -35,7 +35,7 @@ const Login = () => {
         localStorage.setItem("refreshToken", adminResponse.data.refreshToken);
         localStorage.setItem("accessToken", adminResponse.data.accessToken);
         localStorage.setItem("adminEmail", formData.email);
-        localStorage.setItem("role", "admin"); // Store role
+        localStorage.setItem("role", "admin"); 
         navigate("/dashboard", { replace: true });
         return;
       }
@@ -46,7 +46,7 @@ const Login = () => {
         if (userResponse.data && userResponse.data.refreshToken) {
           localStorage.setItem("refreshToken", userResponse.data.refreshToken);
           localStorage.setItem("accessToken", userResponse.data.accessToken);
-          localStorage.setItem("role", "user"); // Store role
+          localStorage.setItem("role", "user"); 
           navigate("/userdashboard", { replace: true });
           return;
         }
@@ -68,7 +68,7 @@ const Login = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      {/* Loading overlay */}
+
       {loading && (
         <div className="fixed inset-0  bg-opacity-50 flex items-center justify-center z-50 backdrop-blur-sm">
           <div className="w-16 h-16 border-4 border-[#003E8A]/50 border-t-[#003E8A] rounded-full animate-spin"></div>
@@ -96,14 +96,14 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Error message */}
+
         {error && (
           <div className="mb-6 bg-red-900 bg-opacity-30 border border-red-500 text-red-200 px-4 py-3 rounded-lg text-center text-sm">
             {error}
           </div>
         )}
 
-        {/* Login form */}
+  
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="relative group">
             <AiOutlineMail

@@ -57,7 +57,6 @@ export default function SignupForm() {
     }
 
     const emailStudentId = formData.email.split("@")[0];
-    // Accept studentId with or without -d in email
     const studentIdPattern = formData.studentId.replace(/-d$/, "");
     if (!emailStudentId.includes(studentIdPattern)) {
       return setErrorMsg("Email must contain your student ID (without -d if present).");
@@ -96,7 +95,6 @@ export default function SignupForm() {
       localStorage.setItem("refreshToken", response.data.refreshToken);
       localStorage.setItem("accessToken", response.data.accessToken);
 
-      // Enter full-screen mode
       if (document.documentElement.requestFullscreen) {
         await document.documentElement.requestFullscreen();
       }

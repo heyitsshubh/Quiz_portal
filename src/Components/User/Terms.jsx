@@ -14,7 +14,6 @@ const Terms = () => {
   const [agreed, setAgreed] = useState(false);
   
   useEffect(() => {
-    // Trigger entrance animations
     setTimeout(() => setAnimate(true), 100);
   }, []);
 
@@ -41,7 +40,6 @@ const Terms = () => {
       </div> */}
 
       <div className={`w-full max-w-5xl flex flex-col md:flex-row gap-6 transition-all duration-500 ${animate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        {/* Left panel - Quiz details */}
         <div className="w-full md:w-1/3 bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-white shadow-xl">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-12 h-12 bg-gradient-to-br from-[#003E8A] to-[#003E8A]/70 rounded-full flex items-center justify-center shadow-lg">
@@ -81,17 +79,13 @@ const Terms = () => {
           </div>
         </div>
 
-        {/* Right panel - Rules and start button */}
         <div className="w-full md:w-2/3 bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col">
-          {/* Header */}
           <div className="bg-gradient-to-r from-[#003E8A] to-[#003E8A]/90 py-5 px-6">
             <h1 className="text-2xl font-bold text-white flex items-center gap-2">
               <FaShieldAlt />
               Quiz Rules & Guidelines
             </h1>
           </div>
-          
-          {/* Rules content */}
           <div className="p-6 overflow-auto flex-grow">
             <p className="text-gray-600 mb-6 text-center">
               Please read and agree to these rules before starting the quiz
@@ -143,8 +137,6 @@ const Terms = () => {
                 </div>
               </li>
             </ul>
-
-            {/* Agreement checkbox */}
             <div className="mt-6 flex items-center gap-2">
               <input 
                 type="checkbox" 
@@ -152,15 +144,13 @@ const Terms = () => {
                 checked={agreed}
                 onChange={() => setAgreed(!agreed)}
                 className="w-5 h-5 text-[#003E8A] rounded focus:ring-[#003E8A]"
-                style={{ accentColor: "#003E8A" }} // Custom accent color for checkbox
+                style={{ accentColor: "#003E8A" }}
               />
               <label htmlFor="agree-terms" className="text-gray-700">
                 I have read and agree to the quiz rules
               </label>
             </div>
           </div>
-
-          {/* Start button footer */}
           <div className="p-6 bg-gray-50 border-t border-gray-100">
             <button
               className={`w-full py-3 px-6 rounded-xl font-medium text-white flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer ${

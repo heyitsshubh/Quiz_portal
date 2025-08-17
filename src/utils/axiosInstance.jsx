@@ -45,8 +45,6 @@ api.interceptors.response.use(
         localStorage.setItem("accessToken", newAccessToken);
         api.defaults.headers.common["Authorization"] = `Bearer ${newAccessToken}`;
         originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-
-        // Set timeout to handle token expiration
         setTimeout(() => {
           console.log("Access token expired, logging out...");
           localStorage.clear();

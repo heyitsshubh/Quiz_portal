@@ -52,8 +52,6 @@ const ViewTest = () => {
       alert("Failed to delete question.");
     }
   };
-
-  // Image Modal Component
   const ImageModal = ({ imageUrl, onClose }) => {
     if (!imageUrl) return null;
 
@@ -176,8 +174,6 @@ const ViewTest = () => {
           </div>
         ))}
       </div>
-
-      {/* Image Modal */}
       {selectedImage && (
         <ImageModal
           imageUrl={selectedImage}

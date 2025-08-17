@@ -9,15 +9,12 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Hamburger Icon for smaller screens */}
       <button
         className="md:hidden fixed top-4 left-4 z-50 text-white bg-[#003E8A] p-2 rounded-full"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       >
         {isSidebarOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
       </button>
-
-      {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 h-screen bg-[#003E8A] text-white flex flex-col justify-between p-4 z-40 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -57,8 +54,6 @@ export default function Sidebar() {
           </button>
         </div>
       </aside>
-
-      {/* Overlay for smaller screens */}
       {isSidebarOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"

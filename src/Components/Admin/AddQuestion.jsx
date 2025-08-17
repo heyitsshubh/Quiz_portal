@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import api from "../../utils/axiosInstance";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, } from "react-router-dom";
 import SuccessBox from "../User/SuccessBox";
 
 const AddQuestions = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const { quizId, mode, questionData } = location.state || {};
   const fileInputRef = useRef(null);
 
