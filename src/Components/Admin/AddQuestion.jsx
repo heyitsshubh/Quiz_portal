@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import api from "../../utils/axiosInstance";
-import { useLocation, } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import SuccessBox from "../User/SuccessBox";
 
 const AddQuestions = () => {
@@ -15,10 +15,13 @@ const AddQuestions = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
+  // Removed unused image state
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -34,9 +37,19 @@ const AddQuestions = () => {
       setCorrectOption(questionData.correctOption);
       setPoints(questionData.points || 1);
       setImageUrl(questionData.imageUrl || "");
+      
+      // Reset image states when loading existing question
       setImagePreview(questionData.imageUrl || null);
+      setImageLoaded(false);
+      setImageError(false);
     }
   }, [mode, questionData]);
+
+  // Reset image states when imageUrl changes
+  useEffect(() => {
+    setImageLoaded(false);
+    setImageError(false);
+  }, [imageUrl]);
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
@@ -53,8 +66,11 @@ const AddQuestions = () => {
     }
 
     setImageLoading(true);
+    setImageError(false);
+    setImageLoaded(false);
     setError("");
 
+    // Create local preview
     const reader = new FileReader();
     reader.onloadend = () => {
       setImagePreview(reader.result);
@@ -72,23 +88,42 @@ const AddQuestions = () => {
       });
 
       if (response.data.success) {
-        setImageUrl(response.data.data.imageUrl);
-        setImage(file);
+        const uploadedImageUrl = response.data.data.imageUrl;
+        setImageUrl(uploadedImageUrl);
+        // Update preview to use the uploaded URL for consistency
+        setImagePreview(uploadedImageUrl);
         setError("");
+        
+        console.log("Image uploaded successfully:", uploadedImageUrl);
       }
     } catch (err) {
       setError("Failed to upload image. Please try again.");
       console.error("Image upload error:", err);
       setImagePreview(null);
+      setImageUrl("");
     } finally {
       setImageLoading(false);
     }
+  };
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+    setImageError(false);
+    console.log('Image loaded successfully:', imagePreview);
+  };
+
+  const handleImageError = (e) => {
+    setImageError(true);
+    setImageLoaded(false);
+    console.error('Failed to load image:', e.target.src);
   };
 
   const handleRemoveImage = () => {
     setImage(null);
     setImagePreview(null);
     setImageUrl("");
+    setImageLoaded(false);
+    setImageError(false);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -111,7 +146,7 @@ const AddQuestions = () => {
       options,
       correctOption,
       points,
-      imageUrl,
+      imageUrl, // This will be the Cloudinary URL or empty string
     };
 
     try {
@@ -121,11 +156,12 @@ const AddQuestions = () => {
           newQuestion
         );
       } else {
-        await api.put(`/admin/dashboard/quiz/questions`, {
+        await api.put("/admin/dashboard/quiz/questions", {
           _id: quizId,
           questions: [newQuestion],
         });
 
+        // Reset form for new question
         setQuestion("");
         setOptions(["", "", "", ""]);
         setCorrectOption(0);
@@ -184,14 +220,14 @@ const AddQuestions = () => {
               <div className="flex items-center gap-4">
                 <label
                   htmlFor="image-upload"
-                  className="px-4 py-2 bg-[#003E8A]/10 text-[#003E8A] rounded-md cursor-pointer hover:bg-[#003E8A]/20 transition"
+                  className="px-4 py-2 bg-[#003E8A]/10 text-[#003E8A] rounded-md cursor-pointer hover:bg-[#003E8A]/20 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {imageLoading ? "Uploading..." : imageUrl ? "Change Image" : "Upload Image"}
                 </label>
                 {imagePreview && (
                   <button
                     onClick={handleRemoveImage}
-                    className="text-red-500 hover:text-red-700 font-medium"
+                    className="text-red-500 hover:text-red-700 font-medium disabled:opacity-50"
                     disabled={imageLoading}
                   >
                     Remove Image
@@ -199,13 +235,42 @@ const AddQuestions = () => {
                 )}
               </div>
 
+              {/* Image Preview with better error handling */}
               {imagePreview && (
                 <div className="mt-4">
-                  <img
-                    src={imagePreview}
-                    alt="Question preview"
-                    className="max-w-xs rounded-md shadow-sm"
-                  />
+                  <div className="relative max-w-xs">
+                    {/* Loading state */}
+                    {!imageLoaded && !imageError && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-md">
+                        <div className="text-sm text-gray-500">Loading image...</div>
+                      </div>
+                    )}
+                    
+                    {/* Error state */}
+                    {imageError && (
+                      <div className="bg-red-50 border border-red-200 rounded-md p-4 text-center">
+                        <div className="text-red-600 text-sm">Failed to load image</div>
+                        <button 
+                          onClick={handleRemoveImage}
+                          className="text-red-500 text-xs mt-2 hover:underline"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    )}
+                    
+                    {/* Actual image */}
+                    <img
+                      key={`preview-${imageUrl || 'local'}-${Date.now()}`} // Unique key to force re-render
+                      src={imagePreview}
+                      alt="Question preview"
+                      className={`max-w-xs rounded-md shadow-sm transition-opacity ${
+                        imageError ? 'hidden' : 'block'
+                      } ${imageLoaded ? 'opacity-100' : 'opacity-50'}`}
+                      onLoad={handleImageLoad}
+                      onError={handleImageError}
+                    />
+                  </div>
                 </div>
               )}
 
@@ -272,4 +337,3 @@ const AddQuestions = () => {
 };
 
 export default AddQuestions;
-
