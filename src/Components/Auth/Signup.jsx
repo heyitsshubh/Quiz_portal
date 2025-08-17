@@ -127,7 +127,7 @@ setTimeout(() => {
         </div>
       )}
 
-      <div className="bg-[#003E8A]/45 p-6 sm:p-8 rounded-2xl w-full max-w-4xl shadow-2xl">
+  <div className="bg-[#003E8A]/45 p-8 rounded-xl w-full max-w-md shadow-2xl mx-auto flex flex-col justify-center items-center" style={{ aspectRatio: '1 / 1', minHeight: '400px', minWidth: '400px' }}>
         <div className="flex items-center justify-center mb-4 sm:mb-6">
           <h1 className="text-white text-4xl sm:text-5xl font-bold">Quiz Master</h1>
         </div>
@@ -144,7 +144,7 @@ setTimeout(() => {
           </p>
         )}
 
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+  <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
           <InputField
             icon={<FaUsers />}
             placeholder="Team Name"
