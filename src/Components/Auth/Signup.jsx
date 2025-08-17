@@ -52,13 +52,15 @@ export default function SignupForm() {
     // if (!formData.password) return setErrorMsg("Password is required.");
     // if (!formData.confirmPassword) return setErrorMsg("Confirm Password is required.");
 
-    if (!/^\d{6,8}$/.test(formData.studentId)) {
-      return setErrorMsg("Enter a valid student ID.");
+    if (!/^\d{6,8}(-d)?$/.test(formData.studentId)) {
+      return setErrorMsg("Enter a valid student ID. It can end with -d.");
     }
 
     const emailStudentId = formData.email.split("@")[0];
-    if (!emailStudentId.includes(formData.studentId)) {
-      return setErrorMsg("Email must contain your student ID.");
+    // Accept studentId with or without -d in email
+    const studentIdPattern = formData.studentId.replace(/-d$/, "");
+    if (!emailStudentId.includes(studentIdPattern)) {
+      return setErrorMsg("Email must contain your student ID (without -d if present).");
     }
 
     if (!formData.email.endsWith("@akgec.ac.in")) {
