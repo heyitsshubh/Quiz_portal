@@ -34,7 +34,6 @@ export default function SignupForm() {
   };
 
   const setErrorMsg = (msg) => {
-  setError(msg);
   setLoading(false);
   toast.error(msg);
   };
@@ -44,20 +43,20 @@ export default function SignupForm() {
     setError("");
     setLoading(true);
 
-  if (!formData.teamName) return setErrorMsg("Team Name is required.");
+  if (!formData.teamName) return setErrorMsg("Name is required.");
     if (!formData.email) return setErrorMsg("Email Address is required.");
     if (!formData.studentId) return setErrorMsg("Student ID is required.");
     // if (!formData.password) return setErrorMsg("Password is required.");
     // if (!formData.confirmPassword) return setErrorMsg("Confirm Password is required.");
 
     if (!/^\d{6,8}(-d)?$/.test(formData.studentId)) {
-      return setErrorMsg("Enter a valid student ID. It can end with -d.");
+      return setErrorMsg("Enter a valid student ID.");
     }
 
     const emailStudentId = formData.email.split("@")[0];
     const studentIdPattern = formData.studentId.replace(/-d$/, "");
     if (!emailStudentId.includes(studentIdPattern)) {
-      return setErrorMsg("Email must contain your student ID (without -d if present).");
+      return setErrorMsg("Email must contain your student ID.");
     }
 
     if (!formData.email.endsWith("@akgec.ac.in")) {
@@ -103,7 +102,7 @@ setTimeout(() => {
 }, 1200);
     } catch (err) {
   const errorMsg = err.response?.data?.message || "Signup failed. Please try again.";
-  setError(errorMsg);
+  // setError(errorMsg);
   toast.error(errorMsg);
     } finally {
       setLoading(false);
@@ -122,12 +121,12 @@ setTimeout(() => {
     >
 
       {loading && (
-        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50 bg-black/30">
           <div className="w-16 h-16 border-8 border-gray-300 border-t-[#003E8A] rounded-full animate-spin"></div>
         </div>
       )}
 
-  <div className="bg-[#003E8A]/45 p-8 rounded-xl w-full max-w-md shadow-2xl mx-auto flex flex-col justify-center items-center" style={{ aspectRatio: '1 / 1', minHeight: '400px', minWidth: '400px' }}>
+  <div className="bg-[#003E8A]/45 p-10 rounded-xl w-full max-w-md shadow-2xl mx-auto flex flex-col justify-center items-center" style={{ aspectRatio: '1 / 1', minHeight: '500px', minWidth: '500px' }}>
         <div className="flex items-center justify-center mb-4 sm:mb-6">
           <h1 className="text-white text-4xl sm:text-5xl font-bold">Quiz Master</h1>
         </div>
@@ -147,7 +146,7 @@ setTimeout(() => {
   <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
           <InputField
             icon={<FaUsers />}
-            placeholder="Team Name"
+            placeholder="Name"
             name="teamName"
             value={formData.teamName}
             onChange={handleChange}
