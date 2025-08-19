@@ -18,7 +18,7 @@ import bgquiz from "../../assets/bgquiz.jpeg";
 export default function SignupForm() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    teamName: "",
+    teamLeaderName: "",
     email: "",
     studentId: "",
     // password: "",
@@ -43,7 +43,7 @@ export default function SignupForm() {
     setError("");
     setLoading(true);
 
-  if (!formData.teamName) return setErrorMsg("Name is required.");
+  if (!formData.teamLeaderName) return setErrorMsg("Name is required.");
     if (!formData.email) return setErrorMsg("Email Address is required.");
     if (!formData.studentId) return setErrorMsg("Student ID is required.");
     // if (!formData.password) return setErrorMsg("Password is required.");
@@ -147,8 +147,8 @@ setTimeout(() => {
           <InputField
             icon={<FaUsers />}
             placeholder="Name"
-            name="teamName"
-            value={formData.teamName}
+            name="teamLeaderName"
+            value={formData.teamLeaderName}
             onChange={handleChange}
           />
           <InputField
