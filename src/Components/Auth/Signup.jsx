@@ -43,7 +43,7 @@ export default function SignupForm() {
     setError("");
     setLoading(true);
 
-  if (!formData.teamLeaderName) return setErrorMsg("Name is required.");
+  if (!formData.teamLeaderName) return setErrorMsg("Team Leader Name is required.");
     if (!formData.email) return setErrorMsg("Email Address is required.");
     if (!formData.studentId) return setErrorMsg("Student ID is required.");
     // if (!formData.password) return setErrorMsg("Password is required.");
