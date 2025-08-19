@@ -260,16 +260,16 @@ const AddQuestions = () => {
                     )}
                     
                     {/* Actual image */}
-                    <img
-                      key={`preview-${imageUrl || 'local'}-${Date.now()}`} // Unique key to force re-render
-                      src={imagePreview}
-                      alt="Question preview"
-                      className={`max-w-xs rounded-md shadow-sm transition-opacity ${
-                        imageError ? 'hidden' : 'block'
-                      } ${imageLoaded ? 'opacity-100' : 'opacity-50'}`}
-                      onLoad={handleImageLoad}
-                      onError={handleImageError}
-                    />
+               <img
+  src={imagePreview}
+  alt="Question preview"
+  onLoad={handleImageLoad}
+  onError={handleImageError}
+  className={`max-w-xs rounded-md shadow-sm transition-opacity ${
+    imageError ? 'hidden' : 'block'
+  } ${imageLoaded ? 'opacity-100' : 'opacity-50'}`}
+/>
+
                   </div>
                 </div>
               )}
