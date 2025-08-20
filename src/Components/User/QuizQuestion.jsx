@@ -511,9 +511,10 @@ const QuizQuestion = () => {
     const fetchQuestions = async () => {
       try {
         const res = await api.get(`/quiz/questions?quizId=${quizId}`);
+        console.log("Quiz Data:", res.data); // Add this after fetching
         if (res.data.success) {
           setQuizData({
-            quizTitle: res.data.title || "Quiz",
+            quizTitle: res.data.quizTitle || res.data.title || "Quiz",
             totalQuestions: res.data.count,
             questions: res.data.data,
             timeLimit: res.data.timeLimit, // <-- Add timeLimit from backend
