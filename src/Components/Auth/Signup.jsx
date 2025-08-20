@@ -113,7 +113,7 @@ setTimeout(() => {
     <div
       className="relative min-h-screen flex flex-col items-center justify-center px-2"
       style={{
-        backgroundImage: `url(${bgquiz})`,
+        backgroundImage: window.innerWidth >= 768 ? `url(${bgquiz})` : "none",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
