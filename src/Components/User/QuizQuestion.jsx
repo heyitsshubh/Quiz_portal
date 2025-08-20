@@ -511,13 +511,14 @@ const QuizQuestion = () => {
     const fetchQuestions = async () => {
       try {
         const res = await api.get(`/quiz/questions?quizId=${quizId}`);
-        console.log("Quiz Data:", res.data); // Add this after fetching
-        if (res.data.success) {
+        if (res.data.success && res.data.data) {
+          const quiz = res.data.data;
           setQuizData({
-            quizTitle: res.data.quizTitle || res.data.title || "Quiz",
-            totalQuestions: res.data.count,
-            questions: res.data.data,
-            timeLimit: res.data.timeLimit, // <-- Add timeLimit from backend
+            quizTitle: quiz.quizTitle || quiz.title || "Quiz",
+            totalQuestions: quiz.totalQuestions,
+            questions: quiz.questions,
+            timeLimit: quiz.timeLimit,
+            // add other fields if needed
           });
           setError("");
         } else {
