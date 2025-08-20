@@ -516,6 +516,7 @@ const QuizQuestion = () => {
             quizTitle: res.data.title || "Quiz",
             totalQuestions: res.data.count,
             questions: res.data.data,
+            timeLimit: res.data.timeLimit, // <-- Add timeLimit from backend
           });
           setError("");
         } else {
