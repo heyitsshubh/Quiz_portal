@@ -30,7 +30,7 @@ const Userdashboard = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#003E8A]/10 to-white flex flex-col">
+    <div className="min-h-screen bg-gradient-to-b from-[#003E8A]/10 to-white flex flex-col overflow-hidden">
       <header className="bg-gradient-to-r from-[#003E8A] via-[#003E8A]/90 to-[#003E8A]/80 text-white shadow-lg">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-center md:justify-between">
@@ -145,14 +145,14 @@ const Userdashboard = () => {
                   <span>{quiz.timeLimit || "N/A"} minutes</span>
                 </div>
         
-                <span className={`text-xs font-semibold px-4 py-2 rounded-full ${
+                {/* <span className={`text-xs font-semibold px-4 py-2 rounded-full ${
                   quiz.difficulty?.toLowerCase() === 'easy' ? 'bg-green-100 text-green-700 border border-green-200' :
                   quiz.difficulty?.toLowerCase() === 'medium' ? 'bg-yellow-100 text-yellow-700 border border-yellow-200' :
                   quiz.difficulty?.toLowerCase() === 'hard' ? 'bg-red-100 text-red-700 border border-red-200' :
                   'bg-gray-100 text-gray-700 border border-gray-200'
                 }`}>
                   {quiz.difficulty || "Unknown"} Level
-                </span>
+                </span> */}
               </div>
         
               <button
@@ -178,8 +178,8 @@ const Userdashboard = () => {
               {/* <FaBrain className="text-[#003E8A]" /> */}
               <span className="text-gray-700 font-medium">Quiz Master</span>
             </div>
-            <div className="text-gray-500 text-sm">
-              © {new Date().getFullYear()} Quiz Master | All Rights Reserved
+            <div className="text-gray-500 text-l">
+              © {new Date().getFullYear()} Team Conatus | All Rights Reserved
             </div>
           </div>
         </div>
