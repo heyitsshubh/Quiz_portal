@@ -134,7 +134,7 @@ setTimeout(() => {
           Sign Up
         </h2>
         <p className="text-sm text-blue-200 text-center mb-4 sm:mb-6">
-          Create your team account to participate in quizzes
+          Create your account to participate in quizzes
         </p>
 
         {error && (
