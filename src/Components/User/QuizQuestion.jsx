@@ -640,6 +640,12 @@ const QuizQuestion = () => {
     return `${min}:${sec < 10 ? "0" : ""}${sec}`;
   };
 
+  // Get current question object
+  const currentQuestion =
+    quizData && quizData.questions && quizData.questions[questionIndex]
+      ? quizData.questions[questionIndex]
+      : {};
+
   // ✅ Navigation
   const handleNextOrSubmit = () => {
     if (selectedOption !== null) {
@@ -734,10 +740,12 @@ const QuizQuestion = () => {
     );
   }
 
-  const { quizTitle, totalQuestions, questions } = quizData;
-  const currentQuestion = questions[questionIndex] || {};
-  const { questionText = "", options = [], imageUrl = null } = currentQuestion;
-  const canSubmit = timeSinceStart >= 900;
+const quizTitle = quizData.title || quizData.quizTitle || "Quiz";
+const totalQuestions = quizData.totalQuestions || 1;
+const questionData = quizData.questionData || {};
+const { questionText = "", options = [], imageUrl = null } = questionData;
+const timeLimitSeconds = (quizData.timeLimit ? Number(quizData.timeLimit) : 10) * 60;
+const canSubmit = timeSinceStart >= timeLimitSeconds;
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">

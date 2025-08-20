@@ -22,9 +22,10 @@ const Results = () => {
       try {
         const response = await api.get(`/admin/dashboard/results?_id=${quizId}`);
         const data = response.data;
+        console.log('Results API response:', data); // <-- Log backend response
 
         if (data.success) {
-          setQuizTitle(data.quizTitle);
+          setQuizTitle(data.quizTitle || data.title || "Quiz");
 
           const distribution = data.scoreDistribution;
           const chartData = Object.keys(distribution).map((key) => ({
