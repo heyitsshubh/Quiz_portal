@@ -126,14 +126,14 @@ setTimeout(() => {
         </div>
       )}
 
-  <div className="bg-[#003E8A]/45 p-10 rounded-xl w-full max-w-md shadow-2xl mx-auto flex flex-col justify-center items-center" style={{ aspectRatio: '1 / 1', minHeight: '500px', minWidth: '500px' }}>
-        <div className="flex items-center justify-center mb-4 sm:mb-6">
-          <h1 className="text-white text-4xl sm:text-5xl font-bold">Quiz Master</h1>
+  <div className="bg-[#003E8A]/45 p-4 sm:p-10 rounded-xl w-full max-w-md shadow-2xl mx-auto flex flex-col justify-center items-center aspect-square min-h-[350px] sm:min-h-[500px] min-w-[90vw] sm:min-w-[500px]">
+        <div className="flex items-center justify-center mb-2 sm:mb-6">
+          <h1 className="text-white text-2xl sm:text-5xl font-bold">Quiz Master</h1>
         </div>
-        <h2 className="text-xl sm:text-2xl font-bold text-white text-center mb-2 sm:mb-4">
+        <h2 className="text-base sm:text-2xl font-bold text-white text-center mb-1 sm:mb-4">
           Sign Up
         </h2>
-        <p className="text-sm text-blue-200 text-center mb-4 sm:mb-6">
+        <p className="text-xs sm:text-sm text-blue-200 text-center mb-2 sm:mb-6">
           Create your account to participate in quizzes
         </p>
 
@@ -143,7 +143,7 @@ setTimeout(() => {
           </p>
         )}
 
-  <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
+  <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:gap-4 w-full">
           <InputField
             icon={<FaUsers />}
             placeholder="Name"
