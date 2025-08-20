@@ -513,7 +513,7 @@ const QuizQuestion = () => {
         const res = await api.get(`/quiz/questions?quizId=${quizId}`);
         if (res.data.success) {
           setQuizData({
-            quizTitle: "Quiz",
+            quizTitle: res.data.title || "Quiz",
             totalQuestions: res.data.count,
             questions: res.data.data,
           });
