@@ -91,7 +91,7 @@ const Results = () => {
               <thead>
                 <tr>
                   <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    TEAM NAME
+                     NAME
                   </th>
                   <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     FINAL SCORE
@@ -105,7 +105,7 @@ const Results = () => {
                 {teamResults.map((team, index) => (
                   <tr key={index}>
                     <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {team.teamName}
+                      {team.teamLeaderName}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap text-sm text-green-600">
                       {team.finalScore}
