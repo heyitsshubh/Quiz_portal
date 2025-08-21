@@ -8,7 +8,12 @@ const QuizSubmissionSuccess = () => {
   const navigate = useNavigate();
 
   const handleLogout = useCallback(() => {
-    localStorage.clear();
+    // Remove only quiz-related localStorage keys
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith("quiz-")) {
+        localStorage.removeItem(key);
+      }
+    });
     toast.success("Logged out successfully!");
     navigate("/");
   }, [navigate]);
