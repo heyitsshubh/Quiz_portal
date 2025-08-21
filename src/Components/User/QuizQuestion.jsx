@@ -405,7 +405,8 @@ const QuizQuestion = () => {
   const { quizTitle = "Quiz", totalQuestions = 1 } = quizMetadata;
   const { questionData = {} } = currentQuestionData;
   const { questionText = "", options = [], imageUrl = null } = questionData;
-  const canSubmit = timeSinceStart >= 900;
+  // Enable submit after 1 minute (60 seconds)
+  const canSubmit = timeSinceStart >= 60;
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
