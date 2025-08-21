@@ -250,13 +250,15 @@ const QuizQuestion = () => {
         incrementTabSwitch();
         if (tabSwitchCount === 0) {
           toast.warn("Don't switch the tab! The quiz will be auto-submitted if you switch again.", {
-            autoClose: 3000,
+            autoClose: 5000,
           });
         } else if (tabSwitchCount >= 1) {
           toast.error("You switched tabs again. The quiz will now be auto-submitted.", {
             autoClose: 3000,
           });
-          submitQuiz();
+         setTimeout(() => {
+           submitQuiz();
+         }, 2000);
         }
       }
     };

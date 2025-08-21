@@ -21,6 +21,7 @@ const Results = () => {
     const fetchResults = async () => {
       try {
         const response = await api.get(`/admin/dashboard/results?_id=${quizId}`);
+
         const data = response.data;
         console.log('Results API response:', data); // <-- Log backend response
 

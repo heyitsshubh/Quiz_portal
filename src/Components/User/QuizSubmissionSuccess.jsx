@@ -2,15 +2,24 @@ import React from "react";
 import { toast } from "react-toastify";
 import { FaCheckCircle, FaSignOutAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useCallback,useEffect } from "react";
 
 const QuizSubmissionSuccess = () => {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-  localStorage.clear();
-  toast.success("Logged out successfully!");
-  navigate("/"); 
-  };
+  const handleLogout = useCallback(() => {
+    localStorage.clear();
+    toast.success("Logged out successfully!");
+    navigate("/");
+  }, [navigate]);
+
+  // Auto logout after 20 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      handleLogout();
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, [handleLogout]);
 
   return (
     <div className="min-h-screen bg-white">
