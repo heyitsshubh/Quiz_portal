@@ -661,6 +661,7 @@ const QuizQuestion = () => {
     
     try {
       const res = await api.get(`/quiz/question?quizId=${quizId}&questionIndex=${index}`);
+      console.log(res.data);
       if (res.data.success) {
         const questionData = res.data.data;
         

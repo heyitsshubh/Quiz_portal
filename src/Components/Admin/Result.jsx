@@ -23,7 +23,7 @@ const Results = () => {
         const response = await api.get(`/admin/dashboard/results?_id=${quizId}`);
 
         const data = response.data;
-        console.log('Results API response:', data); // <-- Log backend response
+        console.log('Results API response:', data); 
 
         if (data.success) {
           setQuizTitle(data.quizTitle || data.title || "Quiz");
@@ -95,6 +95,9 @@ const Results = () => {
                   <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                      NAME
                   </th>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                     Student id
+                  </th>
                   <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     FINAL SCORE
                   </th>
@@ -108,6 +111,9 @@ const Results = () => {
                   <tr key={index}>
                     <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
                       {team.teamLeaderName}
+                    </td>
+                      <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {team.studentId}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap text-sm text-green-600">
                       {team.finalScore}
