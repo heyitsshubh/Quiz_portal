@@ -43,7 +43,7 @@ export default function SignupForm() {
     setError("");
     setLoading(true);
 
-  if (!formData.teamLeaderName) return setErrorMsg("Team Leader Name is required.");
+  if (!formData.teamLeaderName) return setErrorMsg(" Name is required.");
     if (!formData.email) return setErrorMsg("Email Address is required.");
     if (!formData.studentId) return setErrorMsg("Student ID is required.");
     // if (!formData.password) return setErrorMsg("Password is required.");
@@ -110,15 +110,16 @@ setTimeout(() => {
   };
 
   return (
-    <div
-      className="relative min-h-screen flex flex-col items-center justify-center px-2"
-      style={{
-        backgroundImage: window.innerWidth >= 768 ? `url(${bgquiz})` : "none",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
+  <div
+  className={`relative min-h-screen flex flex-col items-center justify-center px-2 ${window.innerWidth < 768 ? "bg-[#003E8A]/45" : ""}`}
+  style={{
+    backgroundImage: window.innerWidth >= 768 ? `url(${bgquiz})` : "none",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+  }}
+>
+ 
 
       {loading && (
         <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50 bg-black/30">
@@ -126,7 +127,7 @@ setTimeout(() => {
         </div>
       )}
 
-  <div className="bg-[#003E8A]/45 p-4 sm:p-10 rounded-xl w-full max-w-md shadow-2xl mx-auto flex flex-col justify-center items-center aspect-square min-h-[350px] sm:min-h-[500px] min-w-[90vw] sm:min-w-[500px]">
+  <div className="ckgrun p-4 sm:p-10 rounded-xl w-full max-w-md shadow-2xl mx-auto flex flex-col justify-center items-center aspect-square min-h-[350px] sm:min-h-[500px] min-w-[90vw] sm:min-w-[500px]">
         <div className="flex items-center justify-center mb-2 sm:mb-6">
           <h1 className="text-white text-2xl sm:text-5xl font-bold">Quiz Master</h1>
         </div>
