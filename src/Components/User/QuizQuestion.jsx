@@ -661,7 +661,7 @@ const QuizQuestion = () => {
     
     try {
       const res = await api.get(`/quiz/question?quizId=${quizId}&questionIndex=${index}`);
-      console.log(res.data);
+      // console.log(res.data);
       if (res.data.success) {
         const questionData = res.data.data;
         
@@ -701,7 +701,7 @@ const QuizQuestion = () => {
   // Load initial question on mount
   useEffect(() => {
     if (quizId && isQuizInitialized && !questionsCache[questionIndex]) {
-      console.log("Loading initial question:", questionIndex);
+      // console.log("Loading initial question:", questionIndex);
       fetchQuestion(questionIndex);
     }
   }, [quizId, questionIndex, isQuizInitialized]);
