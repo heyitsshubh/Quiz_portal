@@ -49,7 +49,7 @@ export default function SignupForm() {
     // if (!formData.password) return setErrorMsg("Password is required.");
     // if (!formData.confirmPassword) return setErrorMsg("Confirm Password is required.");
 
-    if (!/^\d{6,8}(-d)?$/.test(formData.studentId)) {
+    if (!/^\d{6,10}(-d)?$/.test(formData.studentId)) {
       return setErrorMsg("Enter a valid student ID.");
     }
 
